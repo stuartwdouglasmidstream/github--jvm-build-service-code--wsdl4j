@@ -74,6 +74,8 @@ Author:
               value="${dist.dir.root}/${name}-bin-${wsdl4j.version}"/>
     <property name="dist.src.file"
               value="${dist.dir.root}/${name}-src-${wsdl4j.version}"/>
+
+    <property name="change.log.start.date" value="30 May 2003"/>
   </target>
 
   <!-- =================================================================== -->
@@ -289,5 +291,28 @@ Author:
       <test name="com.ibm.wsdl.tck.JWSDLTestSuite"
             todir="./test"/>
     </junit>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the Change Log                                              -->
+  <!-- =================================================================== -->
+  <target name="changelog" depends="init">
+    <mkdir dir="${build.dir}"/>
+
+    <cvschangelog destfile="${build.dir}/changelog.xml"
+                  start="${change.log.start.date}">
+      <user displayname="Matthew J. Duftler"
+            userid="duftler2"/>
+    </cvschangelog>
+
+    <style in="${build.dir}/changelog.xml"
+           out="${build.dir}/changelog.html"
+           style="${docs.dir}/cvschangelog.xsl">
+      <param name="title" expression="WSDL4J ChangeLog"/>
+      <param name="module" expression="wsdl4j"/>
+      <param name="cvsweb"
+             expression="http://www-124.ibm.com/developerworks/oss/cvs/wsdl4j/"/>
+      <param name="date" expression="${TODAY}"/>
+    </style>
   </target>
 </project>
