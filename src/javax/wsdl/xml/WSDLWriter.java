@@ -17,6 +17,12 @@ public interface WSDLWriter
    * Sets the specified feature to the specified value.
    * <p>
    * There are no minimum features that must be supported.
+   * <p>
+   * All feature names must be fully-qualified, Java package style. All
+   * names starting with javax.wsdl. are reserved for features defined
+   * by the JWSDL specification. It is recommended that implementation-
+   * specific features be fully-qualified to match the package name
+   * of that implementation. For example: com.abc.featureName
    *
    * @param name the name of the feature to be set.
    * @param value the value to set the feature to.
