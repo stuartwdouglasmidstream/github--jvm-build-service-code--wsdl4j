@@ -368,6 +368,9 @@ public class WSDLReaderImpl implements WSDLReader
 
             InputSource inputSource = new InputSource(reader);
             Document doc = getDocument(inputSource, locationURI);
+
+            reader.close();
+
             Element documentElement = doc.getDocumentElement();
 
             /*
@@ -1431,6 +1434,9 @@ public class WSDLReaderImpl implements WSDLReader
       Reader reader = StringUtils.getContentAsReader(url);
       InputSource inputSource = new InputSource(reader);
       Document doc = getDocument(inputSource, wsdlURI);
+
+      reader.close();
+
       Definition def = readWSDL(url.toString(), doc);
 
       return def;
