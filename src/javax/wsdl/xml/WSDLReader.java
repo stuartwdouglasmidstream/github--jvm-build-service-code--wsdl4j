@@ -16,12 +16,27 @@ import javax.wsdl.extensions.*;
  */
 public interface WSDLReader
 {
+  /**
+   * Set the verbose property. If set to true, status messages will
+   * be displayed. Default value is true.
+   */
   public void setVerbose(boolean verbose);
 
+  /**
+   * Get whether or not status messages will be displayed.
+   */
   public boolean getVerbose();
 
+  /**
+   * Set the importDocuments property. If set to true, imported
+   * WSDL documents will be retrieved and processed. Default value
+   * is true.
+   */
   public void setImportDocuments(boolean importDocuments);
 
+  /**
+   * Get whether or not to retrieve and process imported WSDL documents.
+   */
   public boolean getImportDocuments();
 
   /**

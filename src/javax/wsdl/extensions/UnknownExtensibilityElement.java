@@ -4,6 +4,11 @@ import org.w3c.dom.*;
 import javax.wsdl.*;
 
 /**
+ * This class is used to wrap arbitrary elements.
+ *
+ * @see UnknownExtensionSerializer
+ * @see UnknownExtensionDeserializer
+ *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
 public class UnknownExtensibilityElement implements ExtensibilityElement,

@@ -4,6 +4,9 @@ import java.util.*;
 import javax.wsdl.*;
 
 /**
+ * This class is used to associate serializers, deserializers, and
+ * Java implementation types with extensibility elements.
+ *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
 public class ExtensionRegistry implements java.io.Serializable
@@ -86,6 +89,21 @@ public class ExtensionRegistry implements java.io.Serializable
     return defaultDeser;
   }
 
+  /**
+   * Declare that the specified serializer should be used to serialize
+   * all extensibility elements with a qname matching elementType, when
+   * encountered as children of the specified parentType.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * definition this extension was encountered. For
+   * example, javax.wsdl.Binding.class would be used to indicate
+   * this extensibility element was found in the list of
+   * extensibility elements belonging to a javax.wsdl.Binding.
+   * @param elementType the qname of the extensibility element
+   * @param es the extension serializer to use
+   *
+   * @see #querySerializer(Class, QName)
+   */
   public void registerSerializer(Class parentType,
                                  QName elementType,
                                  ExtensionSerializer es)
@@ -102,6 +120,22 @@ public class ExtensionRegistry implements java.io.Serializable
     innerSerializerReg.put(elementType, es);
   }
 
+  /**
+   * Declare that the specified deserializer should be used to deserialize
+   * all extensibility elements with a qname matching elementType, when
+   * encountered as immediate children of the element represented by the
+   * specified parentType.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * document this extensibility element was encountered. For
+   * example, javax.wsdl.Binding.class would be used to indicate
+   * this element was encountered as an immediate child of
+   * a <soap:binding> element.
+   * @param elementType the qname of the extensibility element
+   * @param ed the extension deserializer to use
+   *
+   * @see #queryDeserializer(Class, QName)
+   */
   public void registerDeserializer(Class parentType,
                                    QName elementType,
                                    ExtensionDeserializer ed)
@@ -118,6 +152,27 @@ public class ExtensionRegistry implements java.io.Serializable
     innerDeserializerReg.put(elementType, ed);
   }
 
+  /**
+   * Look up the serializer to use for the extensibility element with
+   * the qname elementType, which was encountered as a child of the
+   * specified parentType.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * definition this extension was encountered. For
+   * example, javax.wsdl.Binding.class would be used to indicate
+   * this extensibility element was found in the list of
+   * extensibility elements belonging to a javax.wsdl.Binding.
+   * @param elementType the qname of the extensibility element
+   *
+   * @return the extension serializer, if one was found. If none was
+   * found, the behavior depends on the value of the defaultSerializer
+   * property. If the defaultSerializer property is set to a non-null
+   * value, that value is returned; otherwise, a WSDLException is
+   * thrown.
+   *
+   * @see #registerSerializer(Class, QName, ExtensionSerializer)
+   * @see #setDefaultSerializer(ExtensionSerializer)
+   */
   public ExtensionSerializer querySerializer(Class parentType,
                                              QName elementType)
                                                throws WSDLException
@@ -147,6 +202,26 @@ public class ExtensionRegistry implements java.io.Serializable
     return es;
   }
 
+  /**
+   * Look up the deserializer for the extensibility element with the
+   * qname elementType, which was encountered as an immediate child
+   * of the element represented by the specified parentType.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * document this extensibility element was encountered. For
+   * example, javax.wsdl.Binding.class would be used to indicate
+   * this element was encountered as an immediate child of
+   * a <soap:binding> element.
+   * @param elementType the qname of the extensibility element
+   *
+   * @return the extension deserializer, if one was found. If none was
+   * found, the behavior depends on the value of the defaultDeserializer
+   * property. If the defaultDeserializer property is set to a non-null
+   * value, that value is returned; otherwise, a WSDLException is thrown.
+   *
+   * @see #registerDeserializer(Class, QName, ExtensionDeserializer)
+   * @see #setDefaultDeserializer(ExtensionDeserializer)
+   */
   public ExtensionDeserializer queryDeserializer(Class parentType,
                                                  QName elementType)
                                                    throws WSDLException
@@ -193,6 +268,23 @@ public class ExtensionRegistry implements java.io.Serializable
            : null;
   }
 
+  /**
+   * Declare that the specified extensionType is the concrete
+   * class which should be used to represent extensibility elements
+   * with qnames matching elementType, that are intended to exist as
+   * children of the specified parentType.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * definition this extension would exist. For example,
+   * javax.wsdl.Binding.class would be used to indicate
+   * this extensibility element would be added to the list of
+   * extensibility elements belonging to a javax.wsdl.Binding,
+   * after being instantiated.
+   * @param elementType the qname of the extensibility element
+   * @param extensionType the concrete class which should be instantiated
+   *
+   * @see #createExtension(Class, QName)
+   */
   public void mapExtensionTypes(Class parentType,
                                 QName elementType,
                                 Class extensionType)
@@ -209,6 +301,26 @@ public class ExtensionRegistry implements java.io.Serializable
     innerExtensionTypeReg.put(elementType, extensionType);
   }
 
+  /**
+   * Create an instance of the type which was declared to be used to
+   * represent extensibility elements with qnames matching elementType,
+   * when intended to exist as children of the specified parentType.
+   * This method allows a user to instantiate an extensibility element
+   * without having to know the implementing type.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * definition this extension will exist. For example,
+   * javax.wsdl.Binding.class would be used to indicate
+   * this extensibility element is going to be added to the list of
+   * extensibility elements belonging to a javax.wsdl.Binding,
+   * after being instantiated.
+   * @param elementType the qname of the extensibility element
+   *
+   * @return a new instance of the type used to represent the
+   * specified extension
+   *
+   * @see #mapExtensionTypes(Class, QName, Class)
+   */
   public ExtensibilityElement createExtension(Class parentType,
                                               QName elementType)
                                                 throws WSDLException

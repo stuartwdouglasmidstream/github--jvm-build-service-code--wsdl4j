@@ -6,6 +6,12 @@ import javax.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**
+ * This class is used to serialize UnknownExtensibilityElement instances
+ * into the PrintWriter.
+ *
+ * @see UnknownExtensibilityElement
+ * @see UnknownExtensionDeserializer
+ *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
 public class UnknownExtensionSerializer implements ExtensionSerializer,

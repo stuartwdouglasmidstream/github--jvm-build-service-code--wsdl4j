@@ -15,7 +15,7 @@ import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**
- * This interface describes a collection of methods
+ * This class describes a collection of methods
  * that enable conversion of a WSDL document (in XML,
  * following the WSDL schema described in the WSDL
  * specification) into a WSDL model.

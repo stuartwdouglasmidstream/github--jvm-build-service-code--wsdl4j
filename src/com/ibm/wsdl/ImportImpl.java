@@ -3,6 +3,12 @@ package com.ibm.wsdl;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 
+/**
+ * This class represents an import, and may contain a reference
+ * to the imported definition.
+ *
+ * @author Matthew J. Duftler (duftler@us.ibm.com)
+ */
 public class ImportImpl implements Import
 {
   protected String namespaceURI = null;

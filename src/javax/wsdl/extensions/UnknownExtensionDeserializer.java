@@ -6,10 +6,11 @@ import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**
- * This class deserializes arbitrary elements into UnknownExtensibilityElement
- * instances.
+ * This class is used to deserialize arbitrary elements into
+ * UnknownExtensibilityElement instances.
  *
  * @see UnknownExtensibilityElement
+ * @see UnknownExtensionSerializer
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */

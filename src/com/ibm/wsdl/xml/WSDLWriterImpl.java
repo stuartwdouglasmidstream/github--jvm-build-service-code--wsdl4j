@@ -14,7 +14,7 @@ import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**
- * This interface describes a collection of methods
+ * This class describes a collection of methods
  * that allow a WSDL model to be written to a writer
  * in an XML format that follows the WSDL schema.
  *

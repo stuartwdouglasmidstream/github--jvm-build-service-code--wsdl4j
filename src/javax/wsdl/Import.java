@@ -2,14 +2,36 @@ package javax.wsdl;
 
 import org.w3c.dom.*;
 
+/**
+ * This interface represents an import, and may contain a reference
+ * to the imported definition.
+ *
+ * @author Matthew J. Duftler (duftler@us.ibm.com)
+ */
 public interface Import extends java.io.Serializable
 {
+  /**
+   * Set the namespace URI of this import.
+   *
+   * @param namespaceURI the desired namespace URI
+   */
   public void setNamespaceURI(String namespaceURI);
 
+  /**
+   * Get the namespace URI of this import.
+   */
   public String getNamespaceURI();
 
+  /**
+   * Set the location URI of this import.
+   *
+   * @param locationURI the desired location URI
+   */
   public void setLocationURI(String locationURI);
 
+  /**
+   * Get the location URI of this import.
+   */
   public String getLocationURI();
 
   /**

@@ -3,6 +3,9 @@ package javax.wsdl.extensions;
 import javax.wsdl.*;
 
 /**
+ * This interface should be implemented by classes intending to represent
+ * extensions.
+ *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
 public interface ExtensibilityElement
