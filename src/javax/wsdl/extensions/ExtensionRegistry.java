@@ -43,6 +43,11 @@ public class ExtensionRegistry implements java.io.Serializable
   protected Map extensionTypeReg = new Hashtable();
   protected ExtensionSerializer defaultSer = null;
   protected ExtensionDeserializer defaultDeser = null;
+  /*
+    This is a Map of Maps. The top-level Map is keyed by (Class)parentType,
+    and the inner Maps are keyed by (QName)attrName.
+  */
+  protected Map extensionAttributeTypeReg = new Hashtable();
 
   /**
    * Set the serializer to be used when none is found for an extensibility
@@ -133,7 +138,7 @@ public class ExtensionRegistry implements java.io.Serializable
    * document this extensibility element was encountered. For
    * example, javax.wsdl.Binding.class would be used to indicate
    * this element was encountered as an immediate child of
-   * a <soap:binding> element.
+   * a &lt;wsdl:binding> element.
    * @param elementType the qname of the extensibility element
    * @param ed the extension deserializer to use
    *
@@ -214,7 +219,7 @@ public class ExtensionRegistry implements java.io.Serializable
    * document this extensibility element was encountered. For
    * example, javax.wsdl.Binding.class would be used to indicate
    * this element was encountered as an immediate child of
-   * a <soap:binding> element.
+   * a &lt;wsdl:binding> element.
    * @param elementType the qname of the extensibility element
    *
    * @return the extension deserializer, if one was found. If none was
@@ -369,6 +374,75 @@ public class ExtensionRegistry implements java.io.Serializable
                               "extensionType '" + extensionType.getName() +
                               "'.",
                               e);
+    }
+  }
+
+  /**
+   * Declare that the type of the specified extension attribute, when it occurs
+   * as an attribute of the specified parent type, should be assumed to be
+   * attrType.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * document this extensibility attribute was encountered. For
+   * example, javax.wsdl.Binding.class would be used to indicate
+   * this attribute was defined on a &lt;wsdl:binding> element.
+   * @param attrName the qname of the extensibility attribute
+   * @param attrType one of the constants defined on the AttributeExtensible
+   * class
+   *
+   * @see #queryExtensionAttributeType(Class, QName)
+   * @see AttributeExtensible
+   */
+  public void registerExtensionAttributeType(Class parentType,
+                                             QName attrName,
+                                             int attrType)
+  {
+    Map innerExtensionAttributeTypeReg =
+      (Map)extensionAttributeTypeReg.get(parentType);
+
+    if (innerExtensionAttributeTypeReg == null)
+    {
+      innerExtensionAttributeTypeReg = new Hashtable();
+
+      extensionAttributeTypeReg.put(parentType, innerExtensionAttributeTypeReg);
+    }
+
+    innerExtensionAttributeTypeReg.put(attrName, new Integer(attrType));
+  }
+
+  /**
+   * Look up the type of the extensibility attribute with the qname attrName,
+   * which was defined on an element represented by the specified parentType.
+   *
+   * @param parentType a class object indicating where in the WSDL
+   * document this extensibility attribute was encountered. For
+   * example, javax.wsdl.Binding.class would be used to indicate
+   * this attribute was defined on a &lt;wsdl:binding> element.
+   * @param attrName the qname of the extensibility attribute
+   *
+   * @return one of the constants defined on the AttributeExtensible class
+   *
+   * @see #registerExtensionAttributeType(Class, QName, int)
+   * @see AttributeExtensible
+   */
+  public int queryExtensionAttributeType(Class parentType, QName attrName)
+  {
+    Map innerExtensionAttributeTypeReg =
+      (Map)extensionAttributeTypeReg.get(parentType);
+    Integer attrType = null;
+
+    if (innerExtensionAttributeTypeReg != null)
+    {
+      attrType = (Integer)innerExtensionAttributeTypeReg.get(attrName);
+    }
+
+    if (attrType != null)
+    {
+      return attrType.intValue();
+    }
+    else
+    {
+      return AttributeExtensible.NO_DECLARED_TYPE;
     }
   }
 }

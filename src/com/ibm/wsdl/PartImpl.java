@@ -33,7 +33,7 @@ public class PartImpl implements Part
   public void setName(String name)
   {
     this.name = name;
-  }  
+  }
 
   /**
    * Get the name of this part.
@@ -43,7 +43,7 @@ public class PartImpl implements Part
   public String getName()
   {
     return name;
-  }  
+  }
 
   public void setElementName(QName elementName)
   {
@@ -66,16 +66,19 @@ public class PartImpl implements Part
   }
 
   /**
-   * Set an extension attribute on this part. Pass in a null
-   * value to remove an extension attribute.
+   * Set an extension attribute on this element. Pass in a null value to remove
+   * an extension attribute.
    *
    * @param name the extension attribute name
-   * @param value the extension attribute value
+   * @param value the extension attribute value. Can be a String, a QName, a
+   * List of Strings, or a List of QNames.
    *
    * @see #getExtensionAttribute
    * @see #getExtensionAttributes
+   * @see ExtensionRegistry#registerExtensionAttributeType
+   * @see ExtensionRegistry#queryExtensionAttributeType
    */
-  public void setExtensionAttribute(QName name, QName value)
+  public void setExtensionAttribute(QName name, Object value)
   {
     if (value != null)
     {
@@ -88,17 +91,21 @@ public class PartImpl implements Part
   }
 
   /**
-   * Retrieve an extension attribute from this part. If the
-   * extension attribute is not defined, null is returned.
+   * Retrieve an extension attribute from this element. If the extension
+   * attribute is not defined, null is returned.
    *
    * @param name the extension attribute name
+   *
    * @return the value of the extension attribute, or null if
-   * it is not defined
+   * it is not defined. Can be a String, a QName, a List of Strings, or a List
+   * of QNames.
    *
    * @see #setExtensionAttribute
    * @see #getExtensionAttributes
+   * @see ExtensionRegistry#registerExtensionAttributeType
+   * @see ExtensionRegistry#queryExtensionAttributeType
    */
-  public QName getExtensionAttribute(QName name)
+  public Object getExtensionAttribute(QName name)
   {
     return (QName)extensionAttributes.get(name);
   }

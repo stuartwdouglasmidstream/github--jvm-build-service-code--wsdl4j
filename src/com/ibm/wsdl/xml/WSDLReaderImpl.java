@@ -485,7 +485,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(importEl, importDef, def);
+    parseExtensibilityAttributes(importEl, Import.class, importDef, def);
 
     return importDef;
   }
@@ -511,7 +511,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(typesEl, types, def);
+    parseExtensibilityAttributes(typesEl, Types.class, types, def);
 
     return types;
   }
@@ -584,7 +584,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(bindingEl, binding, def);
+    parseExtensibilityAttributes(bindingEl, Binding.class, binding, def);
 
     return binding;
   }
@@ -660,7 +660,10 @@ public class WSDLReaderImpl implements WSDLReader
       bindingOperation.setOperation(op);
     }
 
-    parseExtensibilityAttributes(bindingOperationEl, bindingOperation, def);
+    parseExtensibilityAttributes(bindingOperationEl,
+                                 BindingOperation.class,
+                                 bindingOperation,
+                                 def);
 
     return bindingOperation;
   }
@@ -695,7 +698,10 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(bindingInputEl, bindingInput, def);
+    parseExtensibilityAttributes(bindingInputEl,
+                                 BindingInput.class,
+                                 bindingInput,
+                                 def);
 
     return bindingInput;
   }
@@ -730,7 +736,10 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(bindingOutputEl, bindingOutput, def);
+    parseExtensibilityAttributes(bindingOutputEl,
+                                 BindingOutput.class,
+                                 bindingOutput,
+                                 def);
 
     return bindingOutput;
   }
@@ -765,7 +774,10 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(bindingFaultEl, bindingFault, def);
+    parseExtensibilityAttributes(bindingFaultEl,
+                                 BindingFault.class,
+                                 bindingFault,
+                                 def);
 
     return bindingFault;
   }
@@ -816,7 +828,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(msgEl, msg, def);
+    parseExtensibilityAttributes(msgEl, Message.class, msg, def);
 
     return msg;
   }
@@ -866,12 +878,13 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(partEl, part, def);
+    parseExtensibilityAttributes(partEl, Part.class, part, def);
 
     return part;
   }
 
   protected void parseExtensibilityAttributes(Element el,
+                                              Class parentType,
                                               AttributeExtensible attrExt,
                                               Definition def)
                                                 throws WSDLException
@@ -896,18 +909,17 @@ public class WSDLReaderImpl implements WSDLReader
           DOMUtils.registerUniquePrefix(prefix, namespaceURI, def);
 
           String strValue = attribute.getValue();
-          QName qValue = null;
+          int attrType = AttributeExtensible.NO_DECLARED_TYPE;
+          ExtensionRegistry extReg = def.getExtensionRegistry();
 
-          try
+          if (extReg != null)
           {
-            qValue = DOMUtils.getQName(strValue, el, def);
-          }
-          catch (WSDLException e)
-          {
-            qValue = new QName(strValue);
+            attrType = extReg.queryExtensionAttributeType(parentType, qname);
           }
 
-          extAttributes.put(qname, qValue);
+          Object val = parseExtensibilityAttribute(el, attrType, strValue, def);
+
+          extAttributes.put(qname, val);
         }
       }
       else if (!nativeAttributeNames.contains(localName))
@@ -924,6 +936,57 @@ public class WSDLReaderImpl implements WSDLReader
 
         throw wsdlExc;
       }
+    }
+  }
+
+  protected Object parseExtensibilityAttribute(Element el,
+                                               int attrType,
+                                               String attrValue,
+                                               Definition def)
+                                                 throws WSDLException
+  {
+    if (attrType == AttributeExtensible.QNAME_TYPE)
+    {
+      return DOMUtils.getQName(attrValue, el, def);
+    }
+    else if (attrType == AttributeExtensible.LIST_OF_STRINGS_TYPE)
+    {
+      return StringUtils.parseNMTokens(attrValue);
+    }
+    else if (attrType == AttributeExtensible.LIST_OF_QNAMES_TYPE)
+    {
+      List oldList = StringUtils.parseNMTokens(attrValue);
+      int size = oldList.size();
+      List newList = new Vector(size);
+
+      for (int i = 0; i < size; i++)
+      {
+        String str = (String)oldList.get(i);
+        QName qValue = DOMUtils.getQName(str, el, def);
+
+        newList.add(qValue);
+      }
+
+      return newList;
+    }
+    else if (attrType == AttributeExtensible.STRING_TYPE)
+    {
+      return attrValue;
+    }
+    else
+    {
+      QName qValue = null;
+
+      try
+      {
+        qValue = DOMUtils.getQName(attrValue, el, def);
+      }
+      catch (WSDLException e)
+      {
+        qValue = new QName(attrValue);
+      }
+
+      return qValue;
     }
   }
 
@@ -978,7 +1041,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(portTypeEl, portType, def);
+    parseExtensibilityAttributes(portTypeEl, PortType.class, portType, def);
 
     return portType;
   }
@@ -1147,7 +1210,7 @@ public class WSDLReaderImpl implements WSDLReader
       op = null;
     }
 
-    parseExtensibilityAttributes(opEl, op, def);
+    parseExtensibilityAttributes(opEl, Operation.class, op, def);
 
     return op;
   }
@@ -1184,7 +1247,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(serviceEl, service, def);
+    parseExtensibilityAttributes(serviceEl, Service.class, service, def);
 
     return service;
   }
@@ -1236,7 +1299,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(portEl, port, def);
+    parseExtensibilityAttributes(portEl, Port.class, port, def);
 
     return port;
   }
@@ -1324,7 +1387,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(inputEl, input, def);
+    parseExtensibilityAttributes(inputEl, Input.class, input, def);
 
     return input;
   }
@@ -1374,7 +1437,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(outputEl, output, def);
+    parseExtensibilityAttributes(outputEl, Output.class, output, def);
 
     return output;
   }
@@ -1424,7 +1487,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    parseExtensibilityAttributes(faultEl, fault, def);
+    parseExtensibilityAttributes(faultEl, Fault.class, fault, def);
 
     return fault;
   }

@@ -191,7 +191,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                   pw);
         }
 
-        printExtensibilityAttributes(service, def, pw);
+        printExtensibilityAttributes(Service.class, service, def, pw);
 
         pw.println('>');
 
@@ -236,7 +236,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                            pw);
         }
 
-        printExtensibilityAttributes(port, def, pw);
+        printExtensibilityAttributes(Port.class, port, def, pw);
 
         pw.println('>');
 
@@ -291,7 +291,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                              pw);
           }
 
-          printExtensibilityAttributes(binding, def, pw);
+          printExtensibilityAttributes(Binding.class, binding, def, pw);
 
           pw.println('>');
 
@@ -333,7 +333,10 @@ public class WSDLWriterImpl implements WSDLWriter
                                 bindingOperation.getName(),
                                 pw);
 
-        printExtensibilityAttributes(bindingOperation, def, pw);
+        printExtensibilityAttributes(BindingOperation.class,
+                                     bindingOperation,
+                                     def,
+                                     pw);
 
         pw.println('>');
 
@@ -373,7 +376,7 @@ public class WSDLWriterImpl implements WSDLWriter
                               bindingInput.getName(),
                               pw);
 
-      printExtensibilityAttributes(bindingInput, def, pw);
+      printExtensibilityAttributes(BindingInput.class, bindingInput, def, pw);
 
       pw.println('>');
 
@@ -405,7 +408,7 @@ public class WSDLWriterImpl implements WSDLWriter
                               bindingOutput.getName(),
                               pw);
 
-      printExtensibilityAttributes(bindingOutput, def, pw);
+      printExtensibilityAttributes(BindingOutput.class, bindingOutput, def, pw);
 
       pw.println('>');
 
@@ -442,7 +445,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                 bindingFault.getName(),
                                 pw);
 
-        printExtensibilityAttributes(bindingFault, def, pw);
+        printExtensibilityAttributes(BindingFault.class, bindingFault, def, pw);
 
         pw.println('>');
 
@@ -487,7 +490,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                     pw);
           }
 
-          printExtensibilityAttributes(portType, def, pw);
+          printExtensibilityAttributes(PortType.class, portType, def, pw);
 
           pw.println('>');
 
@@ -528,7 +531,7 @@ public class WSDLWriterImpl implements WSDLWriter
                    StringUtils.getNMTokens(operation.getParameterOrdering()),
                    pw);
 
-          printExtensibilityAttributes(operation, def, pw);
+          printExtensibilityAttributes(Operation.class, operation, def, pw);
 
           pw.println('>');
 
@@ -590,7 +593,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                          pw);
       }
 
-      printExtensibilityAttributes(input, def, pw);
+      printExtensibilityAttributes(Input.class, input, def, pw);
 
       Element docEl = input.getDocumentationElement();
 
@@ -635,7 +638,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                          pw);
       }
 
-      printExtensibilityAttributes(output, def, pw);
+      printExtensibilityAttributes(Output.class, output, def, pw);
 
       Element docEl = output.getDocumentationElement();
 
@@ -685,7 +688,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                            pw);
         }
 
-        printExtensibilityAttributes(fault, def, pw);
+        printExtensibilityAttributes(Fault.class, fault, def, pw);
 
         Element docEl = fault.getDocumentationElement();
 
@@ -735,7 +738,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                     pw);
           }
 
-          printExtensibilityAttributes(message, def, pw);
+          printExtensibilityAttributes(Message.class, message, def, pw);
 
           pw.println('>');
 
@@ -775,7 +778,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                          def,
                                          pw);
 
-        printExtensibilityAttributes(part, def, pw);
+        printExtensibilityAttributes(Part.class, part, def, pw);
 
         Element docEl = part.getDocumentationElement();
 
@@ -795,7 +798,8 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  protected void printExtensibilityAttributes(AttributeExtensible attrExt,
+  protected void printExtensibilityAttributes(Class parentType,
+                                              AttributeExtensible attrExt,
                                               Definition def,
                                               PrintWriter pw)
                                                 throws WSDLException
@@ -806,9 +810,76 @@ public class WSDLWriterImpl implements WSDLWriter
     while (attrNames.hasNext())
     {
       QName attrName = (QName)attrNames.next();
-      QName attrValue = (QName)extensionAttributes.get(attrName);
+      Object attrValue = extensionAttributes.get(attrName);
+      String attrStrValue = null;
+      QName attrQNameValue = null;
 
-      DOMUtils.printQualifiedAttribute(attrName, attrValue, def, pw);
+      if (attrValue instanceof String)
+      {
+        attrStrValue = (String)attrValue;
+      }
+      else if (attrValue instanceof QName)
+      {
+        attrQNameValue = (QName)attrValue;
+      }
+      else if (attrValue instanceof List)
+      {
+        List attrValueList = (List)attrValue;
+        int size = attrValueList.size();
+
+        if (size > 0)
+        {
+          Object tempAttrVal = attrValueList.get(0);
+
+          if (tempAttrVal instanceof String)
+          {
+            attrStrValue = StringUtils.getNMTokens(attrValueList);
+          }
+          else if (tempAttrVal instanceof QName)
+          {
+            StringBuffer strBuf = new StringBuffer();
+
+            for (int i = 0; i < size; i++)
+            {
+              QName tempQName = (QName)attrValueList.get(i);
+
+              strBuf.append((i > 0 ? " " : "") +
+                            DOMUtils.getQualifiedValue(tempQName.getNamespaceURI(),
+                                                       tempQName.getLocalPart(),
+                                                       def));
+            }
+
+            attrStrValue = strBuf.toString();
+          }
+          else
+          {
+            throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                                    "Unknown type of extension attribute '" +
+                                    attrName + "': " +
+                                    tempAttrVal.getClass().getName());
+          }
+        }
+        else
+        {
+          attrStrValue = "";
+        }
+      }
+      else
+      {
+        throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                                "Unknown type of extension attribute '" +
+                                attrName + "': " +
+                                attrValue.getClass().getName());
+      }
+
+      if (attrQNameValue != null)
+      {
+        DOMUtils.printQualifiedAttribute(attrName, attrQNameValue, def, pw);
+      }
+      else
+      {
+        DOMUtils.printQualifiedAttribute(attrName, attrStrValue, def, pw);
+      }
     }
   }
 
@@ -835,7 +906,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                    def);
       pw.print("  <" + tagName);
 
-      printExtensibilityAttributes(types, def, pw);
+      printExtensibilityAttributes(Types.class, types, def, pw);
 
       pw.println('>');
 
@@ -878,7 +949,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                   importDef.getLocationURI(),
                                   pw);
 
-          printExtensibilityAttributes(importDef, def, pw);
+          printExtensibilityAttributes(Import.class, importDef, def, pw);
 
           Element docEl = importDef.getDocumentationElement();
 

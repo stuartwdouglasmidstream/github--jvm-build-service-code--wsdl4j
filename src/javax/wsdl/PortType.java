@@ -2,6 +2,7 @@ package javax.wsdl;
 
 import java.util.*;
 import org.w3c.dom.*;
+import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
 
 /**

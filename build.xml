@@ -75,7 +75,7 @@ Author:
     <property name="dist.src.file"
               value="${dist.dir.root}/${name}-src-${wsdl4j.version}"/>
 
-    <property name="change.log.start.date" value="30 May 2003"/>
+    <property name="change.log.start.date" value="21 March 2003"/>
   </target>
 
   <!-- =================================================================== -->
@@ -168,6 +168,7 @@ Author:
              use="true"
              windowtitle="JWSDL API"
              doctitle="JWSDL"
+             breakiterator="yes"
     />
 
     <mkdir dir="${dist.dir.root}/"/>
@@ -190,6 +191,7 @@ Author:
              use="true"
              windowtitle="${Name} API"
              doctitle="${Name}"
+             breakiterator="yes"
              bottom="Copyright &#169; ${year} IBM. All Rights Reserved."
     />
   </target>

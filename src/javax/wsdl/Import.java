@@ -1,6 +1,7 @@
 package javax.wsdl;
 
 import org.w3c.dom.*;
+import javax.wsdl.extensions.*;
 
 /**
  * This interface represents an import, and may contain a reference

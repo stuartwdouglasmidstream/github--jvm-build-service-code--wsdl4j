@@ -1,8 +1,9 @@
 package javax.wsdl;
 
 import java.util.*;
-import javax.xml.namespace.*;
 import org.w3c.dom.*;
+import javax.xml.namespace.*;
+import javax.wsdl.extensions.*;
 
 /**
  * This interface represents a message part and contains the part's
