@@ -40,24 +40,86 @@ public class WSDLReaderImpl implements WSDLReader
   private ExtensionRegistry extReg = null;
   private String factoryImplName = null;
 
-  public void setVerbose(boolean verbose)
+  /**
+   * Sets the specified feature to the specified value.
+   * <p>
+   * The supported features are:
+   * <p>
+   * <table border=1>
+   *   <tr>
+   *     <th>Name</th>
+   *     <th>Description</th>
+   *     <th>Default Value</th>
+   *   </tr>
+   *   <tr>
+   *     <td><center>verbose</center></td>
+   *     <td>If set to true, status messages will be displayed.</td>
+   *     <td><center>true</center></td>
+   *   </tr>
+   *   <tr>
+   *     <td><center>importDocuments</center></td>
+   *     <td>If set to true, imported WSDL documents will be
+   *         retrieved and processed.</td>
+   *     <td><center>true</center></td>
+   *   </tr>
+   * </table>
+   * <p>
+   *
+   * @param name the name of the feature to be set.
+   * @param value the value to set the feature to.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #getFeature(String)
+   */
+  public void setFeature(String name, boolean value)
+    throws IllegalArgumentException
   {
-    this.verbose = verbose;
+    if (name == null)
+    {
+      throw new IllegalArgumentException("Feature name must not be null.");
+    }
+
+    if (name.equals(Constants.FEATURE_VERBOSE))
+    {
+      verbose = value;
+    }
+    else if (name.equals(Constants.FEATURE_IMPORT_DOCUMENTS))
+    {
+      importDocuments = value;
+    }
+    else
+    {
+      throw new IllegalArgumentException("Feature name '" + name +
+                                         "' not recognized.");
+    }
   }
 
-  public boolean getVerbose()
+  /**
+   * Gets the value of the specified feature.
+   *
+   * @param name the name of the feature to get the value of.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #setFeature(String, boolean)
+   */
+  public boolean getFeature(String name) throws IllegalArgumentException
   {
-    return verbose;
-  }
+    if (name == null)
+    {
+      throw new IllegalArgumentException("Feature name must not be null.");
+    }
 
-  public void setImportDocuments(boolean importDocuments)
-  {
-    this.importDocuments = importDocuments;
-  }
-
-  public boolean getImportDocuments()
-  {
-    return importDocuments;
+    if (name.equals(Constants.FEATURE_VERBOSE))
+    {
+      return verbose;
+    }
+    else if (name.equals(Constants.FEATURE_IMPORT_DOCUMENTS))
+    {
+      return importDocuments;
+    }
+    else
+    {
+      throw new IllegalArgumentException("Feature name '" + name +
+                                         "' not recognized.");
+    }
   }
 
   /**

@@ -17,27 +17,46 @@ import javax.wsdl.extensions.*;
 public interface WSDLReader
 {
   /**
-   * Set the verbose property. If set to true, status messages will
-   * be displayed. Default value is true.
+   * Sets the specified feature to the specified value.
+   * <p>
+   * The minimum features that must be supported are:
+   * <p>
+   * <table border=1>
+   *   <tr>
+   *     <th>Name</th>
+   *     <th>Description</th>
+   *     <th>Default Value</th>
+   *   </tr>
+   *   <tr>
+   *     <td><center>verbose</center></td>
+   *     <td>If set to true, status messages will be displayed.</td>
+   *     <td><center>true</center></td>
+   *   </tr>
+   *   <tr>
+   *     <td><center>importDocuments</center></td>
+   *     <td>If set to true, imported WSDL documents will be
+   *         retrieved and processed.</td>
+   *     <td><center>true</center></td>
+   *   </tr>
+   * </table>
+   * <p>
+   *
+   * @param name the name of the feature to be set.
+   * @param value the value to set the feature to.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #getFeature(String)
    */
-  public void setVerbose(boolean verbose);
+  public void setFeature(String name, boolean value)
+    throws IllegalArgumentException;
 
   /**
-   * Get whether or not status messages will be displayed.
+   * Gets the value of the specified feature.
+   *
+   * @param name the name of the feature to get the value of.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #setFeature(String, boolean)
    */
-  public boolean getVerbose();
-
-  /**
-   * Set the importDocuments property. If set to true, imported
-   * WSDL documents will be retrieved and processed. Default value
-   * is true.
-   */
-  public void setImportDocuments(boolean importDocuments);
-
-  /**
-   * Get whether or not to retrieve and process imported WSDL documents.
-   */
-  public boolean getImportDocuments();
+  public boolean getFeature(String name) throws IllegalArgumentException;
 
   /**
    * Set the extension registry to be used when reading

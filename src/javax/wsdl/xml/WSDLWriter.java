@@ -14,6 +14,28 @@ import javax.wsdl.*;
 public interface WSDLWriter
 {
   /**
+   * Sets the specified feature to the specified value.
+   * <p>
+   * There are no minimum features that must be supported.
+   *
+   * @param name the name of the feature to be set.
+   * @param value the value to set the feature to.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #getFeature(String)
+   */
+  public void setFeature(String name, boolean value)
+    throws IllegalArgumentException;
+
+  /**
+   * Gets the value of the specified feature.
+   *
+   * @param name the name of the feature to get the value of.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #setFeature(String, boolean)
+   */
+  public boolean getFeature(String name) throws IllegalArgumentException;
+
+  /**
    * Return a document generated from the specified WSDL model.
    */
   public Document getDocument(Definition wsdlDef) throws WSDLException;

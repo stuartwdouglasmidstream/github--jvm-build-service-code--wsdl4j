@@ -83,4 +83,8 @@ public class Constants
   // XML Declaration string.
   public static final String XML_DECL =
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+  // Feature names.
+  public static final String FEATURE_VERBOSE = "verbose";
+  public static final String FEATURE_IMPORT_DOCUMENTS = "importDocuments";
 }

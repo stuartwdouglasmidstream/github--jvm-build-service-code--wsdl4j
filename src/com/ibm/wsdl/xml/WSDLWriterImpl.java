@@ -23,6 +23,50 @@ import com.ibm.wsdl.util.xml.*;
  */
 public class WSDLWriterImpl implements WSDLWriter
 {
+  /**
+   * Sets the specified feature to the specified value.
+   * <p>
+   * There are no minimum features that must be supported.
+   *
+   * @param name the name of the feature to be set.
+   * @param value the value to set the feature to.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #getFeature(String)
+   */
+  public void setFeature(String name, boolean value)
+    throws IllegalArgumentException
+  {
+    if (name == null)
+    {
+      throw new IllegalArgumentException("Feature name must not be null.");
+    }
+    else
+    {
+      throw new IllegalArgumentException("Feature name '" + name +
+                                         "' not recognized.");
+    }
+  }
+
+  /**
+   * Gets the value of the specified feature.
+   *
+   * @param name the name of the feature to get the value of.
+   * @throws IllegalArgumentException if the feature name is not recognized.
+   * @see #setFeature(String, boolean)
+   */
+  public boolean getFeature(String name) throws IllegalArgumentException
+  {
+    if (name == null)
+    {
+      throw new IllegalArgumentException("Feature name must not be null.");
+    }
+    else
+    {
+      throw new IllegalArgumentException("Feature name '" + name +
+                                         "' not recognized.");
+    }
+  }
+
   private static void printDefinition(Definition def, PrintWriter pw)
     throws WSDLException
   {
