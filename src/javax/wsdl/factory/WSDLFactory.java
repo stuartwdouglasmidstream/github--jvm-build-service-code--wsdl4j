@@ -3,6 +3,7 @@ package javax.wsdl.factory;
 import java.io.*;
 import java.util.*;
 import javax.wsdl.*;
+import javax.wsdl.extensions.*;
 import javax.wsdl.xml.*;
 
 /**
@@ -107,6 +108,14 @@ public abstract class WSDLFactory
    * Create a new instance of a WSDLWriter.
    */
   public abstract WSDLWriter newWSDLWriter();
+
+  /**
+   * Create a new instance of an ExtensionRegistry with pre-registered
+   * serializers/deserializers for the SOAP, HTTP and MIME
+   * extensions. Java extensionTypes are also mapped for all
+   * the SOAP, HTTP and MIME extensions.
+   */
+  public abstract ExtensionRegistry newPopulatedExtensionRegistry();
 
   private static String findFactoryImplName()
   {

@@ -26,7 +26,7 @@ public class WSDLFactoryImpl extends WSDLFactory
   public Definition newDefinition()
   {
     Definition def = new DefinitionImpl();
-    ExtensionRegistry extReg = new PopulatedExtensionRegistry();
+    ExtensionRegistry extReg = newPopulatedExtensionRegistry();
 
     def.setExtensionRegistry(extReg);
 
@@ -47,5 +47,16 @@ public class WSDLFactoryImpl extends WSDLFactory
   public WSDLWriter newWSDLWriter()
   {
     return new WSDLWriterImpl();
+  }
+
+  /**
+   * Create a new instance of an ExtensionRegistry with pre-registered
+   * serializers/deserializers for the SOAP, HTTP and MIME
+   * extensions. Java extensionTypes are also mapped for all
+   * the SOAP, HTTP and MIME extensions.
+   */
+  public ExtensionRegistry newPopulatedExtensionRegistry()
+  {
+    return new PopulatedExtensionRegistry();
   }
 }
