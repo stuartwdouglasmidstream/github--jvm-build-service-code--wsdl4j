@@ -1421,7 +1421,37 @@ public class WSDLReaderImpl implements WSDLReader
     Input input = null;
     Output output = null;
     List faults = new Vector();
+    List extElements = new Vector();
     boolean retrieved = true;
+
+    while (tempEl != null)
+    {
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
+      {
+        docEl = tempEl;
+      }
+      else if (QNameUtils.matches(Constants.Q_ELEM_INPUT, tempEl))
+      {
+        input = parseInput(tempEl, def);
+        messageOrder.add(Constants.ELEM_INPUT);
+      }
+      else if (QNameUtils.matches(Constants.Q_ELEM_OUTPUT, tempEl))
+      {
+        output = parseOutput(tempEl, def);
+        messageOrder.add(Constants.ELEM_OUTPUT);
+      }
+      else if (QNameUtils.matches(Constants.Q_ELEM_FAULT, tempEl))
+      {
+        faults.add(parseFault(tempEl, def));
+      }
+      else 
+      {
+        extElements.add(
+            parseExtensibilityElement(Operation.class, tempEl, def));
+      }
+
+      tempEl = DOMUtils.getNextSiblingElement(tempEl);
+    }
 
     if (name != null)
     {
@@ -1483,35 +1513,6 @@ public class WSDLReaderImpl implements WSDLReader
     // Whether it was retrieved or created, the definition has been found.
     op.setUndefined(false);
 
-    while (tempEl != null)
-    {
-      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
-      {
-        docEl = tempEl;
-      }
-      else if (QNameUtils.matches(Constants.Q_ELEM_INPUT, tempEl))
-      {
-        input = parseInput(tempEl, def);
-        messageOrder.add(Constants.ELEM_INPUT);
-      }
-      else if (QNameUtils.matches(Constants.Q_ELEM_OUTPUT, tempEl))
-      {
-        output = parseOutput(tempEl, def);
-        messageOrder.add(Constants.ELEM_OUTPUT);
-      }
-      else if (QNameUtils.matches(Constants.Q_ELEM_FAULT, tempEl))
-      {
-        faults.add(parseFault(tempEl, def));
-      }
-      else 
-      {
-         op.addExtensibilityElement(
-           parseExtensibilityElement(Operation.class, tempEl, def));
-      }
-
-      tempEl = DOMUtils.getNextSiblingElement(tempEl);
-    }
-
     if (parameterOrderStr != null)
     {
       op.setParameterOrdering(StringUtils.parseNMTokens(parameterOrderStr));
@@ -1542,6 +1543,17 @@ public class WSDLReaderImpl implements WSDLReader
       }
     }
 
+    if (extElements.size() > 0)
+    {
+      Iterator eeIterator = extElements.iterator();
+      
+      while (eeIterator.hasNext())
+      {
+        op.addExtensibilityElement(
+            (ExtensibilityElement) eeIterator.next() );
+      }
+    }
+    
     OperationType style = null;
 
     if (messageOrder.equals(STYLE_ONE_WAY))
@@ -1683,9 +1695,22 @@ public class WSDLReaderImpl implements WSDLReader
       throws WSDLException
   {
     QName elementType = QNameUtils.newQName(el);
+    
+    String namespaceURI = el.getNamespaceURI();
 
     try
     {
+      if (namespaceURI == null || namespaceURI.equals(Constants.NS_URI_WSDL))
+      {
+        throw new WSDLException(WSDLException.INVALID_WSDL,
+                  "Encountered illegal extension element '" +
+                  elementType + 
+                  "' in the context of a '" +
+                  parentType.getName() +
+                  "'. Extension elements must be in " +
+                  "a namespace other than WSDL's.");
+      }
+      
       ExtensionRegistry extReg = def.getExtensionRegistry();
 
       if (extReg == null)
