@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import java.util.*;
@@ -12,8 +16,7 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public interface BindingOperation extends java.io.Serializable,
-                                          AttributeExtensible
+public interface BindingOperation extends java.io.Serializable, ElementExtensible
 {
   /**
    * Set the name of this operation binding.
@@ -46,7 +49,7 @@ public interface BindingOperation extends java.io.Serializable,
   /**
    * Set the input binding for this operation binding.
    *
-   * @param input the new input binding
+   * @param bindingInput the new input binding
    */
   public void setBindingInput(BindingInput bindingInput);
 
@@ -60,7 +63,7 @@ public interface BindingOperation extends java.io.Serializable,
   /**
    * Set the output binding for this operation binding.
    *
-   * @param output the new output binding
+   * @param bindingOutput the new output binding
    */
   public void setBindingOutput(BindingOutput bindingOutput);
 
@@ -71,11 +74,11 @@ public interface BindingOperation extends java.io.Serializable,
    */
   public BindingOutput getBindingOutput();
 
-  /**
-   * Add a fault binding.
+	/**
+	 * Add a fault binding.
    *
-   * @param fault the new fault binding
-   */
+	 * @param bindingFault the new fault binding
+	 */
   public void addBindingFault(BindingFault bindingFault);
 
   /**
@@ -87,11 +90,11 @@ public interface BindingOperation extends java.io.Serializable,
    */
   public BindingFault getBindingFault(String name);
 
-  /**
-   * Get all the fault bindings associated with this operation binding.
+	/**
+	 * Get all the fault bindings associated with this operation binding.
    *
-   * @return names of fault bindings
-   */
+	 * @return names of fault bindings
+	 */
   public Map getBindingFaults();
 
   /**
@@ -112,15 +115,4 @@ public interface BindingOperation extends java.io.Serializable,
    */
   public Element getDocumentationElement();
 
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement);
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements();
 }

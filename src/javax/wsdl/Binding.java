@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import java.util.*;
@@ -13,7 +17,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Binding extends java.io.Serializable, AttributeExtensible
+public interface Binding extends java.io.Serializable, ElementExtensible
 {
   /**
    * Set the name of this binding.
@@ -90,18 +94,6 @@ public interface Binding extends java.io.Serializable, AttributeExtensible
    * @return the documentation element
    */
   public Element getDocumentationElement();
-
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement);
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements();
 
   public void setUndefined(boolean isUndefined);
 

@@ -1,6 +1,9 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
-import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.extensions.*;
 
@@ -12,7 +15,7 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler
  */
-public interface BindingFault extends java.io.Serializable, AttributeExtensible
+public interface BindingFault extends java.io.Serializable, ElementExtensible
 {
   /**
    * Set the name of this fault binding.
@@ -46,15 +49,4 @@ public interface BindingFault extends java.io.Serializable, AttributeExtensible
    */
   public Element getDocumentationElement();
 
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement);
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements();
 }
