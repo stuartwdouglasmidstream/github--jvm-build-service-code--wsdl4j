@@ -41,19 +41,18 @@ Author:
   <target name="init">
     <property name="name" value="wsdl4j"/>
     <property name="Name" value="WSDL4J"/>
-    <property name="version" value="0.0"/>
-    <property name="version.underscore" value="0_0"/>
-    <property name="year" value="2001"/>
+    <property name="version" value="1.0"/>
+    <property name="version.underscore" value="1_0"/>
+    <property name="year" value="2002"/>
 
     <property name="build.compiler" value="classic"/>
     <property name="debug" value="off"/>
 
     <property name="src.dir" value="./src"/>
     <property name="docs.dir" value="./doc"/>
-    <property name="samples.dir" value="./samples"/>
 
     <property name="packages"
-              value="javax.wsdl.*,
+              value="javax.*,
                      com.ibm.wsdl.*"/>
 
     <property name="build.file" value="build.xml"/>
@@ -61,7 +60,6 @@ Author:
     <property name="build.dir" value="./build"/>
     <property name="build.dest" value="./build/classes"/>
     <property name="build.lib" value="./build/lib"/>
-    <property name="build.samples" value="./build/samples"/>
     <property name="build.javadocs" value="./build/javadocs"/>
 
     <property name="dist.dir.root" value="./dist"/>
@@ -100,11 +98,7 @@ Author:
   <patternset id="javac.source.files">
     <include name="javax/wsdl/**/*.java"/>
     <include name="javax/xml/**/*.java"/>
-    <include name="com/ibm/wsdl/*.java"/>
-    <include name="com/ibm/wsdl/extensions/**/*.java"/>
-    <include name="com/ibm/wsdl/factory/*.java"/>
-    <include name="com/ibm/wsdl/util/**/*.java"/>
-    <include name="com/ibm/wsdl/xml/*.java"/>
+    <include name="com/ibm/wsdl/**/*.java"/>
   </patternset>
 
   <!-- =================================================================== -->
@@ -129,21 +123,6 @@ Author:
               targetfile="${build.lib}/${name}.jar">
       <srcfiles dir="${build.dir}" includes="**/*.html"/>
     </uptodate>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Compiles the samples                                                -->
-  <!-- =================================================================== -->
-  <target name="samples" depends="compile">
-<!--
-    <javac srcdir="." destdir="${build.dir}" 
-           classpath="${build.lib}/${name}.jar" debug="${debug}">
-      <include name="samples/**/*.java" />
-    </javac>
-    <copy todir="${build.samples}">
-      <fileset dir="${samples.dir}"/>
-    </copy>
--->
   </target>
 
   <!-- =================================================================== -->
@@ -189,7 +168,7 @@ Author:
   <!-- =================================================================== -->
   <!-- Creates the binary distribution                                     -->
   <!-- =================================================================== -->
-  <target name="dist" depends="compile, javadocsIfRequired, samples">
+  <target name="dist" depends="compile, javadocsIfRequired">
     <delete dir="${dist.dir}"/>
 
     <copy todir="${dist.dir}/docs/api">
@@ -200,18 +179,14 @@ Author:
     </copy>
 
 <!--
-    <copy todir="${dist.dir}/samples">
-      <fileset dir="${build.samples}"/>
-    </copy>
     <copy todir="${dist.dir}/docs">
       <fileset dir="${docs.dir}"/>
     </copy>
 -->
 
 <!--
-    <copy file="LICENSE" tofile="${dist.dir}/LICENSE"/>
-    <copy file="README" tofile="${dist.dir}/README"/>
-    <copy file="ReleaseNotes.html" tofile="${dist.dir}/ReleaseNotes.html"/>
+    <copy file="license.html" tofile="${dist.dir}/license.html"/>
+    <copy file="readme.txt" tofile="${dist.dir}/readme.txt"/>
 -->
 
     <!-- ================================================================= -->
