@@ -237,14 +237,48 @@ public class WSDLReaderImpl implements WSDLReader
       {
         try
         {
-          importDef.setDefinition(readWSDL(def.getDocumentBaseURI(),
-                                           locationURI));
+          String contextURI = def.getDocumentBaseURI();
+          URL contextURL = (contextURI != null)
+                           ? StringUtils.getURL(null, contextURI)
+                           : null;
+          URL url = StringUtils.getURL(contextURL, locationURI);
+          Reader reader = StringUtils.getContentAsReader(url);
+          InputSource inputSource = new InputSource(reader);
+          Document doc = getDocument(inputSource, locationURI);
+          Element documentElement = doc.getDocumentElement();
+
+          /*
+            Check if it's a wsdl document.
+            If it's not, don't retrieve and process it.
+            This should later be extended to allow other types of
+            documents to be retrieved and processed, such as schema
+            documents (".xsd"), etc...
+          */
+          if (Constants.Q_ELEM_DEFINITIONS.matches(documentElement))
+          {
+            if (verbose)
+            {
+              System.out.println("Retrieving document at '" + locationURI +
+                                 "'" +
+                                 (contextURI == null
+                                  ? "."
+                                  : ", relative to '" + contextURI + "'."));
+            }
+
+            importDef.setDefinition(readWSDL(url.toString(), documentElement));
+          }
         }
         catch (WSDLException e)
         {
           e.setLocation(XPathUtils.getXPathExprFromNode(importEl));
 
           throw e;
+        }
+        catch (Throwable t)
+        {
+          throw new WSDLException(WSDLException.OTHER_ERROR,
+                                  "Unable to resolve imported document at '" +
+                                  locationURI + "'.", t);
         }
       }
     }
