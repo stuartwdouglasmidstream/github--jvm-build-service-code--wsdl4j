@@ -140,6 +140,22 @@ Author:
   </target>
 
   <!-- =================================================================== -->
+  <!-- Creates the JWSDL API documentation                                 -->
+  <!-- =================================================================== -->
+  <target name="jwsdl_docs" depends="prepare">
+    <mkdir dir="${build.javadocs}"/>
+    <javadoc packagenames="javax.wsdl.*"
+             sourcepath="${src.dir}"
+             destdir="${build.javadocs}"
+             author="true"
+             version="true"
+             use="true"
+             windowtitle="JWSDL API"
+             doctitle="JWSDL"
+    />
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Creates the API documentation                                       -->
   <!-- =================================================================== -->
   <target name="javadocs" depends="prepare">
