@@ -196,7 +196,7 @@ Author:
 
     <copy todir="${dist.dir}/docs">
       <fileset dir="${docs.dir}">
-        <include name="spec/*.pdf"/>
+        <include name="pfd/*.pdf"/>
       </fileset>
     </copy>
 
