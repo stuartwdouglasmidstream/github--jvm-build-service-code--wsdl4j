@@ -1,6 +1,9 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl.extensions.soap;
 
-import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 
 /**
@@ -17,7 +20,7 @@ public interface SOAPOperation extends ExtensibilityElement,
 	/**
 	 * Set the SOAP action attribute.
    *
-	 * @param soapAction the desired value of the SOAP
+	 * @param soapActionURI the desired value of the SOAP
 	 * action header for this operation.
 	 */
 	public void setSoapActionURI(String soapActionURI);

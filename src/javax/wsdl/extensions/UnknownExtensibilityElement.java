@@ -1,7 +1,10 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl.extensions;
 
 import org.w3c.dom.*;
-import javax.wsdl.*;
 import javax.xml.namespace.*;
 
 /**

@@ -1,6 +1,9 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl.extensions.mime;
 
-import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 
 /**

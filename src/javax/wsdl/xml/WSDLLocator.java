@@ -1,6 +1,9 @@
+/*
+ * (c) Copyright IBM Corp 2002, 2005 
+ */
+
 package javax.wsdl.xml;
 
-import java.io.*;
 import org.xml.sax.*;
 
 /**

@@ -1,6 +1,9 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl.xml;
 
-import java.net.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 import javax.wsdl.*;
