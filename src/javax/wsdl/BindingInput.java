@@ -12,7 +12,7 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler
  */
-public interface BindingInput extends java.io.Serializable
+public interface BindingInput extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this input binding.

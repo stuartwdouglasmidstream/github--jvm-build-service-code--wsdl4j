@@ -1,10 +1,10 @@
 package com.ibm.wsdl;
 
 import java.util.*;
-import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
+import org.w3c.dom.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**
@@ -85,18 +85,18 @@ public class DefinitionImpl implements Definition
    */
   public void setTargetNamespace(String targetNamespace)
   {
-	  this.targetNamespace = targetNamespace;
+    this.targetNamespace = targetNamespace;
   }
 
-	/**
-	 * Get the target namespace in which the WSDL elements
-	 * are defined.
+  /**
+   * Get the target namespace in which the WSDL elements
+   * are defined.
    *
-	 * @return the target namespace
-	 */
-	public String getTargetNamespace()
+   * @return the target namespace
+   */
+  public String getTargetNamespace()
   {
-	  return targetNamespace;
+    return targetNamespace;
   }
 
   /**

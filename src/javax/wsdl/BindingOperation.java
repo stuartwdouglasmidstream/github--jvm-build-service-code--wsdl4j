@@ -12,7 +12,8 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public interface BindingOperation extends java.io.Serializable
+public interface BindingOperation extends java.io.Serializable,
+                                          AttributeExtensible
 {
   /**
    * Set the name of this operation binding.
@@ -70,11 +71,11 @@ public interface BindingOperation extends java.io.Serializable
    */
   public BindingOutput getBindingOutput();
 
-	/**
-	 * Add a fault binding.
+  /**
+   * Add a fault binding.
    *
-	 * @param fault the new fault binding
-	 */
+   * @param fault the new fault binding
+   */
   public void addBindingFault(BindingFault bindingFault);
 
   /**
@@ -86,11 +87,11 @@ public interface BindingOperation extends java.io.Serializable
    */
   public BindingFault getBindingFault(String name);
 
-	/**
-	 * Get all the fault bindings associated with this operation binding.
+  /**
+   * Get all the fault bindings associated with this operation binding.
    *
-	 * @return names of fault bindings
-	 */
+   * @return names of fault bindings
+   */
   public Map getBindingFaults();
 
   /**

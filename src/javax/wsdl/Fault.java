@@ -8,7 +8,7 @@ import org.w3c.dom.*;
  *
  * @author Matthew J. Duftler
  */
-public interface Fault extends java.io.Serializable
+public interface Fault extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this fault message.

@@ -9,7 +9,7 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public interface Types extends java.io.Serializable
+public interface Types extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the documentation element for this document. This dependency

@@ -12,7 +12,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface PortType extends java.io.Serializable
+public interface PortType extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this port type.

@@ -1,8 +1,9 @@
 package com.ibm.wsdl;
 
 import java.util.*;
-import org.w3c.dom.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
+import org.w3c.dom.*;
 
 /**
  * This class represents a WSDL operation.
@@ -16,12 +17,15 @@ import javax.wsdl.*;
 public class OperationImpl implements Operation
 {
   protected String name = null;
-	protected Input input = null;
-	protected Output output = null;
-	protected Map faults = new HashMap();
+  protected Input input = null;
+  protected Output output = null;
+  protected Map faults = new HashMap();
   protected OperationType style = null;
-	protected List parameterOrder = null;
+  protected List parameterOrder = null;
   protected Element docEl = null;
+  protected Map extensionAttributes = new HashMap();
+  protected List nativeAttributeNames =
+    Arrays.asList(Constants.OPERATION_ATTR_NAMES);
   protected boolean isUndefined = true;
 
   public static final long serialVersionUID = 1;
@@ -86,15 +90,15 @@ public class OperationImpl implements Operation
     return output;
   }
 
-	/**
-	 * Add a fault message that must be associated with this
-	 * operation.
+  /**
+   * Add a fault message that must be associated with this
+   * operation.
    *
-	 * @param fault the new fault message
-	 */
+   * @param fault the new fault message
+   */
   public void addFault(Fault fault)
   {
-	  faults.put(fault.getName(), fault);
+    faults.put(fault.getName(), fault);
   }
 
   /**
@@ -109,60 +113,60 @@ public class OperationImpl implements Operation
     return (Fault)faults.get(name);
   }
 
-	/**
-	 * Get all the fault messages associated with this operation.
+  /**
+   * Get all the fault messages associated with this operation.
    *
-	 * @return names of fault messages
-	 */
+   * @return names of fault messages
+   */
   public Map getFaults()
   {
-	  return faults;
+    return faults;
   }
 
-	/**
-	 * Set the style for this operation (request-response,
-	 * one way, solicit-response or notification).
+  /**
+   * Set the style for this operation (request-response,
+   * one way, solicit-response or notification).
    *
-	 * @param style the new operation style
-	 */
-	public void setStyle(OperationType style)
+   * @param style the new operation style
+   */
+  public void setStyle(OperationType style)
   {
-	  this.style = style;
-	}
+    this.style = style;
+  }
 
-	/**
-	 * Get the operation type.
+  /**
+   * Get the operation type.
    *
-	 * @return the operation type
-	 */
-	public OperationType getStyle()
+   * @return the operation type
+   */
+  public OperationType getStyle()
   {
-	  return style;
-	}
+    return style;
+  }
 
-	/**
-	 * Set the parameter ordering for a request-response,
-	 * or solicit-response operation.
+  /**
+   * Set the parameter ordering for a request-response,
+   * or solicit-response operation.
    *
-	 * @param parameterOrder, a list of named parameters
-	 * containing the part names to reflect the desired
-	 * order of parameters for RPC-style operations
-	 */
-	public void setParameterOrdering(List parameterOrder)
+   * @param parameterOrder, a list of named parameters
+   * containing the part names to reflect the desired
+   * order of parameters for RPC-style operations
+   */
+  public void setParameterOrdering(List parameterOrder)
   {
-	  this.parameterOrder = parameterOrder;
-	}
+    this.parameterOrder = parameterOrder;
+  }
 
-	/**
-	 * Get the parameter ordering for this operation.
+  /**
+   * Get the parameter ordering for this operation.
    *
-	 * @return the parameter ordering, a list consisting
-	 * of message part names
-	 */
-	public List getParameterOrdering()
+   * @return the parameter ordering, a list consisting
+   * of message part names
+   */
+  public List getParameterOrdering()
   {
-	  return parameterOrder;
-	}
+    return parameterOrder;
+  }
 
   /**
    * Set the documentation element for this document. This dependency
@@ -186,6 +190,70 @@ public class OperationImpl implements Operation
   public Element getDocumentationElement()
   {
     return docEl;
+  }
+
+  /**
+   * Set an extension attribute on this element. Pass in a null
+   * value to remove an extension attribute.
+   *
+   * @param name the extension attribute name
+   * @param value the extension attribute value
+   *
+   * @see #getExtensionAttribute
+   * @see #getExtensionAttributes
+   */
+  public void setExtensionAttribute(QName name, QName value)
+  {
+    if (value != null)
+    {
+      extensionAttributes.put(name, value);
+    }
+    else
+    {
+      extensionAttributes.remove(name);
+    }
+  }
+
+  /**
+   * Retrieve an extension attribute from this element. If the
+   * extension attribute is not defined, null is returned.
+   *
+   * @param name the extension attribute name
+   * @return the value of the extension attribute, or null if
+   * it is not defined
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttributes
+   */
+  public QName getExtensionAttribute(QName name)
+  {
+    return (QName)extensionAttributes.get(name);
+  }
+
+  /**
+   * Get the map containing all the extension attributes defined
+   * on this element. The keys are the qnames of the attributes.
+   *
+   * @return a map containing all the extension attributes defined
+   * on this element
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttribute
+   */
+  public Map getExtensionAttributes()
+  {
+    return extensionAttributes;
+  }
+
+  /**
+   * Get the list of local attribute names defined for this element in
+   * the WSDL specification.
+   *
+   * @return a List of Strings, one for each local attribute name
+   */
+  public List getNativeAttributeNames()
+  {
+    return nativeAttributeNames;
   }
 
   public void setUndefined(boolean isUndefined)
@@ -232,6 +300,16 @@ public class OperationImpl implements Operation
       {
         strBuf.append("\n" + faultIterator.next());
       }
+    }
+
+    Iterator keys = extensionAttributes.keySet().iterator();
+
+    while (keys.hasNext())
+    {
+      QName name = (QName)keys.next();
+
+      strBuf.append("\nextension attribute: " + name + "=" +
+                    extensionAttributes.get(name));
     }
 
     return strBuf.toString();

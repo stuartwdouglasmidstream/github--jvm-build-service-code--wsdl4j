@@ -12,7 +12,7 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler
  */
-public interface BindingFault extends java.io.Serializable
+public interface BindingFault extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this fault binding.

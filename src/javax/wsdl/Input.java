@@ -8,7 +8,7 @@ import org.w3c.dom.*;
  *
  * @author Matthew J. Duftler
  */
-public interface Input extends java.io.Serializable
+public interface Input extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this input message.

@@ -13,7 +13,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Binding extends java.io.Serializable
+public interface Binding extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this binding.
@@ -36,12 +36,12 @@ public interface Binding extends java.io.Serializable
    */
   public void setPortType(PortType portType);
 
-	/**
-	 * Get the port type this is a binding for.
+  /**
+   * Get the port type this is a binding for.
    *
-	 * @return the associated port type
-	 */
-	public PortType getPortType();
+   * @return the associated port type
+   */
+  public PortType getPortType();
 
   /**
    * Add an operation binding to binding.
@@ -65,8 +65,8 @@ public interface Binding extends java.io.Serializable
    * any matching operation binding
    */
   public BindingOperation getBindingOperation(String name,
-											                        String inputName,
-											                        String outputName);
+                                              String inputName,
+                                              String outputName);
 
   /**
    * Get all the operation bindings defined here.

@@ -8,7 +8,7 @@ import org.w3c.dom.*;
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public interface Import extends java.io.Serializable
+public interface Import extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the namespace URI of this import.

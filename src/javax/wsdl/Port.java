@@ -12,7 +12,7 @@ import javax.wsdl.extensions.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Port extends java.io.Serializable
+public interface Port extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this port.
@@ -35,12 +35,12 @@ public interface Port extends java.io.Serializable
    */
   public void setBinding(Binding binding);
 
-	/**
-	 * Get the binding this port refers to.
+  /**
+   * Get the binding this port refers to.
    *
-	 * @return the binding associated with this port
-	 */
-	public Binding getBinding();
+   * @return the binding associated with this port
+   */
+  public Binding getBinding();
 
   /**
    * Add an extensibility element.

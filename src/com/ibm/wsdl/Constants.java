@@ -80,6 +80,36 @@ public class Constants
   // Lists of native attribute names.
   public static final String[] PART_ATTR_NAMES =
     new String[]{ATTR_NAME, ATTR_TYPE, ATTR_ELEMENT};
+  public static final String[] BINDING_ATTR_NAMES =
+    new String[]{ATTR_NAME, ATTR_TYPE};
+  public static final String[] BINDING_FAULT_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] BINDING_INPUT_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] BINDING_OPERATION_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] BINDING_OUTPUT_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] FAULT_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] IMPORT_ATTR_NAMES =
+    new String[]{ATTR_NAMESPACE, ATTR_LOCATION};
+  public static final String[] INPUT_ATTR_NAMES =
+    new String[]{ATTR_NAME, ATTR_MESSAGE};
+  public static final String[] MESSAGE_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] OPERATION_ATTR_NAMES =
+    new String[]{ATTR_NAME, ATTR_PARAMETER_ORDER};
+  public static final String[] OUTPUT_ATTR_NAMES =
+    new String[]{ATTR_NAME, ATTR_MESSAGE};
+  public static final String[] PORT_ATTR_NAMES =
+    new String[]{ATTR_NAME, ATTR_BINDING};
+  public static final String[] PORT_TYPE_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] SERVICE_ATTR_NAMES =
+    new String[]{ATTR_NAME};
+  public static final String[] TYPES_ATTR_NAMES =
+    new String[]{};
 
   // Qualified attribute names.
   public static final QName Q_ATTR_REQUIRED =

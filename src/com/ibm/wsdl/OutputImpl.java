@@ -1,7 +1,9 @@
 package com.ibm.wsdl;
 
-import org.w3c.dom.*;
+import java.util.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
+import org.w3c.dom.*;
 
 /**
  * This class represents an output message, and contains the name
@@ -14,6 +16,9 @@ public class OutputImpl implements Output
   protected String name = null;
   protected Message message = null;
   protected Element docEl = null;
+  protected Map extensionAttributes = new HashMap();
+  protected List nativeAttributeNames =
+    Arrays.asList(Constants.OUTPUT_ATTR_NAMES);
 
   public static final long serialVersionUID = 1;
 
@@ -71,6 +76,70 @@ public class OutputImpl implements Output
     return docEl;
   }
 
+  /**
+   * Set an extension attribute on this element. Pass in a null
+   * value to remove an extension attribute.
+   *
+   * @param name the extension attribute name
+   * @param value the extension attribute value
+   *
+   * @see #getExtensionAttribute
+   * @see #getExtensionAttributes
+   */
+  public void setExtensionAttribute(QName name, QName value)
+  {
+    if (value != null)
+    {
+      extensionAttributes.put(name, value);
+    }
+    else
+    {
+      extensionAttributes.remove(name);
+    }
+  }
+
+  /**
+   * Retrieve an extension attribute from this element. If the
+   * extension attribute is not defined, null is returned.
+   *
+   * @param name the extension attribute name
+   * @return the value of the extension attribute, or null if
+   * it is not defined
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttributes
+   */
+  public QName getExtensionAttribute(QName name)
+  {
+    return (QName)extensionAttributes.get(name);
+  }
+
+  /**
+   * Get the map containing all the extension attributes defined
+   * on this element. The keys are the qnames of the attributes.
+   *
+   * @return a map containing all the extension attributes defined
+   * on this element
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttribute
+   */
+  public Map getExtensionAttributes()
+  {
+    return extensionAttributes;
+  }
+
+  /**
+   * Get the list of local attribute names defined for this element in
+   * the WSDL specification.
+   *
+   * @return a List of Strings, one for each local attribute name
+   */
+  public List getNativeAttributeNames()
+  {
+    return nativeAttributeNames;
+  }
+
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
@@ -80,6 +149,16 @@ public class OutputImpl implements Output
     if (message != null)
     {
       strBuf.append("\n" + message);
+    }
+
+    Iterator keys = extensionAttributes.keySet().iterator();
+
+    while (keys.hasNext())
+    {
+      QName name = (QName)keys.next();
+
+      strBuf.append("\nextension attribute: " + name + "=" +
+                    extensionAttributes.get(name));
     }
 
     return strBuf.toString();

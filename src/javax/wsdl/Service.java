@@ -13,7 +13,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Service extends java.io.Serializable
+public interface Service extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this service.

@@ -8,7 +8,7 @@ import org.w3c.dom.*;
  *
  * @author Matthew J. Duftler
  */
-public interface Output extends java.io.Serializable
+public interface Output extends java.io.Serializable, AttributeExtensible
 {
   /**
    * Set the name of this output message.
