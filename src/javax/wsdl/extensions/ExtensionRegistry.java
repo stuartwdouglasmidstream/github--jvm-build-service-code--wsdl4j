@@ -12,12 +12,52 @@ public class ExtensionRegistry implements java.io.Serializable
     This is a Map of Maps. The top-level Map is keyed by (Class)parentType,
     and the inner Maps are keyed by (Class)extensionType.
   */
-  private Map serializerReg = new Hashtable();
+  protected Map serializerReg = new Hashtable();
   /*
     This is a Map of Maps. The top-level Map is keyed by (Class)parentType,
     and the inner Maps are keyed by (QName)elementType.
   */
-  private Map deserializerReg = new Hashtable();
+  protected Map deserializerReg = new Hashtable();
+  protected ExtensionSerializer defaultSer = null;
+  protected ExtensionDeserializer defaultDeser = null;
+
+  /**
+   * Set the serializer to be used when none is found for extensibility
+   * elements. Set this to null to have an exception thrown when
+   * unexpected extensibility elements are encountered.
+   */
+  public void setDefaultSerializer(ExtensionSerializer defaultSer)
+  {
+    this.defaultSer = defaultSer;
+  }
+
+  /**
+   * Get the serializer to be used when none is found for extensibility
+   * elements.
+   */
+  public ExtensionSerializer getDefaultSerializer()
+  {
+    return defaultSer;
+  }
+
+  /**
+   * Set the deserializer to be used when none is found for encountered
+   * elements. Set this to null to have an exception thrown when
+   * unexpected extensibility elements are encountered.
+   */
+  public void setDefaultDeserializer(ExtensionDeserializer defaultDeser)
+  {
+    this.defaultDeser = defaultDeser;
+  }
+
+  /**
+   * Get the deserializer to be used when none is found for encountered
+   * elements.
+   */
+  public ExtensionDeserializer getDefaultDeserializer()
+  {
+    return defaultDeser;
+  }
 
   public void registerSerializer(Class parentType,
                                  Class extensionType,
@@ -65,6 +105,11 @@ public class ExtensionRegistry implements java.io.Serializable
 
     if (es == null)
     {
+      es = defaultSer;
+    }
+
+    if (es == null)
+    {
       throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
                               "No ExtensionSerializer found " +
                               "to serialize a '" + extensionType.getName() +
@@ -85,6 +130,11 @@ public class ExtensionRegistry implements java.io.Serializable
     if (innerDeserializerReg != null)
     {
       ed = (ExtensionDeserializer)innerDeserializerReg.get(elementType);
+    }
+
+    if (ed == null)
+    {
+      ed = defaultDeser;
     }
 
     if (ed == null)

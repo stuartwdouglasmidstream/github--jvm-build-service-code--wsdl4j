@@ -10,7 +10,10 @@ import com.ibm.wsdl.extensions.mime.*;
 /**
  * This class extends ExtensionRegistry and pre-registers
  * serializers/deserializers for the SOAP, HTTP and MIME
- * extensions.
+ * extensions. The defaultSerializer property is set to a
+ * new instance of UnknownExtensionSerializer. The
+ * defaultDeserializer property is set to a new instance of
+ * UnknownExtensionDeserializer.
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
@@ -18,6 +21,9 @@ public class PopulatedExtensionRegistry extends ExtensionRegistry
 {
   public PopulatedExtensionRegistry()
   {
+    setDefaultSerializer(new UnknownExtensionSerializer());
+    setDefaultDeserializer(new UnknownExtensionDeserializer());
+
     SOAPAddressSerializer soapAddressSer = new SOAPAddressSerializer();
 
     registerSerializer(Port.class,
