@@ -403,6 +403,42 @@ public class WSDLReaderImpl implements WSDLReader
                                      documentElement,
                                      importedDefs);
             }
+            else
+            {
+              QName docElementQName = QNameUtils.newQName(documentElement);
+
+              if (Constants.XSD_QNAME_LIST.contains(docElementQName))
+              {
+                WSDLFactory factory =
+                  (factoryImplName != null)
+                  ? WSDLFactory.newInstance(factoryImplName)
+                  : WSDLFactory.newInstance();
+
+                importedDef = factory.newDefinition();
+
+                if (extReg != null)
+                {
+                  importedDef.setExtensionRegistry(extReg);
+                }
+
+                String urlString =
+                  (loc != null)
+                  ? loc.getLatestImportURI()
+                  : (url != null)
+                    ? url.toString()
+                    : locationURI;
+
+                importedDef.setDocumentBaseURI(urlString);
+
+                Types types = importedDef.createTypes();
+                UnknownExtensibilityElement unknownExt =
+                  new UnknownExtensibilityElement();
+
+                unknownExt.setElement(documentElement);
+                types.addExtensibilityElement(unknownExt);
+                importedDef.setTypes(types);
+              }
+            }
           }
 
           if (importedDef != null)
