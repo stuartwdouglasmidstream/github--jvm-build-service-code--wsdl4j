@@ -1,14 +1,17 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.extensions;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
-import javax.wsdl.extensions.http.*;
 import javax.wsdl.extensions.mime.*;
-import com.ibm.wsdl.*;
 import com.ibm.wsdl.extensions.soap.*;
 import com.ibm.wsdl.extensions.http.*;
 import com.ibm.wsdl.extensions.mime.*;
+import com.ibm.wsdl.extensions.schema.*;
 
 /**
  * This class extends ExtensionRegistry and pre-registers
@@ -281,5 +284,29 @@ public class PopulatedExtensionRegistry extends ExtensionRegistry
     mapExtensionTypes(MIMEPart.class,
                       MIMEConstants.Q_ELEM_MIME_MIME_XML,
                       MIMEMimeXmlImpl.class);
+                      
+    //Register the schema parser
+    
+    mapExtensionTypes(Types.class, SchemaConstants.Q_ELEM_XSD_1999,
+        SchemaImpl.class);
+    registerDeserializer(Types.class, SchemaConstants.Q_ELEM_XSD_1999,
+        new SchemaDeserializer());
+    registerSerializer(Types.class, SchemaConstants.Q_ELEM_XSD_1999,
+        new SchemaSerializer());
+
+    mapExtensionTypes(Types.class, SchemaConstants.Q_ELEM_XSD_2000,
+        SchemaImpl.class);
+    registerDeserializer(Types.class, SchemaConstants.Q_ELEM_XSD_2000,
+        new SchemaDeserializer());
+    registerSerializer(Types.class, SchemaConstants.Q_ELEM_XSD_2000,
+        new SchemaSerializer());
+
+    mapExtensionTypes(Types.class, SchemaConstants.Q_ELEM_XSD_2001,
+        SchemaImpl.class);
+    registerDeserializer(Types.class, SchemaConstants.Q_ELEM_XSD_2001,
+        new SchemaDeserializer());
+    registerSerializer(Types.class, SchemaConstants.Q_ELEM_XSD_2001,
+        new SchemaSerializer());
+
   }
 }
