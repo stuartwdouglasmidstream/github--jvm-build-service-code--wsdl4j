@@ -91,7 +91,9 @@ public class BindingImpl implements Binding
 											                        String inputName,
 											                        String outputName)
   {
-  	Iterator opBindingIterator = bindingOperations.iterator();
+    boolean found = false;
+    BindingOperation ret = null;
+    Iterator opBindingIterator = bindingOperations.iterator();
 
     while (opBindingIterator.hasNext())
     {
@@ -112,13 +114,45 @@ public class BindingImpl implements Binding
 
       if (op != null && inputName != null)
       {
+        PortType pt = getPortType();
+        OperationType opStyle = null;
+
+        if (pt != null)
+        {
+          Operation tempOp = pt.getOperation(name, inputName, outputName);
+
+          if (tempOp != null)
+          {
+            opStyle = tempOp.getStyle();
+          }
+        }
+
+        String defaultInputName = opName;
+
+        if (opStyle == OperationType.REQUEST_RESPONSE)
+        {
+          defaultInputName = opName + "Request";
+        }
+        else if (opStyle == OperationType.SOLICIT_RESPONSE)
+        {
+          defaultInputName = opName + "Solicit";
+        }
+
+        boolean specifiedDefault = inputName.equals(defaultInputName);
         BindingInput input = op.getBindingInput();
 
         if (input != null)
         {
           String opInputName = input.getName();
 
-          if (opInputName == null || !opInputName.equals(inputName))
+          if (opInputName == null)
+          {
+            if (!specifiedDefault)
+            {
+              op = null;
+            }
+          }
+          else if (!opInputName.equals(inputName))
           {
             op = null;
           }
@@ -127,17 +161,46 @@ public class BindingImpl implements Binding
         {
           op = null;
         }
-	    }
+      }
 
       if (op != null && outputName != null)
       {
+        PortType pt = getPortType();
+        OperationType opStyle = null;
+
+        if (pt != null)
+        {
+          Operation tempOp = pt.getOperation(name, inputName, outputName);
+
+          if (tempOp != null)
+          {
+            opStyle = tempOp.getStyle();
+          }
+        }
+
+        String defaultOutputName = opName;
+
+        if (opStyle == OperationType.REQUEST_RESPONSE
+            || opStyle == OperationType.SOLICIT_RESPONSE)
+        {
+          defaultOutputName = opName + "Response";
+        }
+
+        boolean specifiedDefault = outputName.equals(defaultOutputName);
         BindingOutput output = op.getBindingOutput();
 
         if (output != null)
         {
           String opOutputName = output.getName();
 
-          if (opOutputName == null || !opOutputName.equals(outputName))
+          if (opOutputName == null)
+          {
+            if (!specifiedDefault)
+            {
+              op = null;
+            }
+          }
+          else if (!opOutputName.equals(outputName))
           {
             op = null;
           }
@@ -150,11 +213,28 @@ public class BindingImpl implements Binding
 
       if (op != null)
       {
-        return op;
+        if (found)
+        {
+          throw new IllegalArgumentException("Duplicate operation with " +
+                                             "name=" + name +
+                                             (inputName != null
+                                              ? ", inputName=" + inputName
+                                              : "") +
+                                             (outputName != null
+                                              ? ", outputName=" + outputName
+                                              : "") +
+                                             ", found in portType '" +
+                                             getQName() + "'.");
+        }
+        else
+        {
+          found = true;
+          ret = op;
+        }
       }
     }
 
-  	return null;
+    return ret;
   }  
 
   /**

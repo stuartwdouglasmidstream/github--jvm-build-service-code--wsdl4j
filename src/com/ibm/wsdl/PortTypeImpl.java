@@ -68,6 +68,8 @@ public class PortTypeImpl implements PortType
                                 String inputName,
                                 String outputName)
   {
+    boolean found = false;
+    Operation ret = null;
     Iterator opIterator = operations.iterator();
 
     while (opIterator.hasNext())
@@ -89,14 +91,33 @@ public class PortTypeImpl implements PortType
 
       if (op != null && inputName != null)
       {
+        OperationType opStyle = op.getStyle();
+        String defaultInputName = opName;
+
+        if (opStyle == OperationType.REQUEST_RESPONSE)
+        {
+          defaultInputName = opName + "Request";
+        }
+        else if (opStyle == OperationType.SOLICIT_RESPONSE)
+        {
+          defaultInputName = opName + "Solicit";
+        }
+
+        boolean specifiedDefault = inputName.equals(defaultInputName);
         Input input = op.getInput();
 
         if (input != null)
         {
           String opInputName = input.getName();
 
-          if (opInputName == null
-              || !opInputName.equals(inputName))
+          if (opInputName == null)
+          {
+            if (!specifiedDefault)
+            {
+              op = null;
+            }
+          }
+          else if (!opInputName.equals(inputName))
           {
             op = null;
           }
@@ -109,14 +130,30 @@ public class PortTypeImpl implements PortType
 
       if (op != null && outputName != null)
       {
+        OperationType opStyle = op.getStyle();
+        String defaultOutputName = opName;
+
+        if (opStyle == OperationType.REQUEST_RESPONSE
+            || opStyle == OperationType.SOLICIT_RESPONSE)
+        {
+          defaultOutputName = opName + "Response";
+        }
+
+        boolean specifiedDefault = outputName.equals(defaultOutputName);
         Output output = op.getOutput();
 
         if (output != null)
         {
           String opOutputName = output.getName();
 
-          if (opOutputName == null
-              || !opOutputName.equals(outputName))
+          if (opOutputName == null)
+          {
+            if (!specifiedDefault)
+            {
+              op = null;
+            }
+          }
+          else if (!opOutputName.equals(outputName))
           {
             op = null;
           }
@@ -129,11 +166,28 @@ public class PortTypeImpl implements PortType
 
       if (op != null)
       {
-        return op;
+        if (found)
+        {
+          throw new IllegalArgumentException("Duplicate operation with " +
+                                             "name=" + name +
+                                             (inputName != null
+                                              ? ", inputName=" + inputName
+                                              : "") +
+                                             (outputName != null
+                                              ? ", outputName=" + outputName
+                                              : "") +
+                                             ", found in portType '" +
+                                             getQName() + "'.");
+        }
+        else
+        {
+          found = true;
+          ret = op;
+        }
       }
     }
 
-    return null;
+    return ret;
   }
 
   /**

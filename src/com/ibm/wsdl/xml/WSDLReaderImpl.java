@@ -973,6 +973,43 @@ public class WSDLReaderImpl implements WSDLReader
 
       op = portType.getOperation(name, inputName, outputName);
 
+      if (op != null && !op.isUndefined())
+      {
+        op = null;
+      }
+
+      if (op != null)
+      {
+        if (inputName == null)
+        {
+          Input tempIn = op.getInput();
+
+          if (tempIn != null)
+          {
+            if (tempIn.getName() != null)
+            {
+              op = null;
+            }
+          }
+        }
+      }
+
+      if (op != null)
+      {
+        if (outputName == null)
+        {
+          Output tempOut = op.getOutput();
+
+          if (tempOut != null)
+          {
+            if (tempOut.getName() != null)
+            {
+              op = null;
+            }
+          }
+        }
+      }
+
       if (op == null)
       {
         op = def.createOperation();
@@ -1222,7 +1259,7 @@ public class WSDLReaderImpl implements WSDLReader
     QName messageName =
       DOMUtils.getQualifiedAttributeValue(outputEl,
                                           Constants.ATTR_MESSAGE,
-                                          Constants.ELEM_INPUT,
+                                          Constants.ELEM_OUTPUT,
                                           false);
 
     if (name != null)
