@@ -1068,6 +1068,23 @@ public class WSDLReaderImpl implements WSDLReader
   }
 
   /**
+   * Read the specified &lt;wsdl:definitions&gt; element into a WSDL
+   * definition.
+   *
+   * @param documentBase the document base of the WSDL definition
+   * described by the element. Will be set as the documentBase
+   * of the returned Definition. Can be null, in which case it
+   * will be ignored.
+   * @param definitionsElement the &lt;wsdl:definitions&gt; element
+   * @return the definition described by the element.
+   */
+  public Definition readWSDL(URL documentBase, Element definitionsElement)
+    throws WSDLException
+  {
+    return parseDefinitions(documentBase, definitionsElement);
+  }
+
+  /**
    * Read the specified WSDL document into a WSDL definition.
    *
    * @param documentBase the document base of the WSDL definition
@@ -1081,9 +1098,7 @@ public class WSDLReaderImpl implements WSDLReader
   public Definition readWSDL(URL documentBase, Document wsdlDocument)
     throws WSDLException
   {
-    Element defEl = wsdlDocument.getDocumentElement();
-
-    return parseDefinitions(documentBase, defEl);
+    return readWSDL(documentBase, wsdlDocument.getDocumentElement());
   }
 
   /**

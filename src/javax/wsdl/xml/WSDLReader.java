@@ -38,6 +38,20 @@ public interface WSDLReader
     throws WSDLException;
 
   /**
+   * Read the specified &lt;wsdl:definitions&gt; element into a WSDL
+   * definition.
+   *
+   * @param documentBase the document base of the WSDL definition
+   * described by the element. Will be set as the documentBase
+   * of the returned Definition. Can be null, in which case it
+   * will be ignored.
+   * @param definitionsElement the &lt;wsdl:definitions&gt; element
+   * @return the definition described by the element.
+   */
+  public Definition readWSDL(URL documentBase, Element definitionsElement)
+    throws WSDLException;
+
+  /**
    * Read the specified WSDL document into a WSDL definition.
    *
    * @param documentBase the document base of the WSDL definition
