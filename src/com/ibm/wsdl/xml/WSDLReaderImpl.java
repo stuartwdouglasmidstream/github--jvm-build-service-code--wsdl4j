@@ -1428,4 +1428,22 @@ public class WSDLReaderImpl implements WSDLReader
     return readWSDL(documentBaseURI,
                     getDocument(inputSource, "- WSDL Document -"));
   }
+
+  /**
+   * Read a WSDL document into a WSDL definition.
+   *
+   * @param locator A WSDLLocator object used to provide Readers
+   * pointing to the wsdl file.
+   * @return the definition described in the document
+   */
+  public Definition readWSDL(WSDLLocator locator) throws WSDLException
+  {
+    Reader reader = locator.getBaseReader();
+    InputSource is = new InputSource(reader);
+    String base = locator.getBaseURI();
+
+//    this.loc = locator;
+
+    return readWSDL(base, is);
+  }
 }

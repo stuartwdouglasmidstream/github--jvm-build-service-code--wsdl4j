@@ -172,4 +172,13 @@ public interface WSDLReader
    */
   public Definition readWSDL(String documentBaseURI, InputSource inputSource)
     throws WSDLException;
+
+  /**
+   * Read a WSDL document into a WSDL definition.
+   *
+   * @param locator A WSDLLocator object used to provide Readers
+   * pointing to the wsdl file.
+   * @return the definition described in the document
+   */
+  public Definition readWSDL(WSDLLocator locator) throws WSDLException;
 }
