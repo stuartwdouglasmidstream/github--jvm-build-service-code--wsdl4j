@@ -440,9 +440,9 @@
 }
 1537 javax.wsdl.xml.WSDLLocator
 {
-  1025 java.io.Reader getBaseReader ()
+  1025 org.xml.sax.InputSource getBaseInputSource ()
   1025 java.lang.String getBaseURI ()
-  1025 java.io.Reader getImportReader (java.lang.String,java.lang.String)
+  1025 org.xml.sax.InputSource getImportInputSource (java.lang.String,java.lang.String)
   1025 java.lang.String getLatestImportURI ()
 }
 1537 javax.wsdl.xml.WSDLReader
