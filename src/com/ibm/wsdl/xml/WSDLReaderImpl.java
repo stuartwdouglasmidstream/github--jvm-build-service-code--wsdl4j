@@ -846,33 +846,35 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    Map extensionAttributes = part.getExtensionAttributes();
-
-    extensionAttributes.putAll(getPartAttributes(partEl, def));
-
-    // Need to do something here to locate part definition.
+    if (part instanceof AttributeExtensible)
+    {
+      parseExtensibilityAttributes(partEl, (AttributeExtensible)part, def);
+    }
 
     return part;
   }
 
-  protected Map getPartAttributes(Element el,
-                                  Definition def) throws WSDLException
+  protected void parseExtensibilityAttributes(Element el,
+                                              AttributeExtensible attrExt,
+                                              Definition def)
+                                                throws WSDLException
   {
-    Map attributes = new HashMap();
+    List nativeAttributeNames = attrExt.getNativeAttributeNames();
+    Map extAttributes = attrExt.getExtensionAttributes();
     NamedNodeMap nodeMap = el.getAttributes();
-    int atts = nodeMap.getLength();
+    int length = nodeMap.getLength();
 
-    for (int a = 0; a < atts; a++)
+    for (int i = 0; i < length; i++)
     {
-      Attr attribute = (Attr)nodeMap.item(a);
-      String lName = attribute.getLocalName();
-      String nSpace = attribute.getNamespaceURI();
+      Attr attribute = (Attr)nodeMap.item(i);
+      String localName = attribute.getLocalName();
+      String namespaceURI = attribute.getNamespaceURI();
       String prefix = attribute.getPrefix();
-      QName name = new QName(nSpace, lName);
+      QName qname = new QName(namespaceURI, localName);
 
-      if (nSpace != null && !nSpace.equals(Constants.NS_URI_WSDL))
+      if (namespaceURI != null && !namespaceURI.equals(Constants.NS_URI_WSDL))
       {
-        if (!nSpace.equals(Constants.NS_URI_XMLNS))
+        if (!namespaceURI.equals(Constants.NS_URI_XMLNS))
         {
           String strValue = attribute.getValue();
           QName qValue = null;
@@ -886,29 +888,25 @@ public class WSDLReaderImpl implements WSDLReader
             qValue = new QName(strValue);
           }
 
-          attributes.put(name, qValue);
+          extAttributes.put(qname, qValue);
 
           String tempNSUri = def.getNamespace(prefix);
 
-          while (tempNSUri != null && !tempNSUri.equals(nSpace))
+          while (tempNSUri != null && !tempNSUri.equals(namespaceURI))
           {
             prefix += "_";
             tempNSUri = def.getNamespace(prefix);
           }
 
-          def.addNamespace(prefix, nSpace);
+          def.addNamespace(prefix, namespaceURI);
         }
       }
-      else if (!lName.equals(Constants.ATTR_NAME)
-               && !lName.equals(Constants.ATTR_ELEMENT)
-               && !lName.equals(Constants.ATTR_TYPE))
-
+      else if (!nativeAttributeNames.contains(localName))
       {
         WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
                                                   "Encountered illegal " +
-                                                  "part extension " +
-                                                  "attribute '" +
-                                                  name + "'. Extension " +
+                                                  "extension attribute '" +
+                                                  qname + "'. Extension " +
                                                   "attributes must be in " +
                                                   "a namespace other than " +
                                                   "WSDL's.");
@@ -918,8 +916,6 @@ public class WSDLReaderImpl implements WSDLReader
         throw wsdlExc;
       }
     }
-
-    return attributes;
   }
 
   protected PortType parsePortType(Element portTypeEl, Definition def)

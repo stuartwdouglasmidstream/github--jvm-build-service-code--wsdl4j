@@ -13,13 +13,15 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public class PartImpl implements Part
+public class PartImpl implements Part, AttributeExtensible
 {
   protected String name = null;
   protected QName elementName = null;
   protected QName typeName = null;
   protected Element docEl = null;
   protected Map extensionAttributes = new HashMap();
+  protected List nativeAttributeNames =
+    Arrays.asList(Constants.PART_ATTR_NAMES);
 
   public static final long serialVersionUID = 1;
 
@@ -114,6 +116,17 @@ public class PartImpl implements Part
   public Map getExtensionAttributes()
   {
     return extensionAttributes;
+  }
+
+  /**
+   * Get the list of local attribute names defined for this element in
+   * the WSDL specification.
+   *
+   * @return a List of Strings, one for each local attribute name
+   */
+  public List getNativeAttributeNames()
+  {
+    return nativeAttributeNames;
   }
 
   /**

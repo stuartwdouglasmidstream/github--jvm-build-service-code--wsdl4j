@@ -77,6 +77,10 @@ public class Constants
   public static final String ATTR_LOCATION = "location";
   public static final String ATTR_REQUIRED = "required";
 
+  // Lists of native attribute names.
+  public static final String[] PART_ATTR_NAMES =
+    new String[]{ATTR_NAME, ATTR_TYPE, ATTR_ELEMENT};
+
   // Qualified attribute names.
   public static final QName Q_ATTR_REQUIRED =
     new QName(NS_URI_WSDL, ATTR_REQUIRED);

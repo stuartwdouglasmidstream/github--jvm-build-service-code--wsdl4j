@@ -736,15 +736,9 @@ public class WSDLWriterImpl implements WSDLWriter
                                          def,
                                          pw);
 
-        Map extensionAttributes = part.getExtensionAttributes();
-        Iterator attrNames = extensionAttributes.keySet().iterator();
-
-        while (attrNames.hasNext())
+        if (part instanceof AttributeExtensible)
         {
-          QName attrName = (QName)attrNames.next();
-          QName attrValue = (QName)extensionAttributes.get(attrName);
-
-          DOMUtils.printQualifiedAttribute(attrName, attrValue, def, pw);
+          printExtensibilityAttributes((AttributeExtensible)part, def, pw);
         }
 
         Element docEl = part.getDocumentationElement();
@@ -762,6 +756,23 @@ public class WSDLWriterImpl implements WSDLWriter
           pw.println("      </" + tagName + '>');
         }
       }
+    }
+  }
+
+  protected void printExtensibilityAttributes(AttributeExtensible attrExt,
+                                              Definition def,
+                                              PrintWriter pw)
+                                                throws WSDLException
+  {
+    Map extensionAttributes = attrExt.getExtensionAttributes();
+    Iterator attrNames = extensionAttributes.keySet().iterator();
+
+    while (attrNames.hasNext())
+    {
+      QName attrName = (QName)attrNames.next();
+      QName attrValue = (QName)extensionAttributes.get(attrName);
+
+      DOMUtils.printQualifiedAttribute(attrName, attrValue, def, pw);
     }
   }
 
