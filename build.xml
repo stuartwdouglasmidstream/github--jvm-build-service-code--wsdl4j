@@ -46,7 +46,7 @@ Author:
     <property name="jwsdl.version" value="1.1"/>
     <property name="jwsdl.version.underscore" value="1_1"/>
     <property name="qname.version" value="1.0"/>
-    <property name="year" value="2003"/>
+    <property name="year" value="2003,2005"/>
 
     <property name="build.compiler" value="classic"/>
     <property name="debug" value="off"/>
@@ -225,9 +225,9 @@ Author:
       </filterset>
     </copy>
 
-    <copy tofile="${dist.dir}/docs/spec/jsr110-1.0.pdf">
+    <copy tofile="${dist.dir}/docs/spec/jsr110-1.1.pdf">
       <fileset dir="${docs.dir}">
-        <include name="spec/final/jsr110-1.0.pdf"/>
+        <include name="spec/maint_rel_1.1/jsr110-1.1.pdf"/>
       </fileset>
     </copy>
 
@@ -303,8 +303,8 @@ Author:
 
     <cvschangelog destfile="${build.dir}/changelog.xml"
                   start="${change.log.start.date}">
-      <user displayname="Matthew J. Duftler"
-            userid="duftler2"/>
+      <user displayname="John Kaputin"
+            userid="kaputin"/>
     </cvschangelog>
 
     <style in="${build.dir}/changelog.xml"
