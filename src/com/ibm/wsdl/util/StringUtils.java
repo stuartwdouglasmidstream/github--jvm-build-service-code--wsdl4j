@@ -278,64 +278,37 @@ public class StringUtils
   }
 
   /*
-    The recursiveDepth argument is used to insure that the algorithm gives up
-    after hunting 2 levels up in the contextURL's path.
-  */
-  private static URL getURL(URL contextURL, String spec, int recursiveDepth)
-                                                  throws MalformedURLException
-  {
-    URL url = null;
-
-    try
-    {
-      url = new URL(contextURL, spec);
-
-      try
-      {
-        url.openStream();
-      }
-      catch (IOException ioe1)
-      {
-        throw new MalformedURLException("This file was not found: " + url);
-      }
-    }
-    catch (MalformedURLException e1)
-    {
-      url = new URL("file", "", spec);
-
-      try
-      {
-        url.openStream();
-      }
-      catch (IOException ioe2)
-      {
-        if (contextURL != null)
-        {
-          String contextFileName = contextURL.getFile();
-          String parentName      = new File(contextFileName).getParent();
-
-          if (parentName != null && recursiveDepth < 3)
-          {
-            return getURL(new URL("file", "", parentName + '/'),
-                          spec,
-                          recursiveDepth + 1);
-          }
-        }
-
-        throw new MalformedURLException("This file was not found: " + url);
-      }
-    }
-
-    return url;
-  }
-
-  /*
   @param contextURL the context in which to attempt to resolve the spec.
   Effectively a document base.
   */
-  public static URL getURL(URL contextURL, String spec) throws MalformedURLException
+  public static URL getURL(URL contextURL, String spec)
+    throws MalformedURLException
   {
-    return getURL(contextURL, spec, 1);
+    if (contextURL != null)
+    {
+      File tempFile = new File(spec);
+
+      if (tempFile.isAbsolute())
+      {
+        return tempFile.toURL();
+      }
+    }
+
+    try
+    {
+      return new URL(contextURL, spec);
+    }
+    catch (MalformedURLException e)
+    {
+      if (contextURL == null)
+      {
+        return new File(spec).toURL();
+      }
+      else
+      {
+        throw e;
+      }
+    }
   }
 
   /*
