@@ -40,6 +40,7 @@ public class WSDLReaderImpl implements WSDLReader
   private boolean importDocuments = true;
   private ExtensionRegistry extReg = null;
   private String factoryImplName = null;
+  private WSDLLocator loc = null;
 
   /**
    * Sets the specified feature to the specified value.
@@ -320,16 +321,40 @@ public class WSDLReaderImpl implements WSDLReader
         try
         {
           String contextURI = def.getDocumentBaseURI();
-          URL contextURL = (contextURI != null)
-                           ? StringUtils.getURL(null, contextURI)
-                           : null;
-          URL url = StringUtils.getURL(contextURL, locationURI);
-          Definition importedDef =
-            (Definition)importedDefs.get(url.toString());
+          Definition importedDef = null;
+          Reader reader = null;
+          URL url = null;
+
+          if (loc != null)
+          {
+             reader = loc.getImportReader(contextURI, locationURI);
+             
+             /*
+               We now have available the latest import URI. This might
+               differ from the locationURI so check the importedDefs for it
+               since it is this that we pass as the documentBaseURI later.
+             */
+             String liu = loc.getLatestImportURI();
+
+             importedDef = (Definition)importedDefs.get(liu);
+          }
+          else
+          {
+            URL contextURL = (contextURI != null)
+                             ? StringUtils.getURL(null, contextURI)
+                             : null;
+
+            url = StringUtils.getURL(contextURL, locationURI);
+            importedDef = (Definition)importedDefs.get(url.toString());
+
+            if (importedDef == null)
+            {
+              reader = StringUtils.getContentAsReader(url);
+            }
+          }
 
           if (importedDef == null)
           {
-            Reader reader = StringUtils.getContentAsReader(url);
             InputSource inputSource = new InputSource(reader);
             Document doc = getDocument(inputSource, locationURI);
             Element documentElement = doc.getDocumentElement();
@@ -353,7 +378,14 @@ public class WSDLReaderImpl implements WSDLReader
                                     : ", relative to '" + contextURI + "'."));
               }
 
-              importedDef = readWSDL(url.toString(),
+              String urlString =
+                (loc != null)
+                ? loc.getLatestImportURI()
+                : (url != null)
+                  ? url.toString()
+                  : locationURI;
+
+              importedDef = readWSDL(urlString,
                                      documentElement,
                                      importedDefs);
             }
@@ -1438,18 +1470,16 @@ public class WSDLReaderImpl implements WSDLReader
    */
   public Definition readWSDL(WSDLLocator locator) throws WSDLException
   {
-    if (true)
-    {
-      throw new WSDLException(WSDLException.OTHER_ERROR,
-                              "Definition.readWSDL(WSDLLocator) is not " +
-                              "supported yet.");
-    }
-
     Reader reader = locator.getBaseReader();
     InputSource is = new InputSource(reader);
     String base = locator.getBaseURI();
 
-//    this.loc = locator;
+    this.loc = locator;
+
+    if (verbose)
+    {
+      System.out.println("Retrieving document at '" + base + "'.");
+    }
 
     return readWSDL(base, is);
   }
