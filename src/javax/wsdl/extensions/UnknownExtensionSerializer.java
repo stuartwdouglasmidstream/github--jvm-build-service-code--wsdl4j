@@ -1,9 +1,8 @@
-package com.ibm.wsdl.extensions;
+package javax.wsdl.extensions;
 
 import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
-import javax.wsdl.extensions.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**

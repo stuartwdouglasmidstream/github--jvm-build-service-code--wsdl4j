@@ -1,8 +1,7 @@
-package com.ibm.wsdl.extensions;
+package javax.wsdl.extensions;
 
 import org.w3c.dom.*;
 import javax.wsdl.*;
-import javax.wsdl.extensions.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)

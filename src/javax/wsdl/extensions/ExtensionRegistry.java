@@ -8,6 +8,18 @@ import javax.wsdl.*;
  */
 public class ExtensionRegistry implements java.io.Serializable
 {
+  /**
+   * Creates the extension registry, and sets the defaultSerializer
+   * and defaultDeserializer properties to instances of an
+   * UnknownExtensionSerializer, and an UnknownExtensionDeserializer,
+   * respectively.
+   */
+  public ExtensionRegistry()
+  {
+    setDefaultSerializer(new UnknownExtensionSerializer());
+    setDefaultDeserializer(new UnknownExtensionDeserializer());
+  }
+
   /*
     This is a Map of Maps. The top-level Map is keyed by (Class)parentType,
     and the inner Maps are keyed by (QName)elementType.
@@ -27,9 +39,12 @@ public class ExtensionRegistry implements java.io.Serializable
   protected ExtensionDeserializer defaultDeser = null;
 
   /**
-   * Set the serializer to be used when none is found for extensibility
-   * elements. Set this to null to have an exception thrown when
-   * unexpected extensibility elements are encountered.
+   * Set the serializer to be used when none is found for an extensibility
+   * element. Set this to null to have an exception thrown when
+   * unexpected extensibility elements are encountered. Default value is
+   * an instance of UnknownExtensionSerializer.
+   *
+   * @see UnknownExtensionSerializer
    */
   public void setDefaultSerializer(ExtensionSerializer defaultSer)
   {
@@ -37,8 +52,10 @@ public class ExtensionRegistry implements java.io.Serializable
   }
 
   /**
-   * Get the serializer to be used when none is found for extensibility
-   * elements.
+   * Get the serializer to be used when none is found for an extensibility
+   * element. Default value is an instance of UnknownExtensionSerializer.
+   *
+   * @see UnknownExtensionSerializer
    */
   public ExtensionSerializer getDefaultSerializer()
   {
@@ -46,9 +63,12 @@ public class ExtensionRegistry implements java.io.Serializable
   }
 
   /**
-   * Set the deserializer to be used when none is found for encountered
-   * elements. Set this to null to have an exception thrown when
-   * unexpected extensibility elements are encountered.
+   * Set the deserializer to be used when none is found for an encountered
+   * element. Set this to null to have an exception thrown when
+   * unexpected extensibility elements are encountered. Default value is
+   * an instance of UnknownExtensionDeserializer.
+   *
+   * @see UnknownExtensionDeserializer
    */
   public void setDefaultDeserializer(ExtensionDeserializer defaultDeser)
   {
@@ -56,8 +76,10 @@ public class ExtensionRegistry implements java.io.Serializable
   }
 
   /**
-   * Get the deserializer to be used when none is found for encountered
-   * elements.
+   * Get the deserializer to be used when none is found for an encountered
+   * element. Default value is an instance of UnknownExtensionDeserializer.
+   *
+   * @see UnknownExtensionDeserializer
    */
   public ExtensionDeserializer getDefaultDeserializer()
   {
