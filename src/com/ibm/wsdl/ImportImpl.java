@@ -9,8 +9,7 @@ public class ImportImpl implements Import
   protected String locationURI = null;
   /*
     This would need to be made into a generic reference to handle other
-    types of referenced documents. Also, this needs to be made to handle
-    multiple documents associated (i.e. imported) with the same namespace.
+    types of referenced documents.
   */
   protected Definition definition = null;
   protected Element docEl = null;
@@ -40,9 +39,7 @@ public class ImportImpl implements Import
    * and the top-level Definition (i.e. the one with the <import>)
    * will use this Definition when resolving referenced WSDL parts.
    * This would need to be made into a generic reference to handle
-   * other types of referenced documents. Also, this needs to be
-   * made to handle multiple documents associated (i.e. imported)
-   * with the same namespace.
+   * other types of referenced documents.
    */
   public void setDefinition(Definition definition)
   {
@@ -54,9 +51,7 @@ public class ImportImpl implements Import
    * and the top-level Definition (i.e. the one with the <import>)
    * will use this Definition when resolving referenced WSDL parts.
    * This would need to be made into a generic reference to handle
-   * other types of referenced documents. Also, this needs to be
-   * made to handle multiple documents associated (i.e. imported)
-   * with the same namespace.
+   * other types of referenced documents.
    */
   public Definition getDefinition()
   {
