@@ -26,13 +26,18 @@ public class MIMEContentSerializer implements ExtensionSerializer,
 
     if (mimeContent != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(MIMEConstants.NS_URI_MIME,
+                                   "content",
+                                   def);
+
       if (parentType != null
           && MIMEPart.class.isAssignableFrom(parentType))
       {
         pw.print("    ");
       }
 
-      pw.print("        <mime:content");
+      pw.print("        <" + tagName);
 
       DOMUtils.printAttribute(MIMEConstants.ATTR_PART,
                               mimeContent.getPart(),

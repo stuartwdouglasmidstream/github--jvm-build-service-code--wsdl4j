@@ -28,7 +28,12 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
 
     if (soapHeader != null)
     {
-      pw.print("        <soap:header");
+      String tagName =
+        DOMUtils.getQualifiedValue(SOAPConstants.NS_URI_SOAP,
+                                   "header",
+                                   def);
+
+      pw.print("        <" + tagName);
 
       DOMUtils.printQualifiedAttribute(Constants.ATTR_MESSAGE,
                                        soapHeader.getMessage(),
@@ -59,7 +64,7 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
 
       printSoapHeaderFaults(soapHeader.getSOAPHeaderFaults(), def, pw);
 
-      pw.println("        </soap:header>");
+      pw.println("        </" + tagName + '>');
     }
   }
 
@@ -70,6 +75,10 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
   {
     if (soapHeaderFaults != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(SOAPConstants.NS_URI_SOAP,
+                                   "headerfault",
+                                   def);
       Iterator soapHeaderFaultIterator = soapHeaderFaults.iterator();
 
       while (soapHeaderFaultIterator.hasNext())
@@ -79,8 +88,8 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
 
         if (soapHeaderFault != null)
         {
-          pw.print("          <soap:headerfault");
-    
+          pw.print("          <" + tagName);
+
           DOMUtils.printQualifiedAttribute(Constants.ATTR_MESSAGE,
                                            soapHeaderFault.getMessage(),
                                            def,

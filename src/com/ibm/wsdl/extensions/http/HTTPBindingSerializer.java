@@ -26,7 +26,12 @@ public class HTTPBindingSerializer implements ExtensionSerializer,
 
     if (httpBinding != null)
     {
-      pw.print("    <http:binding");
+      String tagName =
+        DOMUtils.getQualifiedValue(HTTPConstants.NS_URI_HTTP,
+                                   "binding",
+                                   def);
+
+      pw.print("    <" + tagName);
 
       DOMUtils.printAttribute(HTTPConstants.ATTR_VERB,
                               httpBinding.getVerb(),

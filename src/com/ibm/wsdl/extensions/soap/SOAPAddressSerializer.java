@@ -26,7 +26,12 @@ public class SOAPAddressSerializer implements ExtensionSerializer,
 
     if (soapAddress != null)
     {
-      pw.print("      <soap:address");
+      String tagName =
+        DOMUtils.getQualifiedValue(SOAPConstants.NS_URI_SOAP,
+                                   "address",
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_LOCATION,
                               soapAddress.getLocationURI(),

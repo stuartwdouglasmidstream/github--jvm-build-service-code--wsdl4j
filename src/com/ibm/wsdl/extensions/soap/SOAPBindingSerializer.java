@@ -26,7 +26,12 @@ public class SOAPBindingSerializer implements ExtensionSerializer,
 
     if (soapBinding != null)
     {
-      pw.print("    <soap:binding");
+      String tagName =
+        DOMUtils.getQualifiedValue(SOAPConstants.NS_URI_SOAP,
+                                   "binding",
+                                   def);
+
+      pw.print("    <" + tagName);
 
       DOMUtils.printAttribute(SOAPConstants.ATTR_STYLE,
                               soapBinding.getStyle(),

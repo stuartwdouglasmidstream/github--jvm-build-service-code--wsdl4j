@@ -26,7 +26,12 @@ public class HTTPUrlReplacementSerializer implements ExtensionSerializer,
 
     if (httpUrlReplacement != null)
     {
-      pw.print("        <http:urlReplacement");
+      String tagName =
+        DOMUtils.getQualifiedValue(HTTPConstants.NS_URI_HTTP,
+                                   "urlReplacement",
+                                   def);
+
+      pw.print("        <" + tagName);
 
       Boolean required = httpUrlReplacement.getRequired();
 

@@ -29,13 +29,18 @@ public class SOAPBodySerializer implements ExtensionSerializer,
 
     if (soapBody != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(SOAPConstants.NS_URI_SOAP,
+                                   "body",
+                                   def);
+
       if (parentType != null
           && MIMEPart.class.isAssignableFrom(parentType))
       {
         pw.print("    ");
       }
 
-      pw.print("        <soap:body");
+      pw.print("        <" + tagName);
 
       DOMUtils.printAttribute(SOAPConstants.ATTR_PARTS,
                               StringUtils.getNMTokens(soapBody.getParts()),

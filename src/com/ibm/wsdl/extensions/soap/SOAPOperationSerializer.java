@@ -27,7 +27,12 @@ public class SOAPOperationSerializer implements ExtensionSerializer,
 
     if (soapOperation != null)
     {
-      pw.print("      <soap:operation");
+      String tagName =
+        DOMUtils.getQualifiedValue(SOAPConstants.NS_URI_SOAP,
+                                   "operation",
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(SOAPConstants.ATTR_SOAP_ACTION,
                               soapOperation.getSoapActionURI(),

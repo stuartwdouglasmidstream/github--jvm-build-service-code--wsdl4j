@@ -27,7 +27,12 @@ public class SOAPFaultSerializer implements ExtensionSerializer,
 
     if (soapFault != null)
     {
-      pw.print("        <soap:fault");
+      String tagName =
+        DOMUtils.getQualifiedValue(SOAPConstants.NS_URI_SOAP,
+                                   "fault",
+                                   def);
+
+      pw.print("        <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_NAME, soapFault.getName(), pw);
       DOMUtils.printAttribute(SOAPConstants.ATTR_USE, soapFault.getUse(), pw);

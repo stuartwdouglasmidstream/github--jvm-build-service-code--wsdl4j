@@ -26,7 +26,12 @@ public class HTTPOperationSerializer implements ExtensionSerializer,
 
     if (httpOperation != null)
     {
-      pw.print("      <http:operation");
+      String tagName =
+        DOMUtils.getQualifiedValue(HTTPConstants.NS_URI_HTTP,
+                                   "operation",
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_LOCATION,
                               httpOperation.getLocationURI(),

@@ -26,13 +26,18 @@ public class MIMEMimeXmlSerializer implements ExtensionSerializer,
 
     if (mimeMimeXml != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(MIMEConstants.NS_URI_MIME,
+                                   "mimeXml",
+                                   def);
+
       if (parentType != null
           && MIMEPart.class.isAssignableFrom(parentType))
       {
         pw.print("    ");
       }
 
-      pw.print("        <mime:mimeXml");
+      pw.print("        <" + tagName);
 
       DOMUtils.printAttribute(MIMEConstants.ATTR_PART,
                               mimeMimeXml.getPart(),

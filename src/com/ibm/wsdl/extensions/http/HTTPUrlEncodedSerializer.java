@@ -11,8 +11,8 @@ import com.ibm.wsdl.util.xml.*;
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
 public class HTTPUrlEncodedSerializer implements ExtensionSerializer,
-                                              ExtensionDeserializer,
-                                              Serializable
+                                                 ExtensionDeserializer,
+                                                 Serializable
 {
   public void marshall(Class parentType,
                        Class extensionType,
@@ -26,7 +26,12 @@ public class HTTPUrlEncodedSerializer implements ExtensionSerializer,
 
     if (httpUrlEncoded != null)
     {
-      pw.print("        <http:urlEncoded");
+      String tagName =
+        DOMUtils.getQualifiedValue(HTTPConstants.NS_URI_HTTP,
+                                   "urlEncoded",
+                                   def);
+
+      pw.print("        <" + tagName);
 
       Boolean required = httpUrlEncoded.getRequired();
 

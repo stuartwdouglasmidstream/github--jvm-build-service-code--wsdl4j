@@ -297,7 +297,11 @@ public class DOMUtils {
   {
     if (name != null)
     {
-      printAttribute(getQualifiedValue(name, def), value, pw);
+      printAttribute(getQualifiedValue(name.getNamespaceURI(),
+                                       name.getLocalPart(),
+                                       def),
+                     value,
+                     pw);
     }
   }
 
@@ -312,35 +316,47 @@ public class DOMUtils {
   {
     if (value != null)
     {
-      printAttribute(name, getQualifiedValue(value, def), pw);
+      printAttribute(name,
+                     getQualifiedValue(value.getNamespaceURI(),
+                                       value.getLocalPart(),
+                                       def),
+                     pw);
     }
   }
 
-  private static String getQualifiedValue(QName value,
-                                          Definition def)
-                                            throws WSDLException
+  public static String getQualifiedValue(String namespaceURI,
+                                         String localPart,
+                                         Definition def)
+                                           throws WSDLException
   {
-    String namespaceURI = value.getNamespaceURI();
-    String localPart = value.getLocalPart();
     String prefix = null;
 
     if (namespaceURI != null && !namespaceURI.equals(""))
     {
-      prefix = def.getPrefix(namespaceURI);
-
-      if (prefix == null)
-      {
-        throw new WSDLException(WSDLException.OTHER_ERROR,
-                                "Can't find prefix for '" + namespaceURI +
-                                "'. Namespace prefixes must be set on the" +
-                                " Definition object using the " +
-                                "addNamespace(...) method.");
-      }
+      prefix = getPrefix(namespaceURI, def);
     }
 
     return ((prefix != null && !prefix.equals(""))
             ? prefix + ":"
             : "") + localPart;
+  }
+
+  public static String getPrefix(String namespaceURI,
+                                 Definition def)
+                                   throws WSDLException
+  {
+    String prefix = def.getPrefix(namespaceURI);
+
+    if (prefix == null)
+    {
+      throw new WSDLException(WSDLException.OTHER_ERROR,
+                              "Can't find prefix for '" + namespaceURI +
+                              "'. Namespace prefixes must be set on the" +
+                              " Definition object using the " +
+                              "addNamespace(...) method.");
+    }
+
+    return prefix;
   }
 
   public static String cleanString(String orig)

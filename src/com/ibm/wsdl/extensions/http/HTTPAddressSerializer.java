@@ -26,7 +26,12 @@ public class HTTPAddressSerializer implements ExtensionSerializer,
 
     if (httpAddress != null)
     {
-      pw.print("      <http:address");
+      String tagName =
+        DOMUtils.getQualifiedValue(HTTPConstants.NS_URI_HTTP,
+                                   "address",
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_LOCATION,
                               httpAddress.getLocationURI(),

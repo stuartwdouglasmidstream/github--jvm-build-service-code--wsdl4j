@@ -28,13 +28,18 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
 
     if (mimeMultipartRelated != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(MIMEConstants.NS_URI_MIME,
+                                   "multipartRelated",
+                                   def);
+
       if (parentType != null
           && MIMEPart.class.isAssignableFrom(parentType))
       {
         pw.print("    ");
       }
 
-      pw.print("        <mime:multipartRelated");
+      pw.print("        <" + tagName);
 
       Boolean required = mimeMultipartRelated.getRequired();
 
@@ -56,7 +61,7 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
         pw.print("    ");
       }
 
-      pw.println("        </mime:multipartRelated>");
+      pw.println("        </" + tagName + '>');
     }
   }
 
@@ -68,6 +73,10 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
   {
     if (mimeParts != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(MIMEConstants.NS_URI_MIME,
+                                   "part",
+                                   def);
       Iterator mimePartIterator = mimeParts.iterator();
 
       while (mimePartIterator.hasNext())
@@ -76,7 +85,7 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
 
         if (mimePart != null)
         {
-          pw.print("          <mime:part");
+          pw.print("          <" + tagName);
 
           Boolean required = mimePart.getRequired();
 
@@ -114,7 +123,7 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
             }
           }
 
-          pw.println("          </mime:part>");
+          pw.println("          </" + tagName + '>');
         }
       }
     }
