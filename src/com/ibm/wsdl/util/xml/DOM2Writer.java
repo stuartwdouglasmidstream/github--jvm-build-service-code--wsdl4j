@@ -1,8 +1,13 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.util.xml;
 
 import java.io.*;
 import java.util.*;
 import org.w3c.dom.*;
+import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
 
 /**
@@ -26,6 +31,33 @@ public class DOM2Writer
    */
   private static String NS_URI_XML = "http://www.w3.org/XML/1998/namespace";
 
+  private static Map xmlEncodingMap = new HashMap();
+
+  static
+  {
+    xmlEncodingMap.put(null, Constants.XML_DECL_DEFAULT);
+    xmlEncodingMap.put(System.getProperty("file.encoding"),
+                       Constants.XML_DECL_DEFAULT);
+    xmlEncodingMap.put("UTF8", "UTF-8");
+    xmlEncodingMap.put("UTF-16", "UTF-16");
+    xmlEncodingMap.put("UnicodeBig", "UTF-16");
+    xmlEncodingMap.put("UnicodeLittle", "UTF-16");
+    xmlEncodingMap.put("ASCII", "US-ASCII");
+    xmlEncodingMap.put("ISO8859_1", "ISO-8859-1");
+    xmlEncodingMap.put("ISO8859_2", "ISO-8859-2");
+    xmlEncodingMap.put("ISO8859_3", "ISO-8859-3");
+    xmlEncodingMap.put("ISO8859_4", "ISO-8859-4");
+    xmlEncodingMap.put("ISO8859_5", "ISO-8859-5");
+    xmlEncodingMap.put("ISO8859_6", "ISO-8859-6");
+    xmlEncodingMap.put("ISO8859_7", "ISO-8859-7");
+    xmlEncodingMap.put("ISO8859_8", "ISO-8859-8");
+    xmlEncodingMap.put("ISO8859_9", "ISO-8859-9");
+    xmlEncodingMap.put("ISO8859_13", "ISO-8859-13");
+    xmlEncodingMap.put("ISO8859_15_FDIS", "ISO-8859-15");
+    xmlEncodingMap.put("GBK", "GBK");
+    xmlEncodingMap.put("Big5", "Big5");
+  }
+  
   /**
    * Return a string containing this node serialized as XML.
    */
@@ -38,6 +70,33 @@ public class DOM2Writer
     return sw.toString();
   }
 
+
+  /**
+   * Print an XML declaration before serializing the element.
+   */
+  public static void serializeElementAsDocument(Element el, Writer writer)
+  {
+    PrintWriter pw = new PrintWriter(writer);
+    String javaEncoding = (writer instanceof OutputStreamWriter)
+                ? ((OutputStreamWriter) writer).getEncoding()
+                : null;
+                
+    String xmlEncoding = java2XMLEncoding(javaEncoding);                
+    
+    if (xmlEncoding != null)
+    { 
+      pw.println(Constants.XML_DECL_START +
+                 xmlEncoding +
+                 Constants.XML_DECL_END);
+    }
+    else
+    {
+      pw.println("<?xml version=\"1.0\"?>");
+    }
+
+    serializeAsXML(el, writer);
+  }
+  
   /**
   * Serialize this node into the writer as XML.
   */
@@ -47,11 +106,16 @@ public class DOM2Writer
 
     namespaceStack.register("xml", NS_URI_XML);
 
-    print(node, namespaceStack, new PrintWriter(writer));
+    PrintWriter pw = new PrintWriter(writer);
+    String javaEncoding = (writer instanceof OutputStreamWriter)
+                ? ((OutputStreamWriter) writer).getEncoding()
+                : null;
+
+    print(node, namespaceStack, pw, java2XMLEncoding(javaEncoding));
   }
 
   private static void print(Node node, ObjectRegistry namespaceStack,
-                            PrintWriter out)
+                            PrintWriter out, String xmlEncoding)
   {
     if (node == null)
     {
@@ -65,7 +129,16 @@ public class DOM2Writer
     {
       case Node.DOCUMENT_NODE :
       {
-        out.println("<?xml version=\"1.0\"?>");
+        if (xmlEncoding != null)
+        { 
+          out.println(Constants.XML_DECL_START +
+                     xmlEncoding +
+	                 Constants.XML_DECL_END);
+        }
+        else
+        {
+          out.println("<?xml version=\"1.0\"?>");
+        }
 
         NodeList children = node.getChildNodes();
 
@@ -75,7 +148,7 @@ public class DOM2Writer
 
           for (int i = 0; i < numChildren; i++)
           {
-            print(children.item(i), namespaceStack, out);
+            print(children.item(i), namespaceStack, out, xmlEncoding);
           }
         }
         break;
@@ -105,6 +178,7 @@ public class DOM2Writer
           }
           catch (IllegalArgumentException e)
           {
+            // ignore this and carry on
           }
 
           if (!prefixIsDeclared)
@@ -141,6 +215,7 @@ public class DOM2Writer
             }
             catch (IllegalArgumentException e)
             {
+              // ignore this and carry on
             }
 
             if (!prefixIsDeclared)
@@ -165,7 +240,7 @@ public class DOM2Writer
 
           for (int i = 0; i < numChildren; i++)
           {
-            print(children.item(i), namespaceStack, out);
+            print(children.item(i), namespaceStack, out, xmlEncoding);
           }
         }
         else
@@ -237,6 +312,12 @@ public class DOM2Writer
     }
   }
 
+  public static String java2XMLEncoding(String javaEnc)
+  {
+    return (String)xmlEncodingMap.get(javaEnc);
+  }
+
+  
   private static void printNamespaceDecl(Node node,
                                          ObjectRegistry namespaceStack,
                                          PrintWriter out)
