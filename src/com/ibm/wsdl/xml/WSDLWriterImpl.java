@@ -106,8 +106,8 @@ public class WSDLWriterImpl implements WSDLWriter
 
     pw.println('>');
 
-    printImports(def.getImports(), def, pw);
     printDocumentation(def.getDocumentationElement(), pw);
+    printImports(def.getImports(), def, pw);
     printTypes(def.getTypes(), def, pw);
     printMessages(def.getMessages(), def, pw);
     printPortTypes(def.getPortTypes(), def, pw);
