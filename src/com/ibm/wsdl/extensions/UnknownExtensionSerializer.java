@@ -23,6 +23,8 @@ public class UnknownExtensionSerializer implements ExtensionSerializer,
     UnknownExtensibilityElement unknownExt =
       (UnknownExtensibilityElement)extension;
 
+    pw.print("    ");
+
     DOM2Writer.serializeAsXML(unknownExt.getElement(), pw);
 
     pw.println();

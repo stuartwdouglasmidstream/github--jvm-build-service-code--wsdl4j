@@ -52,7 +52,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
     printImports(def.getImports(), pw);
     printDocumentation(def.getDocumentationElement(), pw);
-    printTypes(def.getTypesElement(), pw);
+    printTypes(def.getTypes(), def, pw);
     printMessages(def.getMessages(), def, pw);
     printPortTypes(def.getPortTypes(), def, pw);
     printBindings(def.getBindings(), def, pw);
@@ -623,14 +623,20 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printTypes(Element typesElement, PrintWriter pw)
+  private static void printTypes(Types types, Definition def, PrintWriter pw)
     throws WSDLException
   {
-    if (typesElement != null)
+    if (types != null)
     {
-      DOM2Writer.serializeAsXML(typesElement, pw);
+      pw.println("  <" + Constants.ELEM_TYPES + '>');
 
-      pw.println();
+      printDocumentation(types.getDocumentationElement(), pw);
+
+      List extElements = types.getExtensibilityElements();
+
+      printExtensibilityElements(Types.class, extElements, def, pw);
+
+      pw.println("  </" + Constants.ELEM_TYPES + '>');
     }
   }
 

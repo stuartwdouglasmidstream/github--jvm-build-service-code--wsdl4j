@@ -107,22 +107,16 @@ public interface Definition extends java.io.Serializable
    public Map getNamespaces();
 
   /**
-   * Set the types element for this document. This dependency on
-   * org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param typesEl the types element
+   * Set the types section.
    */
-  public void setTypesElement(Element typesEl);
+  public void setTypes(Types types);
 
   /**
-   * Get the types element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
+   * Get the types section.
    *
-   * @return the types element
+   * @return the types section
    */
-  public Element getTypesElement();
+  public Types getTypes();
 
   /**
    * Add an import to this WSDL description.
@@ -367,6 +361,13 @@ public interface Definition extends java.io.Serializable
    * @return the newly created service
    */
   public Service createService();
+
+  /**
+   * Create a new types section.
+   *
+   * @return the newly created types section
+   */
+  public Types createTypes();
 
   /**
    * Get a reference to the ExtensionRegistry for this Definition.

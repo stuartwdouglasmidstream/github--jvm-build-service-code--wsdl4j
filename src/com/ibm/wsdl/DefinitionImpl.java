@@ -20,8 +20,8 @@ public class DefinitionImpl implements Definition
   protected QName name = null;
   protected String targetNamespace = null;
   protected Map namespaces = new HashMap();
-  protected Element typesEl = null;
   protected Map imports = new HashMap();
+  protected Types types = null;
   protected Map messages = new HashMap();
   protected Map bindings = new HashMap();
   protected Map portTypes = new HashMap();
@@ -189,27 +189,21 @@ public class DefinitionImpl implements Definition
    }
 
   /**
-   * Set the types element for this document. This dependency on
-   * org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param typesEl the types element
+   * Set the types section.
    */
-  public void setTypesElement(Element typesEl)
+  public void setTypes(Types types)
   {
-    this.typesEl = typesEl;
+    this.types = types;
   }
 
   /**
-   * Get the types element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
+   * Get the types section.
    *
-   * @return the types element
+   * @return the types section
    */
-  public Element getTypesElement()
+  public Types getTypes()
   {
-    return typesEl;
+    return types;
   }
 
   /**
@@ -597,6 +591,16 @@ public class DefinitionImpl implements Definition
   }
 
   /**
+   * Create a new types section.
+   *
+   * @return the newly created types section
+   */
+  public Types createTypes()
+  {
+    return new TypesImpl();
+  }
+
+  /**
    * Set the ExtensionRegistry for this Definition.
    */
   public void setExtensionRegistry(ExtensionRegistry extReg)
@@ -674,11 +678,6 @@ public class DefinitionImpl implements Definition
     strBuf.append("Definition: name=" + name +
                   " targetNamespace=" + targetNamespace);
 
-    if (typesEl != null)
-    {
-      strBuf.append("\n" + DOM2Writer.nodeToString(typesEl));
-    }
-
     if (imports != null)
     {
       Iterator importIterator = imports.values().iterator();
@@ -687,6 +686,11 @@ public class DefinitionImpl implements Definition
       {
         strBuf.append("\n" + importIterator.next());
       }
+    }
+
+    if (types != null)
+    {
+      strBuf.append("\n" + types);
     }
 
     if (messages != null)

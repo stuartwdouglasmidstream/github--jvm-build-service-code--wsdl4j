@@ -121,7 +121,7 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else if (Constants.Q_ELEM_TYPES.matches(tempEl))
       {
-        def.setTypesElement(tempEl);
+        def.setTypes(parseTypes(tempEl, def));
       }
       else if (Constants.Q_ELEM_MESSAGE.matches(tempEl))
       {
@@ -212,6 +212,30 @@ public class WSDLReaderImpl implements WSDLReader
     }
 
     return importDef;
+  }
+
+  private static Types parseTypes(Element typesEl, Definition def)
+    throws WSDLException
+  {
+    Types types = def.createTypes();
+    Element tempEl = DOMUtils.getFirstChildElement(typesEl);
+
+    while (tempEl != null)
+    {
+      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      {
+        types.setDocumentationElement(tempEl);
+      }
+      else
+      {
+        types.addExtensibilityElement(
+          parseExtensibilityElement(Types.class, tempEl, def));
+      }
+
+      tempEl = DOMUtils.getNextSiblingElement(tempEl);
+    }
+
+    return types;
   }
 
   private static Binding parseBinding(Element bindingEl, Definition def)

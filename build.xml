@@ -54,11 +54,7 @@ Author:
 
     <property name="packages"
               value="javax.wsdl.*,
-                     com.ibm.wsdl,
-                     com.ibm.wsdl.extensions.*,
-                     com.ibm.wsdl.factory,
-                     com.ibm.wsdl.util.*,
-                     com.ibm.wsdl.xml"/>
+                     com.ibm.wsdl.*"/>
 
     <property name="build.file" value="build.xml"/>
 

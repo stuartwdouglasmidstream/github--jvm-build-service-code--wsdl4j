@@ -19,6 +19,7 @@ public class UnknownExtensionDeserializer implements ExtensionDeserializer,
   {
     UnknownExtensibilityElement unknownExt = new UnknownExtensibilityElement();
 
+    unknownExt.setElementType(elementType);
     unknownExt.setElement(el);
 
     return unknownExt;
