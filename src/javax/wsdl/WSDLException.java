@@ -4,6 +4,8 @@ import java.io.*;
 
 public class WSDLException extends Exception
 {
+  public static final long serialVersionUID = 1;
+
   public static final String INVALID_WSDL = "INVALID_WSDL";
   public static final String PARSER_ERROR = "PARSER_ERROR";
   public static final String OTHER_ERROR = "OTHER_ERROR";

@@ -12,6 +12,8 @@ public class OperationType implements java.io.Serializable
 {
   private String id;
 
+  public static final long serialVersionUID = 1;
+
   public static OperationType ONE_WAY =
     new OperationType("ONE_WAY");
   public static OperationType REQUEST_RESPONSE =
