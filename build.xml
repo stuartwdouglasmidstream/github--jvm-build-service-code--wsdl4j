@@ -145,7 +145,7 @@ Author:
   <!-- =================================================================== -->
   <target name="jwsdl_docs" depends="prepare">
     <mkdir dir="${build.javadocs}"/>
-    <javadoc packagenames="javax.wsdl.*"
+    <javadoc packagenames="javax.*"
              sourcepath="${src.dir}"
              destdir="${build.javadocs}"
              author="true"

@@ -2,6 +2,15 @@ package javax.wsdl.xml;
 
 import java.io.*;
 
+/**
+ * This interface can act as an additional layer of indirection between
+ * a WSDLReader and the actual location of WSDL documents. One
+ * use could be to retrieve WSDL documents from JAR files, while still
+ * retaining the ability to resolve imported documents using relative
+ * URIs.
+ *
+ * @see WSDLReader#readWSDL(WSDLLocator)
+ */
 public interface WSDLLocator
 {
   /**

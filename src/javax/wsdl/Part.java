@@ -6,7 +6,7 @@ import org.w3c.dom.*;
 
 /**
  * This interface represents a message part and contains the part's
- * name, elementName, and typeName.
+ * name, elementName, typeName, and any extensibility attributes.
  *
  * @author Paul Fremantle
  * @author Nirmal Mukhi
@@ -42,6 +42,9 @@ public interface Part extends java.io.Serializable
    *
    * @param name the extension attribute name
    * @param value the extension attribute value
+   *
+   * @see #getExtensionAttribute
+   * @see #getExtensionAttributes
    */
   public void setExtensionAttribute(QName name, QName value);
 
@@ -52,6 +55,9 @@ public interface Part extends java.io.Serializable
    * @param name the extension attribute name
    * @return the value of the extension attribute, or null if
    * it is not defined
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttributes
    */
   public QName getExtensionAttribute(QName name);
 
@@ -61,6 +67,9 @@ public interface Part extends java.io.Serializable
    *
    * @return a map containing all the extension attributes defined
    * on this part
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttribute
    */
   public Map getExtensionAttributes();
 

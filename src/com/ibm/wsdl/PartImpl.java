@@ -7,7 +7,7 @@ import org.w3c.dom.*;
 
 /**
  * This class represents a message part and contains the part's
- * name, elementName, and typeName.
+ * name, elementName, typeName, and any extensibility attributes.
  *
  * @author Paul Fremantle
  * @author Nirmal Mukhi
@@ -67,6 +67,9 @@ public class PartImpl implements Part
    *
    * @param name the extension attribute name
    * @param value the extension attribute value
+   *
+   * @see #getExtensionAttribute
+   * @see #getExtensionAttributes
    */
   public void setExtensionAttribute(QName name, QName value)
   {
@@ -87,6 +90,9 @@ public class PartImpl implements Part
    * @param name the extension attribute name
    * @return the value of the extension attribute, or null if
    * it is not defined
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttributes
    */
   public QName getExtensionAttribute(QName name)
   {
@@ -99,6 +105,9 @@ public class PartImpl implements Part
    *
    * @return a map containing all the extension attributes defined
    * on this part
+   *
+   * @see #setExtensionAttribute
+   * @see #getExtensionAttribute
    */
   public Map getExtensionAttributes()
   {
