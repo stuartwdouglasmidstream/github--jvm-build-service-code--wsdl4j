@@ -1204,6 +1204,19 @@ public class WSDLReaderImpl implements WSDLReader
    * Read the WSDL document accessible via the specified
    * URI into a WSDL definition.
    *
+   * @param wsdlURI a URI (can be a filename or URL) pointing to a
+   * WSDL XML definition.
+   * @return the definition.
+   */
+  public Definition readWSDL(String wsdlURI) throws WSDLException
+  {
+    return readWSDL(null, wsdlURI);
+  }
+
+  /**
+   * Read the WSDL document accessible via the specified
+   * URI into a WSDL definition.
+   *
    * @param contextURI the context in which to resolve the
    * wsdlURI, if the wsdlURI is relative. Can be null, in which
    * case it will be ignored.
