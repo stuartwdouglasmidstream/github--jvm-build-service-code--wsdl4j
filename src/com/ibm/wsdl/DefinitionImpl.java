@@ -37,7 +37,7 @@ public class DefinitionImpl implements Definition
   /**
    * Set the document base URI of this definition. Can be used to
    * represent the origin of the Definition, and can be exploited
-   * when resolving relative URIs (e.g. in <import>s).
+   * when resolving relative URIs (e.g. in &lt;import&gt;s).
    *
    * @param documentBaseURI the document base URI of this definition
    */
