@@ -40,7 +40,7 @@ public abstract class DefinitionFactory
    *</pre>
    * Once an instance of a DefinitionFactory is obtained, invoke
    * newDefinition() on it to programmatically create a new instance
-   * of a Defintion.
+   * of a Definition.
    */
   public static DefinitionFactory newInstance() throws WSDLException
   {
@@ -54,7 +54,7 @@ public abstract class DefinitionFactory
    * returns an instance of the class factoryImplName.
    * Once an instance of a DefinitionFactory is obtained, invoke
    * newDefinition() on it to programmatically create a new instance
-   * of a Defintion.
+   * of a Definition.
    *
    * @param factoryImplName the fully-qualified class name of the
    * class which provides a concrete implementation of the abstract
