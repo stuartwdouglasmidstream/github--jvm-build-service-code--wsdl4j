@@ -5,6 +5,7 @@ import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
+import javax.xml.namespace.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 

@@ -4,6 +4,7 @@ import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.xml.namespace.*;
 
 /**
  * This class represents a port type binding and describes the

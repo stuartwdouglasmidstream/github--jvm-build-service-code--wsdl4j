@@ -1,9 +1,9 @@
 package com.ibm.wsdl.extensions.soap;
 
 import java.util.*;
-import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
+import javax.xml.namespace.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)

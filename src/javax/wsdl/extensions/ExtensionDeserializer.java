@@ -2,6 +2,7 @@ package javax.wsdl.extensions;
 
 import org.w3c.dom.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * This interface should be implemented by classes which deserialize

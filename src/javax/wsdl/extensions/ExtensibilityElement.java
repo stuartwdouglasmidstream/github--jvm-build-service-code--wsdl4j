@@ -1,6 +1,7 @@
 package javax.wsdl.extensions;
 
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * This interface should be implemented by classes intending to represent

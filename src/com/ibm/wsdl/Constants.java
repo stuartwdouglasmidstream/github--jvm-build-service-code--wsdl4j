@@ -1,6 +1,6 @@
 package com.ibm.wsdl;
 
-import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)

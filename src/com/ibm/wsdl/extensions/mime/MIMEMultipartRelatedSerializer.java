@@ -6,6 +6,7 @@ import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.mime.*;
+import javax.xml.namespace.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 
@@ -146,7 +147,7 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
 
     while (tempEl != null)
     {
-      if (MIMEConstants.Q_ELEM_MIME_PART.matches(tempEl))
+      if (QNameUtils.matches(MIMEConstants.Q_ELEM_MIME_PART, tempEl))
       {
         mimeMultipartRelated.addMIMEPart(
           parseMIMEPart(MIMEMultipartRelated.class,
@@ -195,7 +196,7 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
     {
       try
       {
-        QName tempElType = new QName(tempEl);
+        QName tempElType = QNameUtils.newQName(tempEl);
         ExtensionDeserializer extDS = extReg.queryDeserializer(MIMEPart.class,
                                                                tempElType);
         ExtensibilityElement ext =

@@ -3,6 +3,7 @@ package com.ibm.wsdl.util.xml;
 import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 public class DOMUtils {
   /**
@@ -265,7 +266,7 @@ public class DOMUtils {
 
   public static void throwWSDLException(Element location) throws WSDLException
   {
-    String elName = new QName(location).toString();
+    String elName = QNameUtils.newQName(location).toString();
 
     WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
                                               "Encountered unexpected '" +

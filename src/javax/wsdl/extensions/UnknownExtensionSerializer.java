@@ -3,6 +3,7 @@ package javax.wsdl.extensions;
 import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**

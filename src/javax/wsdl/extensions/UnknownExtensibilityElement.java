@@ -2,6 +2,7 @@ package javax.wsdl.extensions;
 
 import org.w3c.dom.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * This class is used to wrap arbitrary elements.

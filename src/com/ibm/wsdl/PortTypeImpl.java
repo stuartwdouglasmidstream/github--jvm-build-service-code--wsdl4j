@@ -3,6 +3,7 @@ package com.ibm.wsdl;
 import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * This class represents a port type. It contains information about

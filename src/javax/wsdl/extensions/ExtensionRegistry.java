@@ -2,6 +2,7 @@ package javax.wsdl.extensions;
 
 import java.util.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * This class is used to associate serializers, deserializers, and

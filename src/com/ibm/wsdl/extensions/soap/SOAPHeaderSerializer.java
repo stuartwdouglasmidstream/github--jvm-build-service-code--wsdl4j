@@ -6,6 +6,7 @@ import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
+import javax.xml.namespace.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
@@ -181,7 +182,7 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
 
     while (tempEl != null)
     {
-      if (SOAPConstants.Q_ELEM_SOAP_HEADER_FAULT.matches(tempEl))
+      if (QNameUtils.matches(SOAPConstants.Q_ELEM_SOAP_HEADER_FAULT, tempEl))
       {
         soapHeader.addSOAPHeaderFault(
           parseSoapHeaderFault(SOAPHeader.class,

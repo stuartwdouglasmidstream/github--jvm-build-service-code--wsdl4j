@@ -85,7 +85,7 @@ public class QName implements Serializable
   {
     return ((namespaceURI == emptyString)
             ? localPart
-            : namespaceURI + ":" + localPart);
+            : '{' + namespaceURI + '}' + localPart);
   }
 
   /**

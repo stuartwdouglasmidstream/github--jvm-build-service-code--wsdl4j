@@ -3,6 +3,7 @@ package com.ibm.wsdl.xml;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import javax.xml.namespace.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
@@ -244,7 +245,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_IMPORT.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_IMPORT, tempEl))
       {
         if (importedDefs == null)
         {
@@ -258,27 +259,27 @@ public class WSDLReaderImpl implements WSDLReader
 
         def.addImport(parseImport(tempEl, def, importedDefs));
       }
-      else if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         def.setDocumentationElement(tempEl);
       }
-      else if (Constants.Q_ELEM_TYPES.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_TYPES, tempEl))
       {
         def.setTypes(parseTypes(tempEl, def));
       }
-      else if (Constants.Q_ELEM_MESSAGE.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_MESSAGE, tempEl))
       {
         def.addMessage(parseMessage(tempEl, def));
       }
-      else if (Constants.Q_ELEM_PORT_TYPE.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_PORT_TYPE, tempEl))
       {
         def.addPortType(parsePortType(tempEl, def));
       }
-      else if (Constants.Q_ELEM_BINDING.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_BINDING, tempEl))
       {
         def.addBinding(parseBinding(tempEl, def));
       }
-      else if (Constants.Q_ELEM_SERVICE.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_SERVICE, tempEl))
       {
         def.addService(parseService(tempEl, def));
       }
@@ -340,7 +341,8 @@ public class WSDLReaderImpl implements WSDLReader
               documents to be retrieved and processed, such as schema
               documents (".xsd"), etc...
             */
-            if (Constants.Q_ELEM_DEFINITIONS.matches(documentElement))
+            if (QNameUtils.matches(Constants.Q_ELEM_DEFINITIONS,
+                                   documentElement))
             {
               if (verbose)
               {
@@ -381,7 +383,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         importDef.setDocumentationElement(tempEl);
       }
@@ -404,7 +406,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         types.setDocumentationElement(tempEl);
       }
@@ -470,11 +472,11 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         binding.setDocumentationElement(tempEl);
       }
-      else if (Constants.Q_ELEM_OPERATION.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_OPERATION, tempEl))
       {
         binding.addBindingOperation(parseBindingOperation(tempEl,
                                                           portType,
@@ -509,19 +511,19 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         bindingOperation.setDocumentationElement(tempEl);
       }
-      else if (Constants.Q_ELEM_INPUT.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_INPUT, tempEl))
       {
         bindingOperation.setBindingInput(parseBindingInput(tempEl, def));
       }
-      else if (Constants.Q_ELEM_OUTPUT.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_OUTPUT, tempEl))
       {
         bindingOperation.setBindingOutput(parseBindingOutput(tempEl, def));
       }
-      else if (Constants.Q_ELEM_FAULT.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_FAULT, tempEl))
       {
         bindingOperation.addBindingFault(parseBindingFault(tempEl, def));
       }
@@ -574,7 +576,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         bindingInput.setDocumentationElement(tempEl);
       }
@@ -607,7 +609,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         bindingOutput.setDocumentationElement(tempEl);
       }
@@ -640,7 +642,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         bindingFault.setDocumentationElement(tempEl);
       }
@@ -686,11 +688,11 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         msg.setDocumentationElement(tempEl);
       }
-      else if (Constants.Q_ELEM_PART.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_PART, tempEl))
       {
         msg.addPart(parsePart(tempEl, def));
       }
@@ -740,7 +742,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         part.setDocumentationElement(tempEl);
       }
@@ -787,11 +789,11 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         portType.setDocumentationElement(tempEl);
       }
-      else if (Constants.Q_ELEM_OPERATION.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_OPERATION, tempEl))
       {
         portType.addOperation(parseOperation(tempEl, portType, def));
       }
@@ -824,21 +826,21 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         docEl = tempEl;
       }
-      else if (Constants.Q_ELEM_INPUT.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_INPUT, tempEl))
       {
         input = parseInput(tempEl, def);
         messageOrder.add(Constants.ELEM_INPUT);
       }
-      else if (Constants.Q_ELEM_OUTPUT.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_OUTPUT, tempEl))
       {
         output = parseOutput(tempEl, def);
         messageOrder.add(Constants.ELEM_OUTPUT);
       }
-      else if (Constants.Q_ELEM_FAULT.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_FAULT, tempEl))
       {
         faults.add(parseFault(tempEl, def));
       }
@@ -943,11 +945,11 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         service.setDocumentationElement(tempEl);
       }
-      else if (Constants.Q_ELEM_PORT.matches(tempEl))
+      else if (QNameUtils.matches(Constants.Q_ELEM_PORT, tempEl))
       {
         service.addPort(parsePort(tempEl, def));
       }
@@ -997,7 +999,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         port.setDocumentationElement(tempEl);
       }
@@ -1017,7 +1019,7 @@ public class WSDLReaderImpl implements WSDLReader
   private static ExtensibilityElement parseExtensibilityElement(
     Class parentType, Element el, Definition def) throws WSDLException
   {
-    QName elementType = new QName(el);
+    QName elementType = QNameUtils.newQName(el);
 
     try
     {
@@ -1083,7 +1085,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         input.setDocumentationElement(tempEl);
       }
@@ -1132,7 +1134,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         output.setDocumentationElement(tempEl);
       }
@@ -1181,7 +1183,7 @@ public class WSDLReaderImpl implements WSDLReader
 
     while (tempEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
       {
         fault.setDocumentationElement(tempEl);
       }
@@ -1199,7 +1201,7 @@ public class WSDLReaderImpl implements WSDLReader
   private static void checkElementName(Element el, QName qname)
     throws WSDLException
   {
-    if (!qname.matches(el))
+    if (!QNameUtils.matches(qname, el))
     {
       WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
                                                 "Expected element '" +

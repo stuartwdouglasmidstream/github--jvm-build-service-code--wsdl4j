@@ -2,6 +2,7 @@ package javax.wsdl;
 
 import java.util.*;
 import org.w3c.dom.*;
+import javax.xml.namespace.*;
 
 /**
  * This interface describes a message used for communication with an operation.

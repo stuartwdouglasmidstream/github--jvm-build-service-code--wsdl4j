@@ -2,6 +2,7 @@ package javax.wsdl.extensions;
 
 import java.io.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * This interface should be implemented by classes which serialize

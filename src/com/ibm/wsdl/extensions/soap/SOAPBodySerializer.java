@@ -7,6 +7,7 @@ import javax.wsdl.extensions.*;
 // MIMEPart.class is needed so <soap:body> can be indented properly.
 import javax.wsdl.extensions.mime.*;
 import javax.wsdl.extensions.soap.*;
+import javax.xml.namespace.*;
 import com.ibm.wsdl.*;
 // MIMEPart.class is needed so <soap:body> can be indented properly.
 import com.ibm.wsdl.extensions.mime.*;

@@ -1,8 +1,8 @@
 package com.ibm.wsdl.extensions.http;
 
-import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.http.*;
+import javax.xml.namespace.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)

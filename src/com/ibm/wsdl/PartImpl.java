@@ -2,6 +2,7 @@ package com.ibm.wsdl;
 
 import org.w3c.dom.*;
 import javax.wsdl.*;
+import javax.xml.namespace.*;
 
 /**
  * This class represents a message part and contains the part's

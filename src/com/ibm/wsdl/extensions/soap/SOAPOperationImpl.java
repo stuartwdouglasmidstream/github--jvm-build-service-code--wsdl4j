@@ -1,8 +1,8 @@
 package com.ibm.wsdl.extensions.soap;
 
-import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
+import javax.xml.namespace.*;
 
 /**
  * This class stores information associated with a SOAP operation that

@@ -2,6 +2,7 @@ package com.ibm.wsdl.xml;
 
 import java.io.*;
 import java.util.*;
+import javax.xml.namespace.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;

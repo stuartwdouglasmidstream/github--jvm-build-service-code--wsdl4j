@@ -1,6 +1,6 @@
 package com.ibm.wsdl.extensions.mime;
 
-import javax.wsdl.*;
+import javax.xml.namespace.*;
 import com.ibm.wsdl.*;
 
 /**
