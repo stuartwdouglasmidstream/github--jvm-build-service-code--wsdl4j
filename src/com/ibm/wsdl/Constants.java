@@ -82,8 +82,10 @@ public class Constants
     new QName(NS_URI_WSDL, ATTR_REQUIRED);
 
   // XML Declaration string.
-  public static final String XML_DECL =
-    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+  public static final String XML_DECL_DEFAULT = "UTF-8";
+  public static final String XML_DECL_START =
+    "<?xml version=\"1.0\" encoding=\"";
+  public static final String XML_DECL_END = "\"?>";
 
   // Feature names.
   public static final String FEATURE_VERBOSE = "javax.wsdl.verbose";

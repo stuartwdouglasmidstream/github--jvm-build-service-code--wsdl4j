@@ -24,6 +24,33 @@ import com.ibm.wsdl.util.xml.*;
  */
 public class WSDLWriterImpl implements WSDLWriter
 {
+  private static Map xmlEncodingMap = new HashMap();
+
+  static
+  {
+    xmlEncodingMap.put(null, Constants.XML_DECL_DEFAULT);
+    xmlEncodingMap.put(System.getProperty("file.encoding"),
+                       Constants.XML_DECL_DEFAULT);
+    xmlEncodingMap.put("UTF8", "UTF-8");
+    xmlEncodingMap.put("UTF-16", "UTF-16");
+    xmlEncodingMap.put("UnicodeBig", "UTF-16");
+    xmlEncodingMap.put("UnicodeLittle", "UTF-16");
+    xmlEncodingMap.put("ASCII", "US-ASCII");
+    xmlEncodingMap.put("ISO8859_1", "ISO-8859-1");
+    xmlEncodingMap.put("ISO8859_2", "ISO-8859-2");
+    xmlEncodingMap.put("ISO8859_3", "ISO-8859-3");
+    xmlEncodingMap.put("ISO8859_4", "ISO-8859-4");
+    xmlEncodingMap.put("ISO8859_5", "ISO-8859-5");
+    xmlEncodingMap.put("ISO8859_6", "ISO-8859-6");
+    xmlEncodingMap.put("ISO8859_7", "ISO-8859-7");
+    xmlEncodingMap.put("ISO8859_8", "ISO-8859-8");
+    xmlEncodingMap.put("ISO8859_9", "ISO-8859-9");
+    xmlEncodingMap.put("ISO8859_13", "ISO-8859-13");
+    xmlEncodingMap.put("ISO8859_15_FDIS", "ISO-8859-15");
+    xmlEncodingMap.put("GBK", "GBK");
+    xmlEncodingMap.put("Big5", "Big5");
+  }
+
   /**
    * Sets the specified feature to the specified value.
    * <p>
@@ -929,10 +956,29 @@ public class WSDLWriterImpl implements WSDLWriter
     throws WSDLException
   {
     PrintWriter pw = new PrintWriter(sink);
+    String javaEncoding = (sink instanceof OutputStreamWriter)
+                          ? ((OutputStreamWriter)sink).getEncoding()
+                          : null;
 
-    pw.println(Constants.XML_DECL);
+    pw.println(Constants.XML_DECL_START +
+               java2XMLEncoding(javaEncoding) +
+               Constants.XML_DECL_END);
 
     printDefinition(wsdlDef, pw);
+  }
+
+  private static String java2XMLEncoding(String javaEnc) throws WSDLException
+  {
+    String xmlEncoding = (String)xmlEncodingMap.get(javaEnc);
+
+    if (xmlEncoding == null)
+    {
+      throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                              "Unsupported Java encoding for writing " +
+                              "wsdl file: '" + javaEnc + "'.");
+    }
+
+    return xmlEncoding;
   }
 
   /**
