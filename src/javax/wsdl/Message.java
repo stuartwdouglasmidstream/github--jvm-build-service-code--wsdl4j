@@ -1,9 +1,13 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import java.util.*;
-import org.w3c.dom.*;
 import javax.wsdl.extensions.*;
-import javax.xml.namespace.*;
+import javax.xml.namespace.QName;
+import org.w3c.dom.Element;
 
 /**
  * This interface describes a message used for communication with an operation.
@@ -12,7 +16,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Message extends java.io.Serializable, AttributeExtensible
+public interface Message extends java.io.Serializable, ElementExtensible
 {
   /**
    * Set the name of this message.

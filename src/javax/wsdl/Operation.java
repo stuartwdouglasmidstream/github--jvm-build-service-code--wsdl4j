@@ -1,8 +1,12 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import java.util.*;
-import org.w3c.dom.*;
 import javax.wsdl.extensions.*;
+import org.w3c.dom.Element;
 
 /**
  * This interface represents a WSDL operation.
@@ -13,7 +17,7 @@ import javax.wsdl.extensions.*;
  * @author Nirmal Mukhi (nmukhi@us.ibm.com)
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public interface Operation extends java.io.Serializable, AttributeExtensible
+public interface Operation extends java.io.Serializable, ElementExtensible
 {
   /**
    * Set the name of this operation.

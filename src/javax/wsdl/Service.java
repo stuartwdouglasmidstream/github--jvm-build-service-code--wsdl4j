@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import java.util.*;
@@ -13,7 +17,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Service extends java.io.Serializable, AttributeExtensible
+public interface Service extends java.io.Serializable, ElementExtensible
 {
   /**
    * Set the name of this service.
@@ -49,18 +53,6 @@ public interface Service extends java.io.Serializable, AttributeExtensible
    * Get all the ports defined here.
    */
   public Map getPorts();
-
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement);
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements();
 
   /**
    * Set the documentation element for this document. This dependency
