@@ -22,6 +22,11 @@ public class DOM2Writer
   private static String NS_URI_XMLNS = "http://www.w3.org/2000/xmlns/";
 
   /**
+   * The namespaceURI represented by the prefix <code>xml</code>.
+   */
+  private static String NS_URI_XML = "http://www.w3.org/XML/1998/namespace";
+
+  /**
    * Return a string containing this node serialized as XML.
    */
   public static String nodeToString(Node node)
@@ -38,7 +43,11 @@ public class DOM2Writer
   */
   public static void serializeAsXML(Node node, Writer writer)
   {
-    print(node, null, new PrintWriter(writer));
+    ObjectRegistry namespaceStack = new ObjectRegistry();
+
+    namespaceStack.register("xml", NS_URI_XML);
+
+    print(node, namespaceStack, new PrintWriter(writer));
   }
 
   private static void print(Node node, ObjectRegistry namespaceStack,
