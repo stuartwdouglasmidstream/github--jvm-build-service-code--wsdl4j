@@ -160,6 +160,15 @@ public interface Definition extends java.io.Serializable
   public Message getMessage(QName name);
 
   /**
+   * Remove the specified message from this definition.
+   *
+   * @param name the name of the message to remove
+   * @return the message previously associated with this qname, if there
+   * was one; may return null
+   */
+  public Message removeMessage(QName name);
+
+  /**
    * Get all the messages defined here.
    */
   public Map getMessages();
@@ -179,6 +188,15 @@ public interface Definition extends java.io.Serializable
    * any matching binding
    */
   public Binding getBinding(QName name);
+
+  /**
+   * Remove the specified binding from this definition.
+   *
+   * @param name the name of the binding to remove
+   * @return the binding previously associated with this qname, if there
+   * was one; may return null
+   */
+  public Binding removeBinding(QName name);
 
   /**
    * Get all the bindings defined here.
@@ -202,6 +220,15 @@ public interface Definition extends java.io.Serializable
   public PortType getPortType(QName name);
 
   /**
+   * Remove the specified portType from this definition.
+   *
+   * @param name the name of the portType to remove
+   * @return the portType previously associated with this qname, if there
+   * was one; may return null
+   */
+  public PortType removePortType(QName name);
+
+  /**
    * Get all the portTypes defined here.
    */
   public Map getPortTypes();
@@ -221,6 +248,15 @@ public interface Definition extends java.io.Serializable
    * any matching service
    */
   public Service getService(QName name);
+
+  /**
+   * Remove the specified service from this definition.
+   *
+   * @param name the name of the service to remove
+   * @return the service previously associated with this qname, if there
+   * was one; may return null
+   */
+  public Service removeService(QName name);
 
   /**
    * Get all the services defined here.

@@ -280,6 +280,18 @@ public class DefinitionImpl implements Definition
   }
 
   /**
+   * Remove the specified message from this definition.
+   *
+   * @param name the name of the message to remove
+   * @return the message previously associated with this qname, if there
+   * was one; may return null
+   */
+  public Message removeMessage(QName name)
+  {
+    return (Message)messages.remove(name);
+  }
+
+  /**
    * Get all the messages defined here.
    */
   public Map getMessages()
@@ -314,6 +326,18 @@ public class DefinitionImpl implements Definition
     }
 
     return binding;
+  }
+
+  /**
+   * Remove the specified binding from this definition.
+   *
+   * @param name the name of the binding to remove
+   * @return the binding previously associated with this qname, if there
+   * was one; may return null
+   */
+  public Binding removeBinding(QName name)
+  {
+    return (Binding)bindings.remove(name);
   }
 
   /**
@@ -354,6 +378,18 @@ public class DefinitionImpl implements Definition
   }
 
   /**
+   * Remove the specified portType from this definition.
+   *
+   * @param name the name of the portType to remove
+   * @return the portType previously associated with this qname, if there
+   * was one; may return null
+   */
+  public PortType removePortType(QName name)
+  {
+    return (PortType)portTypes.remove(name);
+  }
+
+  /**
    * Get all the portTypes defined here.
    */
   public Map getPortTypes()
@@ -388,6 +424,18 @@ public class DefinitionImpl implements Definition
     }
 
     return service;
+  }
+
+  /**
+   * Remove the specified service from this definition.
+   *
+   * @param name the name of the service to remove
+   * @return the service previously associated with this qname, if there
+   * was one; may return null
+   */
+  public Service removeService(QName name)
+  {
+    return (Service)services.remove(name);
   }
 
   /**
