@@ -117,7 +117,13 @@ Author:
     </javac>
 
     <mkdir dir="${build.lib}"/>
-    <jar jarfile="${build.lib}/${name}.jar" basedir="${build.dest}" />
+    <jar jarfile="${build.lib}/${name}.jar" basedir="${build.dest}">
+      <exclude name="javax/xml/**"/>
+    </jar>
+
+    <jar jarfile="${build.lib}/qname.jar" basedir="${build.dest}">
+      <include name="javax/xml/**/*.class"/>
+    </jar>
 
     <uptodate property="javadoc.required"
               targetfile="${build.lib}/${name}.jar">
