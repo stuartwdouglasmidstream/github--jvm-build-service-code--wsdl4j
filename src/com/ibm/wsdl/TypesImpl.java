@@ -6,7 +6,7 @@ import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 
 /**
- * This class represents the <types> section of a WSDL document.
+ * This class represents the &lt;types&gt; section of a WSDL document.
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */

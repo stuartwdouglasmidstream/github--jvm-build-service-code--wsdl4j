@@ -5,7 +5,7 @@ import org.w3c.dom.*;
 import javax.wsdl.extensions.*;
 
 /**
- * This interface represents the <types> section of a WSDL document.
+ * This interface represents the &lt;types&gt; section of a WSDL document.
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
