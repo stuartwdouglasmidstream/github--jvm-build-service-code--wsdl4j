@@ -74,7 +74,7 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printDefinition(Definition def, PrintWriter pw)
+  protected void printDefinition(Definition def, PrintWriter pw)
     throws WSDLException
   {
     if (def == null)
@@ -123,10 +123,10 @@ public class WSDLWriterImpl implements WSDLWriter
     pw.flush();
   }
 
-  private static void printServices(Map services,
-                                    Definition def,
-                                    PrintWriter pw)
-                                      throws WSDLException
+  protected void printServices(Map services,
+                               Definition def,
+                               PrintWriter pw)
+                                 throws WSDLException
   {
     if (services != null)
     {
@@ -165,7 +165,7 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printPorts(Map ports, Definition def, PrintWriter pw)
+  protected void printPorts(Map ports, Definition def, PrintWriter pw)
     throws WSDLException
   {
     if (ports != null)
@@ -207,10 +207,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printBindings(Map bindings,
-                                    Definition def,
-                                    PrintWriter pw)
-                                      throws WSDLException
+  protected void printBindings(Map bindings,
+                               Definition def,
+                               PrintWriter pw)
+                                 throws WSDLException
   {
     if (bindings != null)
     {
@@ -263,10 +263,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printBindingOperations(List bindingOperations,
-                                             Definition def,
-                                             PrintWriter pw)
-                                               throws WSDLException
+  protected void printBindingOperations(List bindingOperations,
+                                        Definition def,
+                                        PrintWriter pw)
+                                          throws WSDLException
   {
     if (bindingOperations != null)
     {
@@ -307,10 +307,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printBindingInput(BindingInput bindingInput,
-                                        Definition def,
-                                        PrintWriter pw)
-                                          throws WSDLException
+  protected void printBindingInput(BindingInput bindingInput,
+                                   Definition def,
+                                   PrintWriter pw)
+                                     throws WSDLException
   {
     if (bindingInput != null)
     {
@@ -337,10 +337,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printBindingOutput(BindingOutput bindingOutput,
-                                         Definition def,
-                                         PrintWriter pw)
-                                           throws WSDLException
+  protected void printBindingOutput(BindingOutput bindingOutput,
+                                    Definition def,
+                                    PrintWriter pw)
+                                      throws WSDLException
   {
     if (bindingOutput != null)
     {
@@ -367,10 +367,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printBindingFaults(Map bindingFaults,
-                                         Definition def,
-                                         PrintWriter pw)
-                                           throws WSDLException
+  protected void printBindingFaults(Map bindingFaults,
+                                    Definition def,
+                                    PrintWriter pw)
+                                      throws WSDLException
   {
     if (bindingFaults != null)
     {
@@ -403,10 +403,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printPortTypes(Map portTypes,
-                                     Definition def,
-                                     PrintWriter pw)
-                                       throws WSDLException
+  protected void printPortTypes(Map portTypes,
+                                Definition def,
+                                PrintWriter pw)
+                                  throws WSDLException
   {
     if (portTypes != null)
     {
@@ -444,10 +444,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printOperations(List operations,
-                                      Definition def,
-                                      PrintWriter pw)
-                                        throws WSDLException
+  protected void printOperations(List operations,
+                                 Definition def,
+                                 PrintWriter pw)
+                                   throws WSDLException
   {
     if (operations != null)
     {
@@ -506,10 +506,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printInput(Input input,
-                                 Definition def,
-                                 PrintWriter pw)
-                                   throws WSDLException
+  protected void printInput(Input input,
+                            Definition def,
+                            PrintWriter pw)
+                              throws WSDLException
   {
     if (input != null)
     {
@@ -549,10 +549,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printOutput(Output output,
-                                  Definition def,
-                                  PrintWriter pw)
-                                    throws WSDLException
+  protected void printOutput(Output output,
+                             Definition def,
+                             PrintWriter pw)
+                               throws WSDLException
   {
     if (output != null)
     {
@@ -592,10 +592,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printFaults(Map faults,
-                                  Definition def,
-                                  PrintWriter pw)
-                                    throws WSDLException
+  protected void printFaults(Map faults,
+                             Definition def,
+                             PrintWriter pw)
+                               throws WSDLException
   {
     if (faults != null)
     {
@@ -641,10 +641,10 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printMessages(Map messages,
-                                    Definition def,
-                                    PrintWriter pw)
-                                      throws WSDLException
+  protected void printMessages(Map messages,
+                               Definition def,
+                               PrintWriter pw)
+                                 throws WSDLException
   {
     if (messages != null)
     {
@@ -682,7 +682,7 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printParts(List parts, Definition def, PrintWriter pw)
+  protected void printParts(List parts, Definition def, PrintWriter pw)
     throws WSDLException
   {
     if (parts != null)
@@ -738,9 +738,9 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printDocumentation(Element docElement,
-                                         PrintWriter pw)
-                                           throws WSDLException
+  protected void printDocumentation(Element docElement,
+                                    PrintWriter pw)
+                                      throws WSDLException
   {
     if (docElement != null)
     {
@@ -750,7 +750,7 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printTypes(Types types, Definition def, PrintWriter pw)
+  protected void printTypes(Types types, Definition def, PrintWriter pw)
     throws WSDLException
   {
     if (types != null)
@@ -771,7 +771,7 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printImports(Map imports, Definition def, PrintWriter pw)
+  protected void printImports(Map imports, Definition def, PrintWriter pw)
     throws WSDLException
   {
     if (imports != null)
@@ -819,9 +819,9 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printNamespaceDeclarations(Map namespaces,
-                                                 PrintWriter pw)
-                                                   throws WSDLException
+  protected void printNamespaceDeclarations(Map namespaces,
+                                            PrintWriter pw)
+                                              throws WSDLException
   {
     if (namespaces != null)
     {
@@ -845,11 +845,11 @@ public class WSDLWriterImpl implements WSDLWriter
     }
   }
 
-  private static void printExtensibilityElements(Class parentType,
-                                                 List extensibilityElements,
-                                                 Definition def,
-                                                 PrintWriter pw)
-                                                   throws WSDLException
+  protected void printExtensibilityElements(Class parentType,
+                                            List extensibilityElements,
+                                            Definition def,
+                                            PrintWriter pw)
+                                              throws WSDLException
   {
     if (extensibilityElements != null)
     {
