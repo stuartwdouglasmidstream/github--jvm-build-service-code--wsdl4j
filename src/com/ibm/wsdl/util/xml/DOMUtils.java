@@ -16,19 +16,34 @@ public class DOMUtils {
    */
   private static String NS_URI_XMLNS = "http://www.w3.org/2000/xmlns/";
 
+  private static final String ATTR_XMLNS = "xmlns";
+  
   /**
    * Returns a list of attributes of an element. Returns an 
-   * empty list if the element has no attributes.
+   * empty list if the element has no attributes. Does not
+   * include namespace declarations.
    *
    * @param el       Element whose attributes are returned
    * @return the List of Attr
    */
   static public List getAttributes (Element el) {
+    String nodename, prefix = null;
     List attrs = new Vector();
     NamedNodeMap attrMap = el.getAttributes();
     for(int i = 0; i < attrMap.getLength(); i++)
     {
-      attrs.add(attrMap.item(i));  
+      nodename = attrMap.item(i).getNodeName();
+      prefix = attrMap.item(i).getPrefix();
+      
+      if (ATTR_XMLNS.equals(nodename) || ATTR_XMLNS.equals(prefix))
+      {
+        //ignore namespace declarations
+        continue;
+      }
+      else
+      {
+        attrs.add(attrMap.item(i));  
+      }
     }
       
     return attrs;
