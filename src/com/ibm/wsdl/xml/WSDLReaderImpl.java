@@ -846,10 +846,7 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
-    if (part instanceof AttributeExtensible)
-    {
-      parseExtensibilityAttributes(partEl, (AttributeExtensible)part, def);
-    }
+    parseExtensibilityAttributes(partEl, part, def);
 
     return part;
   }

@@ -13,7 +13,7 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public class PartImpl implements Part, AttributeExtensible
+public class PartImpl implements Part
 {
   protected String name = null;
   protected QName elementName = null;

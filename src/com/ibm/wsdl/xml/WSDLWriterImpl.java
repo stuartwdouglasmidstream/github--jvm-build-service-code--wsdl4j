@@ -736,10 +736,7 @@ public class WSDLWriterImpl implements WSDLWriter
                                          def,
                                          pw);
 
-        if (part instanceof AttributeExtensible)
-        {
-          printExtensibilityAttributes((AttributeExtensible)part, def, pw);
-        }
+        printExtensibilityAttributes(part, def, pw);
 
         Element docEl = part.getDocumentationElement();
 

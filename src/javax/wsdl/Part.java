@@ -12,7 +12,7 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Part extends java.io.Serializable
+public interface Part extends java.io.Serializable,  AttributeExtensible
 {
   /**
    * Set the name of this part.
