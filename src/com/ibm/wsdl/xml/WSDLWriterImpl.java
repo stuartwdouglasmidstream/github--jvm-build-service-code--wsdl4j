@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.xml;
 
 import java.io.*;
@@ -24,33 +28,6 @@ import com.ibm.wsdl.util.xml.*;
  */
 public class WSDLWriterImpl implements WSDLWriter
 {
-  private static Map xmlEncodingMap = new HashMap();
-
-  static
-  {
-    xmlEncodingMap.put(null, Constants.XML_DECL_DEFAULT);
-    xmlEncodingMap.put(System.getProperty("file.encoding"),
-                       Constants.XML_DECL_DEFAULT);
-    xmlEncodingMap.put("UTF8", "UTF-8");
-    xmlEncodingMap.put("UTF-16", "UTF-16");
-    xmlEncodingMap.put("UnicodeBig", "UTF-16");
-    xmlEncodingMap.put("UnicodeLittle", "UTF-16");
-    xmlEncodingMap.put("ASCII", "US-ASCII");
-    xmlEncodingMap.put("ISO8859_1", "ISO-8859-1");
-    xmlEncodingMap.put("ISO8859_2", "ISO-8859-2");
-    xmlEncodingMap.put("ISO8859_3", "ISO-8859-3");
-    xmlEncodingMap.put("ISO8859_4", "ISO-8859-4");
-    xmlEncodingMap.put("ISO8859_5", "ISO-8859-5");
-    xmlEncodingMap.put("ISO8859_6", "ISO-8859-6");
-    xmlEncodingMap.put("ISO8859_7", "ISO-8859-7");
-    xmlEncodingMap.put("ISO8859_8", "ISO-8859-8");
-    xmlEncodingMap.put("ISO8859_9", "ISO-8859-9");
-    xmlEncodingMap.put("ISO8859_13", "ISO-8859-13");
-    xmlEncodingMap.put("ISO8859_15_FDIS", "ISO-8859-15");
-    xmlEncodingMap.put("GBK", "GBK");
-    xmlEncodingMap.put("Big5", "Big5");
-  }
-
   /**
    * Sets the specified feature to the specified value.
    * <p>
@@ -191,8 +168,6 @@ public class WSDLWriterImpl implements WSDLWriter
                                   pw);
         }
 
-        printExtensibilityAttributes(Service.class, service, def, pw);
-
         pw.println('>');
 
         printDocumentation(service.getDocumentationElement(), pw);
@@ -235,8 +210,6 @@ public class WSDLWriterImpl implements WSDLWriter
                                            def,
                                            pw);
         }
-
-        printExtensibilityAttributes(Port.class, port, def, pw);
 
         pw.println('>');
 
@@ -291,8 +264,6 @@ public class WSDLWriterImpl implements WSDLWriter
                                              pw);
           }
 
-          printExtensibilityAttributes(Binding.class, binding, def, pw);
-
           pw.println('>');
 
           printDocumentation(binding.getDocumentationElement(), pw);
@@ -333,11 +304,6 @@ public class WSDLWriterImpl implements WSDLWriter
                                 bindingOperation.getName(),
                                 pw);
 
-        printExtensibilityAttributes(BindingOperation.class,
-                                     bindingOperation,
-                                     def,
-                                     pw);
-
         pw.println('>');
 
         printDocumentation(bindingOperation.getDocumentationElement(), pw);
@@ -376,8 +342,6 @@ public class WSDLWriterImpl implements WSDLWriter
                               bindingInput.getName(),
                               pw);
 
-      printExtensibilityAttributes(BindingInput.class, bindingInput, def, pw);
-
       pw.println('>');
 
       printDocumentation(bindingInput.getDocumentationElement(), pw);
@@ -407,8 +371,6 @@ public class WSDLWriterImpl implements WSDLWriter
       DOMUtils.printAttribute(Constants.ATTR_NAME,
                               bindingOutput.getName(),
                               pw);
-
-      printExtensibilityAttributes(BindingOutput.class, bindingOutput, def, pw);
 
       pw.println('>');
 
@@ -444,8 +406,6 @@ public class WSDLWriterImpl implements WSDLWriter
         DOMUtils.printAttribute(Constants.ATTR_NAME,
                                 bindingFault.getName(),
                                 pw);
-
-        printExtensibilityAttributes(BindingFault.class, bindingFault, def, pw);
 
         pw.println('>');
 
@@ -531,8 +491,6 @@ public class WSDLWriterImpl implements WSDLWriter
                    StringUtils.getNMTokens(operation.getParameterOrdering()),
                    pw);
 
-          printExtensibilityAttributes(Operation.class, operation, def, pw);
-
           pw.println('>');
 
           printDocumentation(operation.getDocumentationElement(), pw);
@@ -560,6 +518,10 @@ public class WSDLWriterImpl implements WSDLWriter
           }
 
           printFaults(operation.getFaults(), def, pw);
+          
+          List extElements = operation.getExtensibilityElements();
+          
+          printExtensibilityElements(Operation.class, extElements, def, pw);
 
           pw.println("    </" + tagName + '>');
         }
@@ -738,12 +700,14 @@ public class WSDLWriterImpl implements WSDLWriter
                                     pw);
           }
 
-          printExtensibilityAttributes(Message.class, message, def, pw);
-
           pw.println('>');
 
           printDocumentation(message.getDocumentationElement(), pw);
           printParts(message.getOrderedParts(null), def, pw);
+          
+          List extElements = message.getExtensibilityElements();
+          
+          printExtensibilityElements(Message.class, extElements, def, pw);
 
           pw.println("  </" + tagName + '>');
         }
@@ -905,8 +869,6 @@ public class WSDLWriterImpl implements WSDLWriter
                                    Constants.ELEM_TYPES,
                                    def);
       pw.print("  <" + tagName);
-
-      printExtensibilityAttributes(Types.class, types, def, pw);
 
       pw.println('>');
 
@@ -1084,25 +1046,20 @@ public class WSDLWriterImpl implements WSDLWriter
                           ? ((OutputStreamWriter)sink).getEncoding()
                           : null;
 
-    pw.println(Constants.XML_DECL_START +
-               java2XMLEncoding(javaEncoding) +
-               Constants.XML_DECL_END);
-
-    printDefinition(wsdlDef, pw);
-  }
-
-  private static String java2XMLEncoding(String javaEnc) throws WSDLException
-  {
-    String xmlEncoding = (String)xmlEncodingMap.get(javaEnc);
+    String xmlEncoding = DOM2Writer.java2XMLEncoding(javaEncoding);                      
 
     if (xmlEncoding == null)
     {
       throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
                               "Unsupported Java encoding for writing " +
-                              "wsdl file: '" + javaEnc + "'.");
+                              "wsdl file: '" + javaEncoding + "'.");
     }
 
-    return xmlEncoding;
+    pw.println(Constants.XML_DECL_START +
+               xmlEncoding +
+               Constants.XML_DECL_END);
+
+    printDefinition(wsdlDef, pw);
   }
 
   /**
