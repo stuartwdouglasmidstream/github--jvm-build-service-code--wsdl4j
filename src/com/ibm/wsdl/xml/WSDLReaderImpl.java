@@ -114,7 +114,7 @@ public class WSDLReaderImpl implements WSDLReader
     return factoryImplName;
   }
 
-  private Definition parseDefinitions(URL documentBase, Element defEl)
+  private Definition parseDefinitions(String documentBaseURI, Element defEl)
     throws WSDLException
   {
     checkElementName(defEl, Constants.Q_ELEM_DEFINITIONS);
@@ -134,9 +134,9 @@ public class WSDLReaderImpl implements WSDLReader
                                              Constants.ATTR_TARGET_NAMESPACE);
     NamedNodeMap attrs = defEl.getAttributes();
 
-    if (documentBase != null)
+    if (documentBaseURI != null)
     {
-      def.setDocumentBase(documentBase);
+      def.setDocumentBaseURI(documentBaseURI);
     }
 
     if (name != null)
@@ -246,7 +246,7 @@ public class WSDLReaderImpl implements WSDLReader
         {
           try
           {
-            importDef.setDefinition(readWSDL(def.getDocumentBase(),
+            importDef.setDefinition(readWSDL(def.getDocumentBaseURI(),
                                              locationURI));
           }
           catch (WSDLException e)
@@ -1091,14 +1091,14 @@ public class WSDLReaderImpl implements WSDLReader
    * Read the WSDL document accessible via the specified
    * URI into a WSDL definition.
    *
-   * @param contextURL the context in which to resolve the
+   * @param contextURI the context in which to resolve the
    * wsdlURI, if the wsdlURI is relative. Can be null, in which
    * case it will be ignored.
    * @param wsdlURI a URI (can be a filename or URL) pointing to a
    * WSDL XML definition.
    * @return the definition.
    */
-  public Definition readWSDL(URL contextURL, String wsdlURI)
+  public Definition readWSDL(String contextURI, String wsdlURI)
     throws WSDLException
   {
     try
@@ -1106,16 +1106,19 @@ public class WSDLReaderImpl implements WSDLReader
       if (verbose)
       {
         System.out.println("Retrieving document at '" + wsdlURI + "'" +
-                           (contextURL == null
+                           (contextURI == null
                             ? "."
-                            : ", relative to '" + contextURL + "'."));
+                            : ", relative to '" + contextURI + "'."));
       }
 
+      URL contextURL = (contextURI != null)
+                       ? StringUtils.getURL(null, contextURI)
+                       : null;
       URL url = StringUtils.getURL(contextURL, wsdlURI);
       Reader reader = StringUtils.getContentAsReader(url);
       InputSource inputSource = new InputSource(reader);
       Document doc = getDocument(inputSource, wsdlURI);
-      Definition def = readWSDL(url, doc);
+      Definition def = readWSDL(url.toString(), doc);
 
       return def;
     }
@@ -1135,41 +1138,42 @@ public class WSDLReaderImpl implements WSDLReader
    * Read the specified &lt;wsdl:definitions&gt; element into a WSDL
    * definition.
    *
-   * @param documentBase the document base of the WSDL definition
-   * described by the element. Will be set as the documentBase
+   * @param documentBaseURI the document base URI of the WSDL definition
+   * described by the element. Will be set as the documentBaseURI
    * of the returned Definition. Can be null, in which case it
    * will be ignored.
    * @param definitionsElement the &lt;wsdl:definitions&gt; element
    * @return the definition described by the element.
    */
-  public Definition readWSDL(URL documentBase, Element definitionsElement)
-    throws WSDLException
+  public Definition readWSDL(String documentBaseURI,
+                             Element definitionsElement)
+                               throws WSDLException
   {
-    return parseDefinitions(documentBase, definitionsElement);
+    return parseDefinitions(documentBaseURI, definitionsElement);
   }
 
   /**
    * Read the specified WSDL document into a WSDL definition.
    *
-   * @param documentBase the document base of the WSDL definition
-   * described by the document. Will be set as the documentBase
+   * @param documentBaseURI the document base URI of the WSDL definition
+   * described by the document. Will be set as the documentBaseURI
    * of the returned Definition. Can be null, in which case it
    * will be ignored.
    * @param wsdlDocument the WSDL document, an XML 
    * document obeying the WSDL schema.
    * @return the definition described in the document.
    */
-  public Definition readWSDL(URL documentBase, Document wsdlDocument)
+  public Definition readWSDL(String documentBaseURI, Document wsdlDocument)
     throws WSDLException
   {
-    return readWSDL(documentBase, wsdlDocument.getDocumentElement());
+    return readWSDL(documentBaseURI, wsdlDocument.getDocumentElement());
   }
 
   /**
    * Read a WSDL document into a WSDL definition.
    *
-   * @param documentBase the document base of the WSDL definition
-   * described by the document. Will be set as the documentBase
+   * @param documentBaseURI the document base URI of the WSDL definition
+   * described by the document. Will be set as the documentBaseURI
    * of the returned Definition. Can be null, in which case it
    * will be ignored.
    * @param inputSource an InputSource pointing to the
@@ -1177,10 +1181,10 @@ public class WSDLReaderImpl implements WSDLReader
    * @return the definition described in the document pointed to
    * by the InputSource.
    */
-  public Definition readWSDL(URL documentBase, InputSource inputSource)
+  public Definition readWSDL(String documentBaseURI, InputSource inputSource)
     throws WSDLException
   {
-    return readWSDL(documentBase,
+    return readWSDL(documentBaseURI,
                     getDocument(inputSource, "- WSDL Document -"));
   }
 }

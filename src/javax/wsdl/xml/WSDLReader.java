@@ -70,49 +70,50 @@ public interface WSDLReader
    * Read the WSDL document accessible via the specified
    * URI into a WSDL definition.
    *
-   * @param contextURL the context in which to resolve the
+   * @param contextURI the context in which to resolve the
    * wsdlURI, if the wsdlURI is relative. Can be null, in which
    * case it will be ignored.
    * @param wsdlURI a URI (can be a filename or URL) pointing to a
    * WSDL XML definition.
    * @return the definition.
    */
-  public Definition readWSDL(URL contextURL, String wsdlURI)
+  public Definition readWSDL(String contextURI, String wsdlURI)
     throws WSDLException;
 
   /**
    * Read the specified &lt;wsdl:definitions&gt; element into a WSDL
    * definition.
    *
-   * @param documentBase the document base of the WSDL definition
-   * described by the element. Will be set as the documentBase
+   * @param documentBaseURI the document base URI of the WSDL definition
+   * described by the element. Will be set as the documentBaseURI
    * of the returned Definition. Can be null, in which case it
    * will be ignored.
    * @param definitionsElement the &lt;wsdl:definitions&gt; element
    * @return the definition described by the element.
    */
-  public Definition readWSDL(URL documentBase, Element definitionsElement)
-    throws WSDLException;
+  public Definition readWSDL(String documentBaseURI,
+                             Element definitionsElement)
+                               throws WSDLException;
 
   /**
    * Read the specified WSDL document into a WSDL definition.
    *
-   * @param documentBase the document base of the WSDL definition
-   * described by the document. Will be set as the documentBase
+   * @param documentBaseURI the document base URI of the WSDL definition
+   * described by the document. Will be set as the documentBaseURI
    * of the returned Definition. Can be null, in which case it
    * will be ignored.
    * @param wsdlDocument the WSDL document, an XML 
    * document obeying the WSDL schema.
    * @return the definition described in the document.
    */
-  public Definition readWSDL(URL documentBase, Document wsdlDocument)
+  public Definition readWSDL(String documentBaseURI, Document wsdlDocument)
     throws WSDLException;
 
   /**
    * Read a WSDL document into a WSDL definition.
    *
-   * @param documentBase the document base of the WSDL definition
-   * described by the document. Will be set as the documentBase
+   * @param documentBaseURI the document base URI of the WSDL definition
+   * described by the document. Will be set as the documentBaseURI
    * of the returned Definition. Can be null, in which case it
    * will be ignored.
    * @param inputSource an InputSource pointing to the
@@ -120,6 +121,6 @@ public interface WSDLReader
    * @return the definition described in the document pointed to
    * by the InputSource.
    */
-  public Definition readWSDL(URL documentBase, InputSource inputSource)
+  public Definition readWSDL(String documentBaseURI, InputSource inputSource)
     throws WSDLException;
 }

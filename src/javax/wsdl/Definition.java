@@ -1,6 +1,5 @@
 package javax.wsdl;
 
-import java.net.*;
 import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.extensions.*;
@@ -15,20 +14,20 @@ import javax.wsdl.extensions.*;
 public interface Definition extends java.io.Serializable
 {
   /**
-   * Set the document base of this definition. Can be used to
+   * Set the document base URI of this definition. Can be used to
    * represent the origin of the Definition, and can be exploited
    * when resolving relative URIs (e.g. in <import>s).
    *
-   * @param documentBase the document base of this definition
+   * @param documentBaseURI the document base URI of this definition
    */
-  public void setDocumentBase(URL documentBase);
+  public void setDocumentBaseURI(String documentBaseURI);
 
   /**
-   * Get the document base of this definition.
+   * Get the document base URI of this definition.
    *
-   * @return the document base
+   * @return the document base URI
    */
-  public URL getDocumentBase();
+  public String getDocumentBaseURI();
 
   /**
    * Set the name of this definition.

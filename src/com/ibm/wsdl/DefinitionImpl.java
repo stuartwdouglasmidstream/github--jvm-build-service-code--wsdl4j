@@ -1,6 +1,5 @@
 package com.ibm.wsdl;
 
-import java.net.*;
 import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
@@ -16,7 +15,7 @@ import com.ibm.wsdl.util.xml.*;
  */
 public class DefinitionImpl implements Definition
 {
-  protected URL documentBase = null;
+  protected String documentBaseURI = null;
   protected QName name = null;
   protected String targetNamespace = null;
   protected Map namespaces = new HashMap();
@@ -36,25 +35,25 @@ public class DefinitionImpl implements Definition
   }
 
   /**
-   * Set the document base of this definition. Can be used to
+   * Set the document base URI of this definition. Can be used to
    * represent the origin of the Definition, and can be exploited
    * when resolving relative URIs (e.g. in <import>s).
    *
-   * @param documentBase the document base of this definition
+   * @param documentBaseURI the document base URI of this definition
    */
-  public void setDocumentBase(URL documentBase)
+  public void setDocumentBaseURI(String documentBaseURI)
   {
-    this.documentBase = documentBase;
+    this.documentBaseURI = documentBaseURI;
   }
 
   /**
-   * Get the document base of this definition.
+   * Get the document base URI of this definition.
    *
-   * @return the document base
+   * @return the document base URI
    */
-  public URL getDocumentBase()
+  public String getDocumentBaseURI()
   {
-    return documentBase;
+    return documentBaseURI;
   }
 
   /**
