@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+
+   Build file for WSDL
+
+Notes:
+   This is a build file for use with the Jakarta Ant build tool.
+
+Prerequisites:
+
+   jakarta-ant from http://jakarta.apache.org
+   A JAXP-compliant DOM parser.
+     - Xerces, from http://xml.apache.org, works fine.
+
+Optional additions:
+
+
+Build Instructions:
+   To build, run
+
+     java org.apache.tools.ant.Main <target>
+
+   on the directory where this file is located with the target you want.
+
+Main targets:
+
+ - compile  -> creates the "wsdl.jar" package in "./build/lib"
+ - javadocs -> creates the javadocs in "./build/javadocs"
+ - dist     -> creates the complete binary distribution
+ - srcdist  -> creates the complete src distribution
+
+Author:
+  Matthew J. Duftler <duftler@us.ibm.com>
+
+==================================================================== -->
+
+<project default="compile" basedir=".">
+
+  <target name="init">
+    <property name="name" value="wsdl"/>
+    <property name="Name" value="WSDL"/>
+    <property name="year" value="2001"/>
+
+    <property name="build.compiler" value="classic"/>
+    <property name="debug" value="off"/>
+
+    <property name="src.dir" value="./src"/>
+    <property name="docs.dir" value="./doc"/>
+    <property name="samples.dir" value="./samples"/>
+
+    <property name="packages"
+              value="javax.wsdl.*,
+                     com.ibm.wsdl,
+                     com.ibm.wsdl.extensions.*,
+                     com.ibm.wsdl.factory,
+                     com.ibm.wsdl.util.*,
+                     com.ibm.wsdl.xml"/>
+
+    <property name="build.file" value="build.xml"/>
+
+    <property name="build.dir" value="./build"/>
+    <property name="build.dest" value="./build/classes"/>
+    <property name="build.lib" value="./build/lib"/>
+    <property name="build.samples" value="./build/samples"/>
+    <property name="build.javadocs" value="./build/javadocs"/>
+
+    <property name="dist.dir" value="./wsdl-dist"/>
+    <property name="dist.src.file"
+              value="${dist.dir}/${name}-src"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare" depends="init">
+    <mkdir dir="${build.dir}"/>
+
+    <uptodate property="javac.notRequired"
+              targetfile="${build.lib}/${name}.jar">
+      <srcfiles dir="${src.dir}">
+        <patternset refid="javac.source.files"/>
+      </srcfiles>
+    </uptodate>
+
+    <uptodate property="javadoc.required"
+              targetfile="${build.lib}/${name}.jar">
+      <srcfiles dir="${build.dir}" includes="**/*.html"/>
+    </uptodate>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Source files to be compiled                                         -->
+  <!-- =================================================================== -->
+  <patternset id="javac.source.files">
+    <include name="javax/wsdl/**/*.java"/>
+    <include name="com/ibm/wsdl/*.java"/>
+    <include name="com/ibm/wsdl/extensions/**/*.java"/>
+    <include name="com/ibm/wsdl/factory/*.java"/>
+    <include name="com/ibm/wsdl/util/**/*.java"/>
+    <include name="com/ibm/wsdl/xml/*.java"/>
+  </patternset>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile" depends="prepare">
+    <mkdir dir="${build.dest}"/>
+    <javac srcdir="${src.dir}" destdir="${build.dest}" debug="${debug}">
+      <patternset refid="javac.source.files"/>
+    </javac>
+
+    <mkdir dir="${build.lib}"/>
+    <jar jarfile="${build.lib}/${name}.jar" basedir="${build.dest}" />
+
+    <uptodate property="javadoc.required"
+              targetfile="${build.lib}/${name}.jar">
+      <srcfiles dir="${build.dir}" includes="**/*.html"/>
+    </uptodate>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the samples                                                -->
+  <!-- =================================================================== -->
+  <target name="samples" depends="compile">
+<!--
+    <javac srcdir="." destdir="${build.dir}" 
+           classpath="${build.lib}/${name}.jar" debug="${debug}">
+      <include name="samples/**/*.java" />
+    </javac>
+    <copy todir="${build.samples}">
+      <fileset dir="${samples.dir}"/>
+    </copy>
+-->
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the API documentation                                       -->
+  <!-- =================================================================== -->
+  <target name="javadocs" depends="prepare">
+    <mkdir dir="${build.javadocs}"/>
+    <javadoc packagenames="${packages}"
+             sourcepath="${src.dir}"
+             destdir="${build.javadocs}"
+             author="true"
+             version="true"
+             use="true"
+             windowtitle="${Name} API"
+             doctitle="${Name}"
+             bottom="Copyright &#169; ${year} IBM. All Rights Reserved."
+    />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the API documentation if necessary                          -->
+  <!-- =================================================================== -->
+  <target name="javadocsIfRequired" if="javadoc.required" depends="prepare">
+    <antcall target="javadocs"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the binary distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist" depends="compile, javadocsIfRequired, samples">
+    <mkdir dir="${dist.dir}"/>
+    <mkdir dir="${dist.dir}/docs"/>
+    <mkdir dir="${dist.dir}/docs/apiDocs"/>
+    <mkdir dir="${dist.dir}/lib"/>
+<!--
+    <mkdir dir="${dist.dir}/samples"/>
+-->
+
+    <copy todir="${dist.dir}/docs/apiDocs">
+      <fileset dir="${build.javadocs}"/>
+    </copy>
+    <copy todir="${dist.dir}/lib">
+      <fileset dir="${build.lib}"/>
+    </copy>
+<!--
+    <copy todir="${dist.dir}/samples">
+      <fileset dir="${build.samples}"/>
+    </copy>
+-->
+    <copy todir="${dist.dir}/docs">
+      <fileset dir="${docs.dir}"/>
+    </copy>
+
+<!--
+    <copy file="LICENSE" tofile="${dist.dir}/LICENSE"/>
+    <copy file="README" tofile="${dist.dir}/README"/>
+    <copy file="ReleaseNotes.html" tofile="${dist.dir}/ReleaseNotes.html"/>
+-->
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the source distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="srcdist" depends="init">
+    <delete dir="${dist.dir}"/>
+
+    <copy todir="${dist.dir}/src">
+      <fileset dir="${src.dir}">
+        <patternset refid="javac.source.files"/>
+      </fileset>
+    </copy>
+
+<!--    <copy file="LICENSE" tofile="${dist.dir}/LICENSE"/>-->
+    <copy file="${build.file}" tofile="${dist.dir}/${build.file}"/>
+
+    <!-- ================================================================= -->
+    <!-- Produces the zip file                                             -->
+    <!-- ================================================================= -->
+    <zip zipfile="${dist.src.file}.zip" basedir="${dist.dir}/">
+      <exclude name="*.zip"/>
+    </zip>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Cleans everything                                                   -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+</project>

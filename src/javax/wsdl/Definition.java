@@ -1,0 +1,380 @@
+package javax.wsdl;
+
+import java.net.*;
+import java.util.*;
+import org.w3c.dom.*;
+import javax.wsdl.extensions.*;
+
+/**
+ * This interface represents a WSDL definition.
+ *
+ * @author Paul Fremantle
+ * @author Nirmal Mukhi
+ * @author Matthew J. Duftler
+ */
+public interface Definition extends java.io.Serializable
+{
+  /**
+   * Set the document base of this definition. Can be used to
+   * represent the origin of the Definition, and can be exploited
+   * when resolving relative URIs (e.g. in <import>s).
+   *
+   * @param documentBase the document base of this definition
+   */
+  public void setDocumentBase(URL documentBase);
+
+  /**
+   * Get the document base of this definition.
+   *
+   * @return the document base
+   */
+  public URL getDocumentBase();
+
+  /**
+   * Set the name of this definition.
+   *
+   * @param name the desired name
+   */
+  public void setQName(QName name);
+
+  /**
+   * Get the name of this definition.
+   *
+   * @return the definition name
+   */
+  public QName getQName();
+
+  /**
+   * Set the target namespace in which WSDL elements are defined.
+   *
+   * @param namespace the target namespace
+   */
+  public void setTargetNamespace(String targetNamespace);
+
+	/**
+	 * Get the target namespace in which the WSDL elements
+	 * are defined.
+   *
+	 * @return the target namespace
+	 */
+	public String getTargetNamespace();
+
+  /**
+   * This is a way to add a namespace association to a definition.
+   * It is similar to adding a namespace prefix declaration to the
+   * top of a &lt;wsdl:definition&gt; element. This has nothing to do
+   * with the &lt;wsdl:import&gt; element; there are separate methods for
+   * dealing with information described by &lt;wsdl:import&gt; elements.
+   * There is a default namespace association (which can be
+   * overridden) between the null prefix and
+   * http://schemas.xmlsoap.org/wsdl/.
+   *
+   * @param prefix the prefix to use for this namespace (when
+   * rendering this information as XML). Use null or an empty string
+   * to describe the default namespace (i.e. xmlns="...").
+   * @param namespaceURI the namespace URI to associate the prefix
+   * with. If you use null, the namespace association will be removed.
+   */
+   public void addNamespace(String prefix, String namespaceURI);
+
+   /**
+    * Get the namespace URI associated with this prefix. Or null if
+    * there is no namespace URI associated with this prefix. This is
+    * unrelated to the &lt;wsdl:import&gt; element.
+    *
+    * @see #addNamespace(String, String)
+    * @see #getPrefix(String)
+    */
+   public String getNamespace(String prefix);
+
+   /**
+    * Get a prefix associated with this namespace URI. Or null if
+    * there are no prefixes associated with this namespace URI. This is
+    * unrelated to the &lt;wsdl:import&gt; element.
+    *
+    * @see #addNamespace(String, String)
+    * @see #getNamespace(String)
+    */
+   public String getPrefix(String namespaceURI);
+
+   /**
+    * Get all namespace associations in this definition. The keys are
+    * the prefixes, and the namespace URIs are the values. This is
+    * unrelated to the &lt;wsdl:import&gt; element.
+    *
+    * @see #addNamespace(String, String)
+    */
+   public Map getNamespaces();
+
+  /**
+   * Set the types element for this document. This dependency on
+   * org.w3c.dom.Element should eventually be removed when a more
+   * appropriate way of representing this information is employed.
+   *
+   * @param typesEl the types element
+   */
+  public void setTypesElement(Element typesEl);
+
+  /**
+   * Get the types element. This dependency on org.w3c.dom.Element
+   * should eventually be removed when a more appropriate way of
+   * representing this information is employed.
+   *
+   * @return the types element
+   */
+  public Element getTypesElement();
+
+  /**
+   * Add an import to this WSDL description.
+   *
+   * @param importDef the import to be added
+   */
+  public void addImport(Import importDef);
+
+  /**
+   * Get the list of imports for the specified namespaceURI.
+   *
+   * @param namespaceURI the namespaceURI associated with the
+   * desired imports.
+   * @return a list of the corresponding imports, or null if
+   * there weren't any matching imports
+   */
+  public List getImports(String namespaceURI);
+
+  /**
+   * Get a map of lists containing all the imports defined here.
+   * The map's keys are the namespaceURIs, and the map's values
+   * are lists. There is one list for each namespaceURI for which
+   * imports have been defined.
+   */
+  public Map getImports();
+
+  /**
+   * Add a message to this WSDL description.
+   *
+   * @param message the message to be added
+   */
+  public void addMessage(Message message);
+
+  /**
+   * Get the specified message. Also checks imported documents.
+   *
+   * @param name the name of the desired message.
+   * @return the corresponding message, or null if there wasn't
+   * any matching message
+   */
+  public Message getMessage(QName name);
+
+  /**
+   * Get all the messages defined here.
+   */
+  public Map getMessages();
+
+  /**
+   * Add a binding to this WSDL description.
+   *
+   * @param binding the binding to be added
+   */
+  public void addBinding(Binding binding);
+
+  /**
+   * Get the specified binding. Also checks imported documents.
+   *
+   * @param name the name of the desired binding.
+   * @return the corresponding binding, or null if there wasn't
+   * any matching binding
+   */
+  public Binding getBinding(QName name);
+
+  /**
+   * Get all the bindings defined here.
+   */
+  public Map getBindings();
+
+  /**
+   * Add a portType to this WSDL description.
+   *
+   * @param portType the portType to be added
+   */
+  public void addPortType(PortType portType);
+
+  /**
+   * Get the specified portType. Also checks imported documents.
+   *
+   * @param name the name of the desired portType.
+   * @return the corresponding portType, or null if there wasn't
+   * any matching portType
+   */
+  public PortType getPortType(QName name);
+
+  /**
+   * Get all the portTypes defined here.
+   */
+  public Map getPortTypes();
+
+  /**
+   * Add a service to this WSDL description.
+   *
+   * @param service the service to be added
+   */
+  public void addService(Service service);
+
+  /**
+   * Get the specified service. Also checks imported documents.
+   *
+   * @param name the name of the desired service.
+   * @return the corresponding service, or null if there wasn't
+   * any matching service
+   */
+  public Service getService(QName name);
+
+  /**
+   * Get all the services defined here.
+   */
+  public Map getServices();
+
+  /**
+   * Set the documentation element for this document. This dependency
+   * on org.w3c.dom.Element should eventually be removed when a more
+   * appropriate way of representing this information is employed.
+   *
+   * @param docEl the documentation element
+   */
+  public void setDocumentationElement(Element docEl);
+
+  /**
+   * Get the documentation element. This dependency on org.w3c.dom.Element
+   * should eventually be removed when a more appropriate way of
+   * representing this information is employed.
+   *
+   * @return the documentation element
+   */
+  public Element getDocumentationElement();
+
+  /**
+   * Add an extensibility element.
+   *
+   * @param extElement the extensibility element to be added
+   */
+  public void addExtensibilityElement(ExtensibilityElement extElement);
+
+  /**
+   * Get all the extensibility elements defined here.
+   */
+  public List getExtensibilityElements();
+
+  /**
+   * Create a new binding.
+   *
+   * @return the newly created binding
+   */
+  public Binding createBinding();
+
+  /**
+   * Create a new binding fault.
+   *
+   * @return the newly created binding fault
+   */
+  public BindingFault createBindingFault();
+
+  /**
+   * Create a new binding input.
+   *
+   * @return the newly created binding input
+   */
+  public BindingInput createBindingInput();
+
+  /**
+   * Create a new binding operation.
+   *
+   * @return the newly created binding operation
+   */
+  public BindingOperation createBindingOperation();
+
+  /**
+   * Create a new binding output.
+   *
+   * @return the newly created binding output
+   */
+  public BindingOutput createBindingOutput();
+
+  /**
+   * Create a new fault.
+   *
+   * @return the newly created fault
+   */
+  public Fault createFault();
+
+  /**
+   * Create a new import.
+   *
+   * @return the newly created import
+   */
+  public Import createImport();
+
+  /**
+   * Create a new input.
+   *
+   * @return the newly created input
+   */
+  public Input createInput();
+
+  /**
+   * Create a new message.
+   *
+   * @return the newly created message
+   */
+  public Message createMessage();
+
+  /**
+   * Create a new operation.
+   *
+   * @return the newly created operation
+   */
+  public Operation createOperation();
+
+  /**
+   * Create a new output.
+   *
+   * @return the newly created output
+   */
+  public Output createOutput();
+
+  /**
+   * Create a new part.
+   *
+   * @return the newly created part
+   */
+  public Part createPart();
+
+  /**
+   * Create a new port.
+   *
+   * @return the newly created port
+   */
+  public Port createPort();
+
+  /**
+   * Create a new port type.
+   *
+   * @return the newly created port type
+   */
+  public PortType createPortType();
+
+  /**
+   * Create a new service.
+   *
+   * @return the newly created service
+   */
+  public Service createService();
+
+  /**
+   * Get a reference to the ExtensionRegistry for this Definition.
+   */
+  public ExtensionRegistry getExtensionRegistry();
+
+  /**
+   * Set the ExtensionRegistry for this Definition.
+   */
+  public void setExtensionRegistry(ExtensionRegistry extReg);
+}
