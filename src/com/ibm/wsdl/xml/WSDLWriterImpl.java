@@ -932,7 +932,18 @@ public class WSDLWriterImpl implements WSDLWriter
   public void writeWSDL(Definition wsdlDef, OutputStream sink)
     throws WSDLException
   {
-    Writer writer = new OutputStreamWriter(sink);
+    Writer writer = null;
+
+    try
+    {
+      writer = new OutputStreamWriter(sink, "UTF8");
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      e.printStackTrace();
+
+      writer = new OutputStreamWriter(sink);
+    }
 
     writeWSDL(wsdlDef, writer);
   }
