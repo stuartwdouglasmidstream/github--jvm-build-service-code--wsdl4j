@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import java.util.*;
@@ -12,7 +16,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Definition extends java.io.Serializable
+public interface Definition extends java.io.Serializable, ElementExtensible
 {
   /**
    * Set the document base URI of this definition. Can be used to
@@ -47,17 +51,17 @@ public interface Definition extends java.io.Serializable
   /**
    * Set the target namespace in which WSDL elements are defined.
    *
-   * @param namespace the target namespace
+   * @param targetNamespace the target namespace
    */
   public void setTargetNamespace(String targetNamespace);
 
-	/**
-	 * Get the target namespace in which the WSDL elements
-	 * are defined.
+  /**
+   * Get the target namespace in which the WSDL elements
+   * are defined.
    *
-	 * @return the target namespace
-	 */
-	public String getTargetNamespace();
+   * @return the target namespace
+   */
+  public String getTargetNamespace();
 
   /**
    * This is a way to add a namespace association to a definition.
@@ -277,18 +281,6 @@ public interface Definition extends java.io.Serializable
    * @return the documentation element
    */
   public Element getDocumentationElement();
-
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement);
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements();
 
   /**
    * Create a new binding.
