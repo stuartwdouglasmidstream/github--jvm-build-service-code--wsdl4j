@@ -639,8 +639,15 @@ public class WSDLReaderImpl implements WSDLReader
 
       if (op == null)
       {
+        Input input = def.createInput();
+        Output output = def.createOutput();
+
         op = def.createOperation();
         op.setName(name);
+        input.setName(inputName);
+        output.setName(outputName);
+        op.setInput(input);
+        op.setOutput(output);
         portType.addOperation(op);
       }
 
@@ -940,7 +947,12 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else if (QNameUtils.matches(Constants.Q_ELEM_OPERATION, tempEl))
       {
-        portType.addOperation(parseOperation(tempEl, portType, def));
+        Operation op = parseOperation(tempEl, portType, def);
+
+        if (op != null)
+        {
+          portType.addOperation(op);
+        }
       }
       else
       {
@@ -968,6 +980,7 @@ public class WSDLReaderImpl implements WSDLReader
     Input input = null;
     Output output = null;
     List faults = new Vector();
+    boolean retrieved = true;
 
     while (tempEl != null)
     {
@@ -1045,11 +1058,13 @@ public class WSDLReaderImpl implements WSDLReader
       {
         op = def.createOperation();
         op.setName(name);
+        retrieved = false;
       }
     }
     else
     {
       op = def.createOperation();
+      retrieved = false;
     }
 
     // Whether it was retrieved or created, the definition has been found.
@@ -1107,6 +1122,11 @@ public class WSDLReaderImpl implements WSDLReader
     if (style != null)
     {
       op.setStyle(style);
+    }
+
+    if (retrieved)
+    {
+      op = null;
     }
 
     return op;
