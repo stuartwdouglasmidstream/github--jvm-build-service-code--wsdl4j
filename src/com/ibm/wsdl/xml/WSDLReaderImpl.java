@@ -235,26 +235,16 @@ public class WSDLReaderImpl implements WSDLReader
 
       if (importDocuments)
       {
-        /*
-          Check if it's a wsdl document (for now, must end with
-          ".wsdl"). If it's not, don't retrieve and process it.
-          This should later be extended to allow other types of
-          documents to be retrieved and processed, such as schema
-          documents (".xsd"), etc...
-        */
-        if (locationURI.endsWith(Constants.SUFFIX_WSDL))
+        try
         {
-          try
-          {
-            importDef.setDefinition(readWSDL(def.getDocumentBaseURI(),
-                                             locationURI));
-          }
-          catch (WSDLException e)
-          {
-            e.setLocation(XPathUtils.getXPathExprFromNode(importEl));
+          importDef.setDefinition(readWSDL(def.getDocumentBaseURI(),
+                                           locationURI));
+        }
+        catch (WSDLException e)
+        {
+          e.setLocation(XPathUtils.getXPathExprFromNode(importEl));
 
-            throw e;
-          }
+          throw e;
         }
       }
     }
