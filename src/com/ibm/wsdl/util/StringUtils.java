@@ -312,12 +312,13 @@ public class StringUtils
   }
 
   /*
-    Returns a Reader for reading from the specified resource, if the resource
-    points to a stream.
+    Returns an InputStream for reading from the specified resource, if the
+    resource points to a stream.
   */
-  public static Reader getContentAsReader(URL url) throws SecurityException,
-                                                          IllegalArgumentException,
-                                                          IOException
+  public static InputStream getContentAsInputStream(URL url)
+    throws SecurityException,
+           IllegalArgumentException,
+           IOException
   {
     if (url == null)
     {
@@ -335,24 +336,7 @@ public class StringUtils
 
       if (content instanceof InputStream)
       {
-        Reader in = null;
-
-        /*
-          Create an InputStreamReader appropriate to the codepage of the
-          URL content. If the content is from the local file system, the
-          encoding can be defaulted. Otherwise, assume an ISO Latin 1
-          encoding.
-        */
-        if (url.getProtocol().equals("file"))
-        {
-          in = new InputStreamReader((InputStream)content);
-        }
-        else
-        {
-          in = new InputStreamReader((InputStream)content, "ISO-8859-1");
-        }
-
-        return in;
+        return (InputStream)content;
       }
       else
       {
@@ -364,22 +348,13 @@ public class StringUtils
     }
     catch (SecurityException e)
     {
-      throw new SecurityException("Your JVM's SecurityManager has disallowed this.");
+      throw new SecurityException("Your JVM's SecurityManager has " +
+                                  "disallowed this.");
     }
     catch (FileNotFoundException e)
     {
       throw new FileNotFoundException("This file was not found: " + url);
     }
-  }
-
-  /*
-    Shorthand for: IOUtils.getStringFromReader(getContentAsReader(url)).
-  */
-  public static String getContentAsString(URL url) throws SecurityException,
-                                                          IllegalArgumentException,
-                                                          IOException
-  {
-    return IOUtils.getStringFromReader(getContentAsReader(url));
   }
 
   public static List parseNMTokens(String nmTokens)

@@ -176,7 +176,7 @@ public interface WSDLReader
   /**
    * Read a WSDL document into a WSDL definition.
    *
-   * @param locator A WSDLLocator object used to provide Readers
+   * @param locator A WSDLLocator object used to provide InputSources
    * pointing to the wsdl file.
    * @return the definition described in the document
    */

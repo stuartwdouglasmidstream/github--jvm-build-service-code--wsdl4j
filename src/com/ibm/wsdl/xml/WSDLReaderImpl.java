@@ -322,7 +322,7 @@ public class WSDLReaderImpl implements WSDLReader
         {
           String contextURI = def.getDocumentBaseURI();
           Definition importedDef = null;
-          Reader reader = null;
+          InputStream inputStream = null;
           InputSource inputSource = null;
           URL url = null;
 
@@ -350,11 +350,11 @@ public class WSDLReaderImpl implements WSDLReader
 
             if (importedDef == null)
             {
-              reader = StringUtils.getContentAsReader(url);
+              inputStream = StringUtils.getContentAsInputStream(url);
 
-              if (reader != null)
+              if (inputStream != null)
               {
-                inputSource = new InputSource(reader);
+                inputSource = new InputSource(inputStream);
               }
             }
           }
@@ -374,9 +374,9 @@ public class WSDLReaderImpl implements WSDLReader
 
             Document doc = getDocument(inputSource, locationURI);
 
-            if (reader != null)
+            if (inputStream != null)
             {
-              reader.close();
+              inputStream.close();
             }
 
             Element documentElement = doc.getDocumentElement();
@@ -1480,11 +1480,11 @@ public class WSDLReaderImpl implements WSDLReader
                        ? StringUtils.getURL(null, contextURI)
                        : null;
       URL url = StringUtils.getURL(contextURL, wsdlURI);
-      Reader reader = StringUtils.getContentAsReader(url);
-      InputSource inputSource = new InputSource(reader);
+      InputStream inputStream = StringUtils.getContentAsInputStream(url);
+      InputSource inputSource = new InputSource(inputStream);
       Document doc = getDocument(inputSource, wsdlURI);
 
-      reader.close();
+      inputStream.close();
 
       Definition def = readWSDL(url.toString(), doc);
 
