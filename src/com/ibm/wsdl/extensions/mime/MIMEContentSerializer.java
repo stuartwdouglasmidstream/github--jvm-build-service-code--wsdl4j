@@ -16,6 +16,8 @@ public class MIMEContentSerializer implements ExtensionSerializer,
                                               ExtensionDeserializer,
                                               Serializable
 {
+  public static final long serialVersionUID = 1;
+
   public void marshall(Class parentType,
                        QName elementType,
                        ExtensibilityElement extension,

@@ -20,6 +20,8 @@ import com.ibm.wsdl.extensions.mime.*;
  */
 public class PopulatedExtensionRegistry extends ExtensionRegistry
 {
+  public static final long serialVersionUID = 1;
+
   public PopulatedExtensionRegistry()
   {
     SOAPAddressSerializer soapAddressSer = new SOAPAddressSerializer();

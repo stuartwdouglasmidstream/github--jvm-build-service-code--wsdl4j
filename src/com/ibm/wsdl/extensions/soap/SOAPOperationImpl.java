@@ -19,6 +19,8 @@ public class SOAPOperationImpl implements SOAPOperation
 	protected String soapActionURI = null;
   protected String style = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

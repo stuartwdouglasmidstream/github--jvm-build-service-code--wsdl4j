@@ -15,6 +15,8 @@ public class MIMEContentImpl implements MIMEContent
   protected String part = null;
   protected String type = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

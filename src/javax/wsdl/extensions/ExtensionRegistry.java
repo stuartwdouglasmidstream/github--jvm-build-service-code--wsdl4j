@@ -12,6 +12,8 @@ import javax.xml.namespace.*;
  */
 public class ExtensionRegistry implements java.io.Serializable
 {
+  public static final long serialVersionUID = 1;
+
   /**
    * Creates the extension registry, and sets the defaultSerializer
    * and defaultDeserializer properties to instances of an

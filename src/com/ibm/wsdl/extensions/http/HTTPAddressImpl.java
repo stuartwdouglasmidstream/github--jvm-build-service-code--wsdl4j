@@ -14,6 +14,8 @@ public class HTTPAddressImpl implements HTTPAddress
   protected Boolean required = null;
   protected String locationURI = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

@@ -15,6 +15,8 @@ public class MIMEPartImpl implements MIMEPart
   protected Boolean required = null;
   protected List extElements = new Vector();
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

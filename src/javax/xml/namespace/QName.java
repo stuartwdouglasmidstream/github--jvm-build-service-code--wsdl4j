@@ -27,6 +27,8 @@ public class QName implements Serializable
   // Field localPart.
   private String localPart;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Constructor for the QName.
    *

@@ -14,6 +14,8 @@ public class MIMEMimeXmlImpl implements MIMEMimeXml
   protected Boolean required = null;
   protected String part = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

@@ -20,6 +20,8 @@ public class ImportImpl implements Import
   protected Definition definition = null;
   protected Element docEl = null;
 
+  public static final long serialVersionUID = 1;
+
   public void setNamespaceURI(String namespaceURI)
   {
     this.namespaceURI = namespaceURI;

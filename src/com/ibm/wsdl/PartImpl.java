@@ -21,6 +21,8 @@ public class PartImpl implements Part
   protected Element docEl = null;
   protected Map extensionAttributes = new HashMap();
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the name of this part.
    *

@@ -20,6 +20,8 @@ public class UnknownExtensibilityElement implements ExtensibilityElement,
   protected Boolean required = null;
   protected Element element = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

@@ -15,6 +15,8 @@ public class TypesImpl implements Types
   protected Element docEl = null;
   protected List extElements = new Vector();
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the documentation element for this document. This dependency
    * on org.w3c.dom.Element should eventually be removed when a more

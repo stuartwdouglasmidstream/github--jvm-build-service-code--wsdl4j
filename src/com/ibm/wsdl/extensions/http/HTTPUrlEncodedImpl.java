@@ -13,6 +13,8 @@ public class HTTPUrlEncodedImpl implements HTTPUrlEncoded
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

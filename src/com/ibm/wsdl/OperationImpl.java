@@ -24,6 +24,8 @@ public class OperationImpl implements Operation
   protected Element docEl = null;
   protected boolean isUndefined = true;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the name of this operation.
    *

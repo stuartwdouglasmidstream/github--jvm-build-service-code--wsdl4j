@@ -14,6 +14,8 @@ public class SOAPAddressImpl implements SOAPAddress
   protected Boolean required = null;
   protected String locationURI = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

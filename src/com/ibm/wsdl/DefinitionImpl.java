@@ -30,6 +30,8 @@ public class DefinitionImpl implements Definition
   protected List extElements = new Vector();
   protected ExtensionRegistry extReg = null;
 
+  public static final long serialVersionUID = 1;
+
   public DefinitionImpl()
   {
     addNamespace(null, Constants.NS_URI_WSDL);

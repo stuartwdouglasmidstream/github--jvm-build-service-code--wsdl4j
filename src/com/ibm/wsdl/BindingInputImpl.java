@@ -19,6 +19,8 @@ public class BindingInputImpl implements BindingInput
   protected Element docEl = null;
   protected List extElements = new Vector();
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the name of this input binding.
    *

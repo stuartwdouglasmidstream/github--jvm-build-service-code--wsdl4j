@@ -19,6 +19,8 @@ public class SOAPHeaderImpl implements SOAPHeader
   protected String namespaceURI = null;
   protected List soapHeaderFaults = new Vector();
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

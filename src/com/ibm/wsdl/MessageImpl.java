@@ -20,6 +20,8 @@ public class MessageImpl implements Message
   protected Element docEl = null;
   protected boolean isUndefined = true;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the name of this message.
    *

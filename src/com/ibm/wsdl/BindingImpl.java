@@ -23,6 +23,8 @@ public class BindingImpl implements Binding
   protected List extElements = new Vector();
   protected boolean isUndefined = true;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the name of this binding.
    *

@@ -18,6 +18,8 @@ public class SOAPHeaderFaultImpl implements SOAPHeaderFault
   protected List encodingStyles = null;
   protected String namespaceURI = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

@@ -15,6 +15,8 @@ public class MIMEMultipartRelatedImpl implements MIMEMultipartRelated
   protected Boolean required = null;
   protected List mimeParts = new Vector();
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

@@ -14,6 +14,8 @@ public class SOAPBindingImpl implements SOAPBinding
   protected String style = null;
   protected String transportURI = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the type of this extensibility element.
    *

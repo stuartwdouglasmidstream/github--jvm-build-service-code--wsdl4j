@@ -15,6 +15,8 @@ public class InputImpl implements Input
   protected Message message = null;
   protected Element docEl = null;
 
+  public static final long serialVersionUID = 1;
+
   /**
    * Set the name of this input message.
    *

@@ -18,6 +18,8 @@ import com.ibm.wsdl.util.xml.*;
 public class UnknownExtensionSerializer implements ExtensionSerializer,
                                                    Serializable
 {
+  public static final long serialVersionUID = 1;
+
   public void marshall(Class parentType,
                        QName elementType,
                        ExtensibilityElement extension,

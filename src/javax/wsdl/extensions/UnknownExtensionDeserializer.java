@@ -18,6 +18,8 @@ import com.ibm.wsdl.util.xml.*;
 public class UnknownExtensionDeserializer implements ExtensionDeserializer,
                                                      java.io.Serializable
 {
+  public static final long serialVersionUID = 1;
+
   public ExtensibilityElement unmarshall(Class parentType,
                                          QName elementType,
                                          Element el,
