@@ -13,7 +13,7 @@ import javax.xml.namespace.*;
 public interface AttributeExtensible
 {
   /**
-   * Set an extension attribute on this part. Pass in a null
+   * Set an extension attribute on this element. Pass in a null
    * value to remove an extension attribute.
    *
    * @param name the extension attribute name
@@ -25,7 +25,7 @@ public interface AttributeExtensible
   public void setExtensionAttribute(QName name, QName value);
 
   /**
-   * Retrieve an extension attribute from this part. If the
+   * Retrieve an extension attribute from this element. If the
    * extension attribute is not defined, null is returned.
    *
    * @param name the extension attribute name
@@ -39,10 +39,10 @@ public interface AttributeExtensible
 
   /**
    * Get the map containing all the extension attributes defined
-   * on this part. The keys are the qnames of the attributes.
+   * on this element. The keys are the qnames of the attributes.
    *
    * @return a map containing all the extension attributes defined
-   * on this part
+   * on this element
    *
    * @see #setExtensionAttribute
    * @see #getExtensionAttribute
