@@ -536,11 +536,13 @@ public class WSDLReaderImpl implements WSDLReader
 
     if (portType != null)
     {
-      /*
-        This needs some additional work. The (optional) names of the
-        input and output elements also need to be taken into account.
-      */
-      Operation op = portType.getOperation(name, null, null);
+      BindingInput bindingInput = bindingOperation.getBindingInput();
+      BindingOutput bindingOutput = bindingOperation.getBindingOutput();
+      String inputName =
+        (bindingInput != null ? bindingInput.getName() : null);
+      String outputName =
+        (bindingOutput != null ? bindingOutput.getName() : null);
+      Operation op = portType.getOperation(name, inputName, outputName);
 
       if (op == null)
       {
@@ -813,14 +815,47 @@ public class WSDLReaderImpl implements WSDLReader
     String name = DOMUtils.getAttribute(opEl, Constants.ATTR_NAME);
     String parameterOrderStr = DOMUtils.getAttribute(opEl,
                                               Constants.ATTR_PARAMETER_ORDER);
+    Element tempEl = DOMUtils.getFirstChildElement(opEl);
+    List messageOrder = new Vector();
+    Element docEl = null;
+    Input input = null;
+    Output output = null;
+    List faults = new Vector();
+
+    while (tempEl != null)
+    {
+      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
+      {
+        docEl = tempEl;
+      }
+      else if (Constants.Q_ELEM_INPUT.matches(tempEl))
+      {
+        input = parseInput(tempEl, def);
+        messageOrder.add(Constants.ELEM_INPUT);
+      }
+      else if (Constants.Q_ELEM_OUTPUT.matches(tempEl))
+      {
+        output = parseOutput(tempEl, def);
+        messageOrder.add(Constants.ELEM_OUTPUT);
+      }
+      else if (Constants.Q_ELEM_FAULT.matches(tempEl))
+      {
+        faults.add(parseFault(tempEl, def));
+      }
+      else
+      {
+        DOMUtils.throwWSDLException(tempEl);
+      }
+
+      tempEl = DOMUtils.getNextSiblingElement(tempEl);
+    }
 
     if (name != null)
     {
-      /*
-        This needs some additional work. The (optional) names of the
-        input and output elements also need to be taken into account.
-      */
-      op = portType.getOperation(name, null, null);
+      String inputName = (input != null ? input.getName() : null);
+      String outputName = (output != null ? output.getName() : null);
+
+      op = portType.getOperation(name, inputName, outputName);
 
       if (op == null)
       {
@@ -841,35 +876,29 @@ public class WSDLReaderImpl implements WSDLReader
       op.setParameterOrdering(StringUtils.parseNMTokens(parameterOrderStr));
     }
 
-    Element tempEl = DOMUtils.getFirstChildElement(opEl);
-    List messageOrder = new Vector();
-
-    while (tempEl != null)
+    if (docEl != null)
     {
-      if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
-      {
-        op.setDocumentationElement(tempEl);
-      }
-      else if (Constants.Q_ELEM_INPUT.matches(tempEl))
-      {
-        op.setInput(parseInput(tempEl, def));
-        messageOrder.add(Constants.ELEM_INPUT);
-      }
-      else if (Constants.Q_ELEM_OUTPUT.matches(tempEl))
-      {
-        op.setOutput(parseOutput(tempEl, def));
-        messageOrder.add(Constants.ELEM_OUTPUT);
-      }
-      else if (Constants.Q_ELEM_FAULT.matches(tempEl))
-      {
-        op.addFault(parseFault(tempEl, def));
-      }
-      else
-      {
-        DOMUtils.throwWSDLException(tempEl);
-      }
+      op.setDocumentationElement(docEl);
+    }
 
-      tempEl = DOMUtils.getNextSiblingElement(tempEl);
+    if (input != null)
+    {
+      op.setInput(input);
+    }
+
+    if (output != null)
+    {
+      op.setOutput(output);
+    }
+
+    if (faults.size() > 0)
+    {
+      Iterator faultIterator = faults.iterator();
+
+      while (faultIterator.hasNext())
+      {
+        op.addFault((Fault)faultIterator.next());
+      }
     }
 
     OperationType style = null;
