@@ -709,6 +709,17 @@ public class WSDLWriterImpl implements WSDLWriter
                                          def,
                                          pw);
 
+        Map extensionAttributes = part.getExtensionAttributes();
+        Iterator attrNames = extensionAttributes.keySet().iterator();
+
+        while (attrNames.hasNext())
+        {
+          QName attrName = (QName)attrNames.next();
+          QName attrValue = (QName)extensionAttributes.get(attrName);
+
+          DOMUtils.printQualifiedAttribute(attrName, attrValue, def, pw);
+        }
+
         Element docEl = part.getDocumentationElement();
 
         if (docEl == null)

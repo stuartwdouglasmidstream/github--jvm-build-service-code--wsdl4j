@@ -1,7 +1,8 @@
 package javax.wsdl;
 
-import org.w3c.dom.*;
+import java.util.*;
 import javax.xml.namespace.*;
+import org.w3c.dom.*;
 
 /**
  * This interface represents a message part and contains the part's
@@ -34,6 +35,34 @@ public interface Part extends java.io.Serializable
   public void setTypeName(QName typeName);
 
   public QName getTypeName();
+
+  /**
+   * Set an extension attribute on this part. Pass in a null
+   * value to remove an extension attribute.
+   *
+   * @param name the extension attribute name
+   * @param value the extension attribute value
+   */
+  public void setExtensionAttribute(QName name, QName value);
+
+  /**
+   * Retrieve an extension attribute from this part. If the
+   * extension attribute is not defined, null is returned.
+   *
+   * @param name the extension attribute name
+   * @return the value of the extension attribute, or null if
+   * it is not defined
+   */
+  public QName getExtensionAttribute(QName name);
+
+  /**
+   * Get the map containing all the extension attributes defined
+   * on this part. The keys are the qnames of the attributes.
+   *
+   * @return a map containing all the extension attributes defined
+   * on this part
+   */
+  public Map getExtensionAttributes();
 
   /**
    * Set the documentation element for this document. This dependency

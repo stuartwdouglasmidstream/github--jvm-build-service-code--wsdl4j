@@ -1,8 +1,9 @@
 package com.ibm.wsdl;
 
-import org.w3c.dom.*;
+import java.util.*;
 import javax.wsdl.*;
 import javax.xml.namespace.*;
+import org.w3c.dom.*;
 
 /**
  * This class represents a message part and contains the part's
@@ -18,6 +19,7 @@ public class PartImpl implements Part
   protected QName elementName = null;
   protected QName typeName = null;
   protected Element docEl = null;
+  protected Map extensionAttributes = new HashMap();
 
   /**
    * Set the name of this part.
@@ -60,6 +62,50 @@ public class PartImpl implements Part
   }
 
   /**
+   * Set an extension attribute on this part. Pass in a null
+   * value to remove an extension attribute.
+   *
+   * @param name the extension attribute name
+   * @param value the extension attribute value
+   */
+  public void setExtensionAttribute(QName name, QName value)
+  {
+    if (value != null)
+    {
+      extensionAttributes.put(name, value);
+    }
+    else
+    {
+      extensionAttributes.remove(name);
+    }
+  }
+
+  /**
+   * Retrieve an extension attribute from this part. If the
+   * extension attribute is not defined, null is returned.
+   *
+   * @param name the extension attribute name
+   * @return the value of the extension attribute, or null if
+   * it is not defined
+   */
+  public QName getExtensionAttribute(QName name)
+  {
+    return (QName)extensionAttributes.get(name);
+  }
+
+  /**
+   * Get the map containing all the extension attributes defined
+   * on this part. The keys are the qnames of the attributes.
+   *
+   * @return a map containing all the extension attributes defined
+   * on this part
+   */
+  public Map getExtensionAttributes()
+  {
+    return extensionAttributes;
+  }
+
+  /**
    * Set the documentation element for this document. This dependency
    * on org.w3c.dom.Element should eventually be removed when a more
    * appropriate way of representing this information is employed.
@@ -97,6 +143,16 @@ public class PartImpl implements Part
     if (typeName != null)
     {
       strBuf.append("\ntypeName=" + typeName);
+    }
+
+    Iterator keys = extensionAttributes.keySet().iterator();
+
+    while (keys.hasNext())
+    {
+      QName name = (QName)keys.next();
+
+      strBuf.append("\nextension attribute: " + name + "=" +
+                    extensionAttributes.get(name));
     }
 
     return strBuf.toString();

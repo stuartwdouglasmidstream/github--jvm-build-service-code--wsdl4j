@@ -1,6 +1,7 @@
 package com.ibm.wsdl.util.xml;
 
 import java.io.*;
+import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.xml.namespace.*;
@@ -209,6 +210,34 @@ public class DOMUtils {
     return null;
   }
 
+  public static QName getQName(String prefixedValue,
+                               Element contextEl)
+                                 throws WSDLException
+  {
+    int    index        = prefixedValue.indexOf(':');
+    String prefix       = (index != -1)
+                          ? prefixedValue.substring(0, index)
+                          : null;
+    String localPart    = prefixedValue.substring(index + 1);
+    String namespaceURI = getNamespaceURIFromPrefix(contextEl, prefix);
+
+    if (namespaceURI != null)
+    {
+      return new QName(namespaceURI, localPart);
+    }
+    else
+    {
+      WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
+                                                "Unable to determine " +
+                                                "namespace of '" +
+                                                prefixedValue + "'.");
+
+      wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(contextEl));
+
+      throw wsdlExc;
+    }
+  }
+
   public static QName getQualifiedAttributeValue(Element el,
                                                  String attrName,
                                                  String elDesc,
@@ -219,32 +248,7 @@ public class DOMUtils {
 
     if (attrValue != null)
     {
-      int    index                 = attrValue.indexOf(':');
-      String attrValuePrefix       = (index != -1)
-                                     ? attrValue.substring(0, index)
-                                     : null;
-      String attrValueLocalPart    = attrValue.substring(index + 1);
-      String attrValueNamespaceURI =
-        DOMUtils.getNamespaceURIFromPrefix(el, attrValuePrefix);
-
-      if (attrValueNamespaceURI != null)
-      {
-        return new QName(attrValueNamespaceURI, attrValueLocalPart);
-      }
-      else
-      {
-        WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
-                                                  "Unable to determine " +
-                                                  "namespace of '" +
-                                                  (attrValuePrefix != null
-                                                   ? attrValuePrefix + ":"
-                                                   : "") + attrValueLocalPart +
-                                                  "'.");
-
-        wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(el));
-
-        throw wsdlExc;
-      }
+      return getQName(attrValue, el);
     }
     else if (isRequired)
     {
@@ -306,9 +310,24 @@ public class DOMUtils {
     }
   }
 
-  /**
-   * Prints attributes with qualified values.
-   */
+  public static void printQualifiedAttribute(QName name,
+                                             QName value,
+                                             Definition def,
+                                             PrintWriter pw)
+                                               throws WSDLException
+  {
+    if (value != null)
+    {
+      printAttribute(getQualifiedValue(name.getNamespaceURI(),
+                                       name.getLocalPart(),
+                                       def),
+                     getQualifiedValue(value.getNamespaceURI(),
+                                       value.getLocalPart(),
+                                       def),
+                     pw);
+    }
+  }
+
   public static void printQualifiedAttribute(String name,
                                              QName value,
                                              Definition def,

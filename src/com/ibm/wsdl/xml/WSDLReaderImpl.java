@@ -754,9 +754,80 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    Map extensionAttributes = part.getExtensionAttributes();
+
+    extensionAttributes.putAll(getPartAttributes(partEl, def));
+
     // Need to do something here to locate part definition.
 
     return part;
+  }
+
+  private static Map getPartAttributes(Element el,
+                                       Definition def) throws WSDLException
+  {
+    Map attributes = new HashMap();
+    NamedNodeMap nodeMap = el.getAttributes();
+    int atts = nodeMap.getLength();
+
+    for (int a = 0; a < atts; a++)
+    {
+      Attr attribute = (Attr)nodeMap.item(a);
+      String lName = attribute.getLocalName();
+      String nSpace = attribute.getNamespaceURI();
+      String prefix = attribute.getPrefix();
+      QName name = new QName(nSpace, lName);
+
+      if (nSpace != null && !nSpace.equals(Constants.NS_URI_WSDL))
+      {
+        if (!nSpace.equals(Constants.NS_URI_XMLNS))
+        {
+          String strValue = attribute.getValue();
+          QName qValue = null;
+
+          try
+          {
+            qValue = DOMUtils.getQName(strValue, el);
+          }
+          catch (WSDLException e)
+          {
+            qValue = new QName(strValue);
+          }
+
+          attributes.put(name, qValue);
+
+          String tempNSUri = def.getNamespace(prefix);
+
+          while (tempNSUri != null && !tempNSUri.equals(nSpace))
+          {
+            prefix += "_";
+            tempNSUri = def.getNamespace(prefix);
+          }
+
+          def.addNamespace(prefix, nSpace);
+        }
+      }
+      else if (!lName.equals(Constants.ATTR_NAME)
+               && !lName.equals(Constants.ATTR_ELEMENT)
+               && !lName.equals(Constants.ATTR_TYPE))
+
+      {
+        WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
+                                                  "Encountered illegal " +
+                                                  "part extension " +
+                                                  "attribute '" +
+                                                  name + "'. Extension " +
+                                                  "attributes must be in " +
+                                                  "a namespace other than " +
+                                                  "WSDL's.");
+
+        wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(el));
+
+        throw wsdlExc;
+      }
+    }
+
+    return attributes;
   }
 
   private static PortType parsePortType(Element portTypeEl, Definition def)
