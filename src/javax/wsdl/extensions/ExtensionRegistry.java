@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl.extensions;
 
 import java.util.*;
@@ -138,7 +142,7 @@ public class ExtensionRegistry implements java.io.Serializable
    * document this extensibility element was encountered. For
    * example, javax.wsdl.Binding.class would be used to indicate
    * this element was encountered as an immediate child of
-   * a &lt;wsdl:binding> element.
+   * a &lt;wsdl:binding&gt; element.
    * @param elementType the qname of the extensibility element
    * @param ed the extension deserializer to use
    *
@@ -219,7 +223,7 @@ public class ExtensionRegistry implements java.io.Serializable
    * document this extensibility element was encountered. For
    * example, javax.wsdl.Binding.class would be used to indicate
    * this element was encountered as an immediate child of
-   * a &lt;wsdl:binding> element.
+   * a &lt;wsdl:binding&gt; element.
    * @param elementType the qname of the extensibility element
    *
    * @return the extension deserializer, if one was found. If none was
@@ -360,7 +364,14 @@ public class ExtensionRegistry implements java.io.Serializable
 
     try
     {
-      return (ExtensibilityElement)extensionType.newInstance();
+      ExtensibilityElement ee = (ExtensibilityElement)extensionType.newInstance();
+      
+      if (ee.getElementType() == null)
+      {
+        ee.setElementType(elementType);
+      }
+      
+      return ee;
     }
     catch (Exception e)
     {
