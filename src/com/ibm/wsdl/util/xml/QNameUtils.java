@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2002, 2005 
+ */
+
 package com.ibm.wsdl.util.xml;
 
 import javax.xml.namespace.*;

@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.util.xml;
 
 import java.util.Vector;
