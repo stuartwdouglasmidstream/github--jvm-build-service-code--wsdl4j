@@ -323,6 +323,7 @@ public class WSDLReaderImpl implements WSDLReader
                                                   Constants.ATTR_NAMESPACE);
       String locationURI = DOMUtils.getAttribute(importEl,
                                                  Constants.ATTR_LOCATION);
+      String contextURI = null;
 
       if (namespaceURI != null)
       {
@@ -337,7 +338,7 @@ public class WSDLReaderImpl implements WSDLReader
         {
           try
           {
-            String contextURI = def.getDocumentBaseURI();
+            contextURI = def.getDocumentBaseURI();
             Definition importedDef = null;
             InputStream inputStream = null;
             InputSource inputSource = null;
@@ -389,7 +390,8 @@ public class WSDLReaderImpl implements WSDLReader
                                          "'."));
               }
 
-              Document doc = getDocument(inputSource, locationURI);
+              inputSource.setSystemId(url.toString());
+              Document doc = getDocument(inputSource, url.toString());
 
               if (inputStream != null)
               {
@@ -476,7 +478,10 @@ public class WSDLReaderImpl implements WSDLReader
           {
             throw new WSDLException(WSDLException.OTHER_ERROR,
                                     "Unable to resolve imported document at '" +
-                                    locationURI + "'.", t);
+                                    locationURI + 
+                                    (contextURI == null 
+                                    ? "'." : "', relative to '" + contextURI + "'")
+                                    , t);
           }
         } //end importDocs
       } //end locationURI
@@ -681,6 +686,17 @@ public class WSDLReaderImpl implements WSDLReader
   	        //cannot get the referenced schema, so ignore this schema reference
   	        continue;
   	      }
+  	      
+  	      if (verbose)
+  	      {
+  	        System.out.println("Retrieving schema at '" + 
+  	                           schemaRef.getSchemaLocationURI() +
+  	                          (schema.getDocumentBaseURI() == null
+  	                           ? "'."
+  	                           : "', relative to '" + 
+  	                           schema.getDocumentBaseURI() + "'."));
+  	      }
+
   	  	      
   	      InputStream inputStream = null;
   	      InputSource inputSource = null;
@@ -749,7 +765,8 @@ public class WSDLReaderImpl implements WSDLReader
   	      // If we have not previously read the schema, get its DOM element now.
   	      if (referencedSchema == null)
   	      {
-  	  	    Document doc = getDocument(inputSource, schemaRef.getSchemaLocationURI());
+  	        inputSource.setSystemId(location);
+  	  	    Document doc = getDocument(inputSource, location);
 
   	  	    if (inputStream != null)
   	  	    {
@@ -2038,7 +2055,8 @@ public class WSDLReaderImpl implements WSDLReader
       URL url = StringUtils.getURL(contextURL, wsdlURI);
       InputStream inputStream = StringUtils.getContentAsInputStream(url);
       InputSource inputSource = new InputSource(inputStream);
-      Document doc = getDocument(inputSource, wsdlURI);
+      inputSource.setSystemId(url.toString());
+      Document doc = getDocument(inputSource, url.toString());
 
       inputStream.close();
 
@@ -2054,7 +2072,11 @@ public class WSDLReaderImpl implements WSDLReader
     {
       throw new WSDLException(WSDLException.OTHER_ERROR,
                               "Unable to resolve imported document at '" +
-                              wsdlURI + "'.", t);
+                              wsdlURI +
+                              (contextURI == null
+                              ? "'."
+                              : "', relative to '" + contextURI + "'.")
+                              , t);
     }
   }
 
