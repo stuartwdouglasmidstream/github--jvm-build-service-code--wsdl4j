@@ -136,16 +136,21 @@ Author:
   <!-- Creates the JWSDL API documentation                                 -->
   <!-- =================================================================== -->
   <target name="jwsdl_docs" depends="prepare">
-    <mkdir dir="${build.javadocs}"/>
+    <mkdir dir="${build.dir}/jwsdl-api"/>
     <javadoc packagenames="javax.*"
              sourcepath="${src.dir}"
-             destdir="${build.javadocs}"
+             destdir="${build.dir}/jwsdl-api"
              author="true"
              version="true"
              use="true"
              windowtitle="JWSDL API"
              doctitle="JWSDL"
     />
+
+    <mkdir dir="${dist.dir.root}"/>
+    <zip zipfile="${dist.dir.root}/jwsdl-api.zip" basedir="${build.dir}/">
+      <include name="jwsdl-api/**"/>
+    </zip>
   </target>
 
   <!-- =================================================================== -->
