@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.util.xml;
 
 import java.io.*;
@@ -13,9 +17,29 @@ public class DOMUtils {
   private static String NS_URI_XMLNS = "http://www.w3.org/2000/xmlns/";
 
   /**
+   * Returns a list of attributes of an element. Returns an 
+   * empty list if the element has no attributes.
+   *
+   * @param el       Element whose attributes are returned
+   * @return the List of Attr
+   */
+  static public List getAttributes (Element el) {
+    List attrs = new Vector();
+    NamedNodeMap attrMap = el.getAttributes();
+    for(int i = 0; i < attrMap.getLength(); i++)
+    {
+      attrs.add(attrMap.item(i));  
+    }
+      
+    return attrs;
+  }
+
+  /**
    * Returns the value of an attribute of an element. Returns null
    * if the attribute is not found (whereas Element.getAttribute
-   * returns "" if an attrib is not found).
+   * returns "" if an attrib is not found). This method should be
+   * used for elements that support extension attributes because it
+   * does not track unexpected attributes.
    *
    * @param el       Element whose attrib is looked for
    * @param attrName name of attribute to look for
@@ -27,6 +51,30 @@ public class DOMUtils {
 
     if (attr != null) {
       sRet = attr.getValue();
+    }
+    return sRet;
+  }
+
+  /**
+   * Returns the value of an attribute of an element. Returns null
+   * if the attribute is not found (whereas Element.getAttribute
+   * returns "" if an attrib is not found). This method should be
+   * used for elements that do not support extension attributes
+   * because it tracks the element's remaining attributes so that
+   * eventually any unexpected attributes can be identified.
+   *
+   * @param el       Element whose attrib is looked for
+   * @param attrName name of attribute to look for
+   * @param remainingAttrs List of remaining attributes 
+   * @return the attribute value
+   */
+  static public String getAttribute (Element el, String attrName, List remainingAttrs) {
+    String sRet = null;
+    Attr   attr = el.getAttributeNode(attrName);
+    
+    if (attr != null) {
+      sRet = attr.getValue();
+      remainingAttrs.remove(attr);
     }
     return sRet;
   }
@@ -265,6 +313,11 @@ public class DOMUtils {
     def.addNamespace(prefix, namespaceURI);
   }
 
+  /**
+   * This method should be used for elements that support extension attributes
+   * because it does not track the remaining attributes to test for unexpected 
+   * attributes.
+   */
   public static QName getQualifiedAttributeValue(Element el,
                                                  String attrName,
                                                  String elDesc,
@@ -296,13 +349,77 @@ public class DOMUtils {
     }
   }
 
+  /**
+   * This method should be used for elements that do not support extension attributes
+   * because it tracks the remaining attributes so that eventually any
+   * unexpected attributes can be identified.
+   */
+  public static QName getQualifiedAttributeValue(Element el,
+                                                 String attrName,
+                                                 String elDesc,
+                                                 boolean isRequired,
+                                                 Definition def,
+                                                 List remainingAttrs)
+                                                   throws WSDLException
+  {
+    String attrValue = null;
+    
+    attrValue = DOMUtils.getAttribute(el, attrName, remainingAttrs);
+
+    if (attrValue != null)
+    {
+      return getQName(attrValue, el, def);
+    }
+    else if (isRequired)
+    {
+      WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
+                                                "The '" + attrName +
+                                                "' attribute must be " +
+                                                "specified for every " +
+                                                elDesc + " element.");
+
+      wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(el));
+
+      throw wsdlExc;
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   public static void throwWSDLException(Element location) throws WSDLException
   {
     String elName = QNameUtils.newQName(location).toString();
 
     WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
-                                              "Encountered unexpected '" +
+                                              "Encountered unexpected element '" +
                                               elName + "'.");
+
+    wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(location));
+
+    throw wsdlExc;
+  }
+
+  public static void throwWSDLException(Element location, List remainingAttrs) throws WSDLException
+  {
+    String elName = QNameUtils.newQName(location).toString();
+    
+    StringBuffer sb = new StringBuffer();
+    ListIterator i = remainingAttrs.listIterator();
+    while (i.hasNext())
+    {
+      String attrName = QNameUtils.newQName((Attr)i.next()).toString();
+      sb.append(attrName);
+      sb.append( i.hasNext() ? " " : "");
+    }
+
+    WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
+                                              "Element '" +
+                                              elName +
+                                              "' contained unexpected attributes: '" +
+                                              sb.toString() +
+                                              "'");
 
     wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(location));
 
