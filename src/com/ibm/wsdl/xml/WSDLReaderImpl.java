@@ -1438,6 +1438,13 @@ public class WSDLReaderImpl implements WSDLReader
    */
   public Definition readWSDL(WSDLLocator locator) throws WSDLException
   {
+    if (true)
+    {
+      throw new WSDLException(WSDLException.OTHER_ERROR,
+                              "Definition.readWSDL(WSDLLocator) is not " +
+                              "supported yet.");
+    }
+
     Reader reader = locator.getBaseReader();
     InputSource is = new InputSource(reader);
     String base = locator.getBaseURI();
