@@ -1,19 +1,18 @@
-package com.ibm.wsdl.extensions.mime;
+package com.ibm.wsdl.extensions.http;
 
-import java.util.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.http.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class MIMEMultipartRelated implements ExtensibilityElement,
-                                             java.io.Serializable
+public class HTTPBindingImpl implements HTTPBinding
 {
-  protected QName elementType = MIMEConstants.Q_ELEM_MIME_MULTIPART_RELATED;
+  protected QName elementType = HTTPConstants.Q_ELEM_HTTP_BINDING;
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
-  protected List mimeParts = new Vector();
+  protected String verb = null;
 
   /**
    * Set the type of this extensibility element.
@@ -54,38 +53,33 @@ public class MIMEMultipartRelated implements ExtensibilityElement,
   }
 
   /**
-   * Add a MIME part to this MIME multipart related.
+   * Set the verb for this HTTP binding.
    *
-   * @param mimePart the MIME part to be added
+   * @param verb the desired verb
    */
-  public void addMIMEPart(MIMEPart mimePart)
+  public void setVerb(String verb)
   {
-    mimeParts.add(mimePart);
+    this.verb = verb;
   }
 
   /**
-   * Get all the MIME parts defined here.
+   * Get the verb for this HTTP binding.
    */
-  public List getMIMEParts()
+  public String getVerb()
   {
-    return mimeParts;
+    return verb;
   }
 
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("MIMEMultipartRelated (" + elementType + "):");
+    strBuf.append("HTTPBinding (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (mimeParts != null)
+    if (verb != null)
     {
-      Iterator mimePartIterator = mimeParts.iterator();
-
-      while (mimePartIterator.hasNext())
-      {
-        strBuf.append("\n" + mimePartIterator.next());
-      }
+      strBuf.append("\nverb=" + verb);
     }
 
     return strBuf.toString();

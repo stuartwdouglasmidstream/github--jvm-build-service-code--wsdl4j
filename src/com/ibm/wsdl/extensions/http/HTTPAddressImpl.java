@@ -2,14 +2,14 @@ package com.ibm.wsdl.extensions.http;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.http.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class HTTPOperation implements ExtensibilityElement,
-                                      java.io.Serializable
+public class HTTPAddressImpl implements HTTPAddress
 {
-  protected QName elementType = HTTPConstants.Q_ELEM_HTTP_OPERATION;
+  protected QName elementType = HTTPConstants.Q_ELEM_HTTP_ADDRESS;
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
   protected String locationURI = null;
@@ -53,7 +53,7 @@ public class HTTPOperation implements ExtensibilityElement,
   }
 
   /**
-   * Set the location URI for this HTTP operation.
+   * Set the location URI for this HTTP address.
    *
    * @param locationURI the desired location URI
    */
@@ -63,7 +63,7 @@ public class HTTPOperation implements ExtensibilityElement,
   }
 
   /**
-   * Get the location URI for this HTTP operation.
+   * Get the location URI for this HTTP address.
    */
   public String getLocationURI()
   {
@@ -74,7 +74,7 @@ public class HTTPOperation implements ExtensibilityElement,
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("HTTPOperation (" + elementType + "):");
+    strBuf.append("HTTPAddress (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
     if (locationURI != null)

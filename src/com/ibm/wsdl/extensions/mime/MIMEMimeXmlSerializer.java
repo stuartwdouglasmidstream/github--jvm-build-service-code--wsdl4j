@@ -4,6 +4,7 @@ import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.mime.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 
@@ -15,7 +16,7 @@ public class MIMEMimeXmlSerializer implements ExtensionSerializer,
                                               Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,
@@ -64,7 +65,8 @@ public class MIMEMimeXmlSerializer implements ExtensionSerializer,
                                          ExtensionRegistry extReg)
                                            throws WSDLException
 	{
-    MIMEMimeXml mimeMimeXml = new MIMEMimeXml();
+    MIMEMimeXml mimeMimeXml = (MIMEMimeXml)extReg.createExtension(parentType,
+                                                                  elementType);
     String part = DOMUtils.getAttribute(el, MIMEConstants.ATTR_PART);
     String requiredStr = DOMUtils.getAttributeNS(el,
                                                  Constants.NS_URI_WSDL,

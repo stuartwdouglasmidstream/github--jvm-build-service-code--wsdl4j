@@ -5,6 +5,7 @@ import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.mime.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 
@@ -16,7 +17,7 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
                                                        Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,
@@ -110,12 +111,12 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
             {
               ExtensibilityElement ext =
                 (ExtensibilityElement)extensibilityElementIterator.next();
-              Class extensionType = ext.getClass();
+              QName elementType = ext.getElementType();
               ExtensionSerializer extSer =
-                extReg.querySerializer(MIMEPart.class, extensionType);
+                extReg.querySerializer(MIMEPart.class, elementType);
 
               extSer.marshall(MIMEPart.class,
-                              extensionType,
+                              elementType,
                               ext,
                               pw,
                               def,
@@ -136,7 +137,8 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
                                          ExtensionRegistry extReg)
                                            throws WSDLException
 	{
-    MIMEMultipartRelated mimeMultipartRelated = new MIMEMultipartRelated();
+    MIMEMultipartRelated mimeMultipartRelated =
+      (MIMEMultipartRelated)extReg.createExtension(parentType, elementType);
     String requiredStr = DOMUtils.getAttributeNS(el,
                                                  Constants.NS_URI_WSDL,
                                                  Constants.ATTR_REQUIRED);
@@ -146,7 +148,12 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
     {
       if (MIMEConstants.Q_ELEM_MIME_PART.matches(tempEl))
       {
-        mimeMultipartRelated.addMIMEPart(parseMIMEPart(tempEl, def, extReg));
+        mimeMultipartRelated.addMIMEPart(
+          parseMIMEPart(MIMEMultipartRelated.class,
+                        MIMEConstants.Q_ELEM_MIME_PART,
+                        tempEl,
+                        def,
+                        extReg));
       }
       else
       {
@@ -164,12 +171,15 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
     return mimeMultipartRelated;
 	}
 
-  private MIMEPart parseMIMEPart(Element el,
+  private MIMEPart parseMIMEPart(Class parentType,
+                                 QName elementType,
+                                 Element el,
                                  Definition def,
                                  ExtensionRegistry extReg)
                                    throws WSDLException
   {
-    MIMEPart mimePart = new MIMEPart();
+    MIMEPart mimePart = (MIMEPart)extReg.createExtension(parentType,
+                                                         elementType);
     String requiredStr = DOMUtils.getAttributeNS(el,
                                                  Constants.NS_URI_WSDL,
                                                  Constants.ATTR_REQUIRED);
@@ -185,11 +195,11 @@ public class MIMEMultipartRelatedSerializer implements ExtensionSerializer,
     {
       try
       {
-        QName elementType = new QName(tempEl);
+        QName tempElType = new QName(tempEl);
         ExtensionDeserializer extDS = extReg.queryDeserializer(MIMEPart.class,
-                                                               elementType);
+                                                               tempElType);
         ExtensibilityElement ext =
-          extDS.unmarshall(MIMEPart.class, elementType, tempEl, def, extReg);
+          extDS.unmarshall(MIMEPart.class, tempElType, tempEl, def, extReg);
 
         mimePart.addExtensibilityElement(ext);
       }

@@ -1,17 +1,19 @@
-package com.ibm.wsdl.extensions.http;
+package com.ibm.wsdl.extensions.mime;
 
+import java.util.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.mime.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class HTTPBinding implements ExtensibilityElement, java.io.Serializable
+public class MIMEMultipartRelatedImpl implements MIMEMultipartRelated
 {
-  protected QName elementType = HTTPConstants.Q_ELEM_HTTP_BINDING;
+  protected QName elementType = MIMEConstants.Q_ELEM_MIME_MULTIPART_RELATED;
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
-  protected String verb = null;
+  protected List mimeParts = new Vector();
 
   /**
    * Set the type of this extensibility element.
@@ -52,33 +54,38 @@ public class HTTPBinding implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Set the verb for this HTTP binding.
+   * Add a MIME part to this MIME multipart related.
    *
-   * @param verb the desired verb
+   * @param mimePart the MIME part to be added
    */
-  public void setVerb(String verb)
+  public void addMIMEPart(MIMEPart mimePart)
   {
-    this.verb = verb;
+    mimeParts.add(mimePart);
   }
 
   /**
-   * Get the verb for this HTTP binding.
+   * Get all the MIME parts defined here.
    */
-  public String getVerb()
+  public List getMIMEParts()
   {
-    return verb;
+    return mimeParts;
   }
 
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("HTTPBinding (" + elementType + "):");
+    strBuf.append("MIMEMultipartRelated (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (verb != null)
+    if (mimeParts != null)
     {
-      strBuf.append("\nverb=" + verb);
+      Iterator mimePartIterator = mimeParts.iterator();
+
+      while (mimePartIterator.hasNext())
+      {
+        strBuf.append("\n" + mimePartIterator.next());
+      }
     }
 
     return strBuf.toString();

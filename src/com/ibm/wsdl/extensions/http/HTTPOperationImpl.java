@@ -1,18 +1,18 @@
-package com.ibm.wsdl.extensions.mime;
+package com.ibm.wsdl.extensions.http;
 
-import java.util.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.http.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class MIMEPart implements ExtensibilityElement, java.io.Serializable
+public class HTTPOperationImpl implements HTTPOperation
 {
-  protected QName elementType = MIMEConstants.Q_ELEM_MIME_PART;
+  protected QName elementType = HTTPConstants.Q_ELEM_HTTP_OPERATION;
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
-  protected List extElements = new Vector();
+  protected String locationURI = null;
 
   /**
    * Set the type of this extensibility element.
@@ -53,39 +53,33 @@ public class MIMEPart implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Add an extensibility element. This is where the MIME
-   * elements go.
+   * Set the location URI for this HTTP operation.
    *
-   * @param extElement the extensibility element to be added
+   * @param locationURI the desired location URI
    */
-  public void addExtensibilityElement(ExtensibilityElement extElement)
+  public void setLocationURI(String locationURI)
   {
-    extElements.add(extElement);
+    this.locationURI = locationURI;
   }
 
   /**
-   * Get all the extensibility elements defined here.
+   * Get the location URI for this HTTP operation.
    */
-  public List getExtensibilityElements()
+  public String getLocationURI()
   {
-    return extElements;
+    return locationURI;
   }
 
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("MIMEPart (" + elementType + "):");
+    strBuf.append("HTTPOperation (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (extElements != null)
+    if (locationURI != null)
     {
-      Iterator extIterator = extElements.iterator();
-
-      while (extIterator.hasNext())
-      {
-        strBuf.append("\n" + extIterator.next());
-      }
+      strBuf.append("\nlocationURI=" + locationURI);
     }
 
     return strBuf.toString();

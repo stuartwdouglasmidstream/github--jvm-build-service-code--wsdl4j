@@ -13,7 +13,7 @@ public class UnknownExtensionSerializer implements ExtensionSerializer,
                                                    Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,

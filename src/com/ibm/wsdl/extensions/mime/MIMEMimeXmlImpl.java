@@ -1,17 +1,18 @@
-package com.ibm.wsdl.extensions.http;
+package com.ibm.wsdl.extensions.mime;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.mime.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class HTTPAddress implements ExtensibilityElement, java.io.Serializable
+public class MIMEMimeXmlImpl implements MIMEMimeXml
 {
-  protected QName elementType = HTTPConstants.Q_ELEM_HTTP_ADDRESS;
+  protected QName elementType = MIMEConstants.Q_ELEM_MIME_MIME_XML;
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
-  protected String locationURI = null;
+  protected String part = null;
 
   /**
    * Set the type of this extensibility element.
@@ -52,33 +53,33 @@ public class HTTPAddress implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Set the location URI for this HTTP address.
+   * Set the part for this MIME mimeXml.
    *
-   * @param locationURI the desired location URI
+   * @param part the desired part
    */
-  public void setLocationURI(String locationURI)
+  public void setPart(String part)
   {
-    this.locationURI = locationURI;
+    this.part = part;
   }
 
   /**
-   * Get the location URI for this HTTP address.
+   * Get the part for this MIME mimeXml.
    */
-  public String getLocationURI()
+  public String getPart()
   {
-    return locationURI;
+    return part;
   }
 
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("HTTPAddress (" + elementType + "):");
+    strBuf.append("MIMEMimeXml (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (locationURI != null)
+    if (part != null)
     {
-      strBuf.append("\nlocationURI=" + locationURI);
+      strBuf.append("\npart=" + part);
     }
 
     return strBuf.toString();

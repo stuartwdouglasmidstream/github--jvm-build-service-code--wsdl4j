@@ -10,7 +10,7 @@ public class ExtensionRegistry implements java.io.Serializable
 {
   /*
     This is a Map of Maps. The top-level Map is keyed by (Class)parentType,
-    and the inner Maps are keyed by (Class)extensionType.
+    and the inner Maps are keyed by (QName)elementType.
   */
   protected Map serializerReg = new Hashtable();
   /*
@@ -18,6 +18,11 @@ public class ExtensionRegistry implements java.io.Serializable
     and the inner Maps are keyed by (QName)elementType.
   */
   protected Map deserializerReg = new Hashtable();
+  /*
+    This is a Map of Maps. The top-level Map is keyed by (Class)parentType,
+    and the inner Maps are keyed by (QName)elementType.
+  */
+  protected Map extensionTypeReg = new Hashtable();
   protected ExtensionSerializer defaultSer = null;
   protected ExtensionDeserializer defaultDeser = null;
 
@@ -60,7 +65,7 @@ public class ExtensionRegistry implements java.io.Serializable
   }
 
   public void registerSerializer(Class parentType,
-                                 Class extensionType,
+                                 QName elementType,
                                  ExtensionSerializer es)
   {
     Map innerSerializerReg = (Map)serializerReg.get(parentType);
@@ -72,7 +77,7 @@ public class ExtensionRegistry implements java.io.Serializable
       serializerReg.put(parentType, innerSerializerReg);
     }
 
-    innerSerializerReg.put(extensionType, es);
+    innerSerializerReg.put(elementType, es);
   }
 
   public void registerDeserializer(Class parentType,
@@ -92,7 +97,7 @@ public class ExtensionRegistry implements java.io.Serializable
   }
 
   public ExtensionSerializer querySerializer(Class parentType,
-                                             Class extensionType)
+                                             QName elementType)
                                                throws WSDLException
   {
     Map innerSerializerReg = (Map)serializerReg.get(parentType);
@@ -100,7 +105,7 @@ public class ExtensionRegistry implements java.io.Serializable
 
     if (innerSerializerReg != null)
     {
-      es = (ExtensionSerializer)innerSerializerReg.get(extensionType);
+      es = (ExtensionSerializer)innerSerializerReg.get(elementType);
     }
 
     if (es == null)
@@ -112,8 +117,8 @@ public class ExtensionRegistry implements java.io.Serializable
     {
       throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
                               "No ExtensionSerializer found " +
-                              "to serialize a '" + extensionType.getName() +
-                              "' in the context of a '" +
+                              "to serialize a '" + elementType +
+                              "' element in the context of a '" +
                               parentType.getName() + "'.");
     }
 
@@ -164,5 +169,69 @@ public class ExtensionRegistry implements java.io.Serializable
     return (innerDeserializerReg != null)
            ? innerDeserializerReg.keySet()
            : null;
+  }
+
+  public void mapExtensionTypes(Class parentType,
+                                QName elementType,
+                                Class extensionType)
+  {
+    Map innerExtensionTypeReg = (Map)extensionTypeReg.get(parentType);
+
+    if (innerExtensionTypeReg == null)
+    {
+      innerExtensionTypeReg = new Hashtable();
+
+      extensionTypeReg.put(parentType, innerExtensionTypeReg);
+    }
+
+    innerExtensionTypeReg.put(elementType, extensionType);
+  }
+
+  public ExtensibilityElement createExtension(Class parentType,
+                                              QName elementType)
+                                                throws WSDLException
+  {
+    Map innerExtensionTypeReg = (Map)extensionTypeReg.get(parentType);
+    Class extensionType = null;
+
+    if (innerExtensionTypeReg != null)
+    {
+      extensionType = (Class)innerExtensionTypeReg.get(elementType);
+    }
+
+    if (extensionType == null)
+    {
+      throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                              "No Java extensionType found " +
+                              "to represent a '" + elementType +
+                              "' element in the context of a '" +
+                              parentType.getName() + "'.");
+    }
+    else if (!(ExtensibilityElement.class.isAssignableFrom(extensionType)))
+    {
+      throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                              "The Java extensionType '" +
+                              extensionType.getName() + "' does " +
+                              "not implement the ExtensibilityElement " +
+                              "interface.");
+    }
+
+    try
+    {
+      return (ExtensibilityElement)extensionType.newInstance();
+    }
+    catch (Exception e)
+    {
+      /*
+        Catches:
+                 InstantiationException
+                 IllegalAccessException
+      */
+      throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                              "Problem instantiating Java " +
+                              "extensionType '" + extensionType.getName() +
+                              "'.",
+                              e);
+    }
   }
 }

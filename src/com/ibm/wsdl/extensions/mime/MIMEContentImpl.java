@@ -1,17 +1,19 @@
-package com.ibm.wsdl.extensions.soap;
+package com.ibm.wsdl.extensions.mime;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.mime.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class SOAPAddress implements ExtensibilityElement, java.io.Serializable
+public class MIMEContentImpl implements MIMEContent
 {
-  protected QName elementType = SOAPConstants.Q_ELEM_SOAP_ADDRESS;
+  protected QName elementType = MIMEConstants.Q_ELEM_MIME_CONTENT;
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
-  protected String locationURI = null;
+  protected String part = null;
+  protected String type = null;
 
   /**
    * Set the type of this extensibility element.
@@ -52,33 +54,56 @@ public class SOAPAddress implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Set the location URI for this SOAP address.
+   * Set the part for this MIME content.
    *
-   * @param locationURI the desired location URI
+   * @param part the desired part
    */
-  public void setLocationURI(String locationURI)
+  public void setPart(String part)
   {
-    this.locationURI = locationURI;
+    this.part = part;
   }
 
   /**
-   * Get the location URI for this SOAP address.
+   * Get the part for this MIME content.
    */
-  public String getLocationURI()
+  public String getPart()
   {
-    return locationURI;
+    return part;
+  }
+
+  /**
+   * Set the type for this MIME content.
+   *
+   * @param type the desired type
+   */
+  public void setType(String type)
+  {
+    this.type = type;
+  }
+
+  /**
+   * Get the type for this MIME content.
+   */
+  public String getType()
+  {
+    return type;
   }
 
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("SOAPAddress (" + elementType + "):");
+    strBuf.append("MIMEContent (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (locationURI != null)
+    if (part != null)
     {
-      strBuf.append("\nlocationURI=" + locationURI);
+      strBuf.append("\npart=" + part);
+    }
+
+    if (type != null)
+    {
+      strBuf.append("\ntype=" + type);
     }
 
     return strBuf.toString();

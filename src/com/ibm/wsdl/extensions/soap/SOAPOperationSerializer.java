@@ -4,6 +4,7 @@ import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.soap.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
@@ -16,7 +17,7 @@ public class SOAPOperationSerializer implements ExtensionSerializer,
                                                 Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,
@@ -62,7 +63,8 @@ public class SOAPOperationSerializer implements ExtensionSerializer,
                                          ExtensionRegistry extReg)
                                            throws WSDLException
   {
-    SOAPOperation soapOperation = new SOAPOperation();
+    SOAPOperation soapOperation =
+      (SOAPOperation)extReg.createExtension(parentType, elementType);
     String soapActionURI = DOMUtils.getAttribute(el,
                                              SOAPConstants.ATTR_SOAP_ACTION);
     String style = DOMUtils.getAttribute(el, SOAPConstants.ATTR_STYLE);

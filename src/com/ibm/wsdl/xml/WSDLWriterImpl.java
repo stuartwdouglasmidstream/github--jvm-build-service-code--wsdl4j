@@ -797,7 +797,7 @@ public class WSDLWriterImpl implements WSDLWriter
       {
         ExtensibilityElement ext =
           (ExtensibilityElement)extensibilityElementIterator.next();
-        Class extensionType = ext.getClass();
+        QName elementType = ext.getElementType();
         ExtensionRegistry extReg = def.getExtensionRegistry();
 
         if (extReg == null)
@@ -805,15 +805,15 @@ public class WSDLWriterImpl implements WSDLWriter
           throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
                                   "No ExtensionRegistry set for this " +
                                   "Definition, so unable to serialize a '" +
-                                  extensionType.getName() +
-                                  "' in the context of a '" +
+                                  elementType +
+                                  "' element in the context of a '" +
                                   parentType.getName() + "'.");
         }
 
         ExtensionSerializer extSer = extReg.querySerializer(parentType,
-                                                            extensionType);
+                                                            elementType);
 
-        extSer.marshall(parentType, extensionType, ext, pw, def, extReg);
+        extSer.marshall(parentType, elementType, ext, pw, def, extReg);
       }
     }
   }

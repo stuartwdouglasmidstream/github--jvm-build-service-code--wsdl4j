@@ -14,7 +14,7 @@ public interface ExtensionSerializer
    * having the Definition hold the declarations in a flat table.
    */
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,

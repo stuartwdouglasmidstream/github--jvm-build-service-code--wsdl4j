@@ -5,6 +5,7 @@ import java.util.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.soap.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
@@ -17,7 +18,7 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
                                              Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,
@@ -130,7 +131,8 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
                                          ExtensionRegistry extReg)
                                            throws WSDLException
   {
-    SOAPHeader soapHeader = new SOAPHeader();
+    SOAPHeader soapHeader = (SOAPHeader)extReg.createExtension(parentType,
+                                                               elementType);
     QName message =
       DOMUtils.getQualifiedAttributeValue(el,
                                           Constants.ATTR_MESSAGE,
@@ -181,7 +183,11 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
     {
       if (SOAPConstants.Q_ELEM_SOAP_HEADER_FAULT.matches(tempEl))
       {
-        soapHeader.addSOAPHeaderFault(parseSoapHeaderFault(tempEl));
+        soapHeader.addSOAPHeaderFault(
+          parseSoapHeaderFault(SOAPHeader.class,
+                               SOAPConstants.Q_ELEM_SOAP_HEADER_FAULT,
+                               tempEl,
+                               extReg));
       }
       else
       {
@@ -194,10 +200,14 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
     return soapHeader;
   }
 
-  private static SOAPHeaderFault parseSoapHeaderFault(Element el)
-    throws WSDLException
+  private static SOAPHeaderFault parseSoapHeaderFault(Class parentType,
+                                                      QName elementType,
+                                                      Element el,
+                                                      ExtensionRegistry extReg)
+                                                        throws WSDLException
   {
-    SOAPHeaderFault soapHeaderFault = new SOAPHeaderFault();
+    SOAPHeaderFault soapHeaderFault =
+      (SOAPHeaderFault)extReg.createExtension(parentType, elementType);
     QName message =
       DOMUtils.getQualifiedAttributeValue(el,
                                           Constants.ATTR_MESSAGE,

@@ -4,6 +4,7 @@ import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.http.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 
@@ -15,7 +16,7 @@ public class HTTPAddressSerializer implements ExtensionSerializer,
                                               Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,
@@ -58,7 +59,8 @@ public class HTTPAddressSerializer implements ExtensionSerializer,
                                          ExtensionRegistry extReg)
                                            throws WSDLException
 	{
-    HTTPAddress httpAddress = new HTTPAddress();
+    HTTPAddress httpAddress = (HTTPAddress)extReg.createExtension(parentType,
+                                                                  elementType);
     String locationURI = DOMUtils.getAttribute(el, Constants.ATTR_LOCATION);
     String requiredStr = DOMUtils.getAttributeNS(el,
                                                  Constants.NS_URI_WSDL,

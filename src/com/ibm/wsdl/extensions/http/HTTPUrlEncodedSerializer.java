@@ -4,6 +4,7 @@ import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.http.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.xml.*;
 
@@ -15,7 +16,7 @@ public class HTTPUrlEncodedSerializer implements ExtensionSerializer,
                                                  Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,
@@ -54,7 +55,8 @@ public class HTTPUrlEncodedSerializer implements ExtensionSerializer,
                                          ExtensionRegistry extReg)
                                            throws WSDLException
 	{
-    HTTPUrlEncoded httpUrlEncoded = new HTTPUrlEncoded();
+    HTTPUrlEncoded httpUrlEncoded =
+      (HTTPUrlEncoded)extReg.createExtension(parentType, elementType);
     String requiredStr = DOMUtils.getAttributeNS(el,
                                                  Constants.NS_URI_WSDL,
                                                  Constants.ATTR_REQUIRED);

@@ -3,18 +3,21 @@ package com.ibm.wsdl.extensions.soap;
 import java.util.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.soap.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class SOAPBody implements ExtensibilityElement, java.io.Serializable
+public class SOAPHeaderImpl implements SOAPHeader
 {
-  protected QName elementType = SOAPConstants.Q_ELEM_SOAP_BODY;
+  protected QName elementType = SOAPConstants.Q_ELEM_SOAP_HEADER;
   protected Boolean required = null;
-  protected List parts = null;
+  protected QName message = null;
+  protected String part = null;
   protected String use = null;
   protected List encodingStyles = null;
   protected String namespaceURI = null;
+  protected List soapHeaderFaults = new Vector();
 
   /**
    * Set the type of this extensibility element.
@@ -55,25 +58,43 @@ public class SOAPBody implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Set the parts for this SOAP body.
+   * Set the message for this SOAP header.
    *
-   * @param parts the desired parts
+   * @param message the desired message
    */
-  public void setParts(List parts)
+  public void setMessage(QName message)
   {
-    this.parts = parts;
+    this.message = message;
   }
 
   /**
-   * Get the parts for this SOAP body.
+   * Get the message for this SOAP header.
    */
-  public List getParts()
+  public QName getMessage()
   {
-    return parts;
+    return message;
   }
 
   /**
-   * Set the use for this SOAP body.
+   * Set the part for this SOAP header.
+   *
+   * @param part the desired part
+   */
+  public void setPart(String part)
+  {
+    this.part = part;
+  }
+
+  /**
+   * Get the part for this SOAP header.
+   */
+  public String getPart()
+  {
+    return part;
+  }
+
+  /**
+   * Set the use for this SOAP header.
    *
    * @param use the desired use
    */
@@ -83,7 +104,7 @@ public class SOAPBody implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Get the use for this SOAP body.
+   * Get the use for this SOAP header.
    */
   public String getUse()
   {
@@ -91,7 +112,7 @@ public class SOAPBody implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Set the encodingStyles for this SOAP body.
+   * Set the encodingStyles for this SOAP header.
    *
    * @param encodingStyles the desired encodingStyles
    */
@@ -101,7 +122,7 @@ public class SOAPBody implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Get the encodingStyles for this SOAP body.
+   * Get the encodingStyles for this SOAP header.
    */
   public List getEncodingStyles()
   {
@@ -109,9 +130,9 @@ public class SOAPBody implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Set the namespace URI for this SOAP body.
+   * Set the namespace URI for this SOAP header.
    *
-   * @param namespace the desired namespace URI
+   * @param namespaceURI the desired namespace URI
    */
   public void setNamespaceURI(String namespaceURI)
   {
@@ -119,23 +140,38 @@ public class SOAPBody implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Get the namespace URI for this SOAP body.
+   * Get the namespace URI for this SOAP header.
    */
   public String getNamespaceURI()
   {
     return namespaceURI;
   }
 
+  public void addSOAPHeaderFault(SOAPHeaderFault soapHeaderFault)
+  {
+    soapHeaderFaults.add(soapHeaderFault);
+  }
+
+  public List getSOAPHeaderFaults()
+  {
+    return soapHeaderFaults;
+  }
+
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("SOAPBody (" + elementType + "):");
+    strBuf.append("SOAPHeader (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (parts != null)
+    if (message != null)
     {
-      strBuf.append("\nparts=" + parts);
+      strBuf.append("\nmessage=" + message);
+    }
+
+    if (part != null)
+    {
+      strBuf.append("\npart=" + part);
     }
 
     if (use != null)
@@ -151,6 +187,11 @@ public class SOAPBody implements ExtensibilityElement, java.io.Serializable
     if (namespaceURI != null)
     {
       strBuf.append("\nnamespaceURI=" + namespaceURI);
+    }
+
+    if (soapHeaderFaults != null)
+    {
+      strBuf.append("\nsoapHeaderFaults=" + soapHeaderFaults);
     }
 
     return strBuf.toString();

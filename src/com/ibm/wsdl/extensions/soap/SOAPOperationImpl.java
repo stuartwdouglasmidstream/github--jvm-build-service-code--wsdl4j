@@ -2,6 +2,7 @@ package com.ibm.wsdl.extensions.soap;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.soap.*;
 
 /**
  * This class stores information associated with a SOAP operation that
@@ -11,8 +12,7 @@ import javax.wsdl.extensions.*;
  * @author Nirmal Mukhi (nmukhi@us.ibm.com)
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class SOAPOperation implements ExtensibilityElement,
-                                      java.io.Serializable
+public class SOAPOperationImpl implements SOAPOperation
 {
   protected QName elementType = SOAPConstants.Q_ELEM_SOAP_OPERATION;
   protected Boolean required = null;

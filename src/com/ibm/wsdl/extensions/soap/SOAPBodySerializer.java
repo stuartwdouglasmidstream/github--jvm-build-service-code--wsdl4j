@@ -4,6 +4,9 @@ import java.io.*;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+// MIMEPart.class is needed so <soap:body> can be indented properly.
+import javax.wsdl.extensions.mime.*;
+import javax.wsdl.extensions.soap.*;
 import com.ibm.wsdl.*;
 // MIMEPart.class is needed so <soap:body> can be indented properly.
 import com.ibm.wsdl.extensions.mime.*;
@@ -18,7 +21,7 @@ public class SOAPBodySerializer implements ExtensionSerializer,
                                            Serializable
 {
   public void marshall(Class parentType,
-                       Class extensionType,
+                       QName elementType,
                        ExtensibilityElement extension,
                        PrintWriter pw,
                        Definition def,
@@ -74,7 +77,8 @@ public class SOAPBodySerializer implements ExtensionSerializer,
                                          ExtensionRegistry extReg)
                                            throws WSDLException
   {
-    SOAPBody soapBody = new SOAPBody();
+    SOAPBody soapBody = (SOAPBody)extReg.createExtension(parentType,
+                                                         elementType);
     String partsStr = DOMUtils.getAttribute(el, SOAPConstants.ATTR_PARTS);
     String use = DOMUtils.getAttribute(el, SOAPConstants.ATTR_USE);
     String encStyleStr = DOMUtils.getAttribute(el,

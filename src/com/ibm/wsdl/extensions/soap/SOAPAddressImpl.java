@@ -2,16 +2,17 @@ package com.ibm.wsdl.extensions.soap;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.soap.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class SOAPBinding implements ExtensibilityElement, java.io.Serializable
+public class SOAPAddressImpl implements SOAPAddress
 {
-  protected QName elementType = SOAPConstants.Q_ELEM_SOAP_BINDING;
+  protected QName elementType = SOAPConstants.Q_ELEM_SOAP_ADDRESS;
+  // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
-  protected String style = null;
-  protected String transportURI = null;
+  protected String locationURI = null;
 
   /**
    * Set the type of this extensibility element.
@@ -52,60 +53,33 @@ public class SOAPBinding implements ExtensibilityElement, java.io.Serializable
   }
 
   /**
-   * Set the style for this SOAP binding.
+   * Set the location URI for this SOAP address.
    *
-   * @param style the desired style
+   * @param locationURI the desired location URI
    */
-  public void setStyle(String style)
+  public void setLocationURI(String locationURI)
   {
-    this.style = style;
+    this.locationURI = locationURI;
   }
 
   /**
-   * Get the style for this SOAP binding.
+   * Get the location URI for this SOAP address.
    */
-  public String getStyle()
+  public String getLocationURI()
   {
-    return style;
-  }
-
-  /**
-   * Set the SOAP transport URI to be used for communicating 
-   * with this binding.
-   *
-   * @param transportURI the URI describing the transport 
-   * to be used
-   */
-  public void setTransportURI(String transportURI)
-  {
-    this.transportURI = transportURI;
-  }
-
-  /**
-   * Get the transport URI to be used with this binding.
-   *
-   * @return the transport URI to be used
-   */
-  public String getTransportURI()
-  {
-    return transportURI;
+    return locationURI;
   }
 
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("SOAPBinding (" + elementType + "):");
+    strBuf.append("SOAPAddress (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (transportURI != null)
+    if (locationURI != null)
     {
-      strBuf.append("\ntransportURI=" + transportURI);
-    }
-
-    if (style != null)
-    {
-      strBuf.append("\nstyle=" + style);
+      strBuf.append("\nlocationURI=" + locationURI);
     }
 
     return strBuf.toString();

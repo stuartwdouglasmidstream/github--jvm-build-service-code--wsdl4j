@@ -1,18 +1,17 @@
-package com.ibm.wsdl.extensions.mime;
+package com.ibm.wsdl.extensions.http;
 
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.http.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class MIMEContent implements ExtensibilityElement, java.io.Serializable
+public class HTTPUrlEncodedImpl implements HTTPUrlEncoded
 {
-  protected QName elementType = MIMEConstants.Q_ELEM_MIME_CONTENT;
+  protected QName elementType = HTTPConstants.Q_ELEM_HTTP_URL_ENCODED;
   // Uses the wrapper type so we can tell if it was set or not.
   protected Boolean required = null;
-  protected String part = null;
-  protected String type = null;
 
   /**
    * Set the type of this extensibility element.
@@ -52,58 +51,12 @@ public class MIMEContent implements ExtensibilityElement, java.io.Serializable
     return required;
   }
 
-  /**
-   * Set the part for this MIME content.
-   *
-   * @param part the desired part
-   */
-  public void setPart(String part)
-  {
-    this.part = part;
-  }
-
-  /**
-   * Get the part for this MIME content.
-   */
-  public String getPart()
-  {
-    return part;
-  }
-
-  /**
-   * Set the type for this MIME content.
-   *
-   * @param type the desired type
-   */
-  public void setType(String type)
-  {
-    this.type = type;
-  }
-
-  /**
-   * Get the type for this MIME content.
-   */
-  public String getType()
-  {
-    return type;
-  }
-
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("MIMEContent (" + elementType + "):");
+    strBuf.append("HTTPUrlEncoded (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
-
-    if (part != null)
-    {
-      strBuf.append("\npart=" + part);
-    }
-
-    if (type != null)
-    {
-      strBuf.append("\ntype=" + type);
-    }
 
     return strBuf.toString();
   }

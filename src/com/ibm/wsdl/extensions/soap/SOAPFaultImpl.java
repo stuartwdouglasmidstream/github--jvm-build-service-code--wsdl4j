@@ -3,17 +3,16 @@ package com.ibm.wsdl.extensions.soap;
 import java.util.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.soap.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public class SOAPHeaderFault implements ExtensibilityElement,
-                                        java.io.Serializable
+public class SOAPFaultImpl implements SOAPFault
 {
-  protected QName elementType = SOAPConstants.Q_ELEM_SOAP_HEADER_FAULT;
+  protected QName elementType = SOAPConstants.Q_ELEM_SOAP_FAULT;
   protected Boolean required = null;
-  protected QName message = null;
-  protected String part = null;
+  protected String name = null;
   protected String use = null;
   protected List encodingStyles = null;
   protected String namespaceURI = null;
@@ -57,43 +56,25 @@ public class SOAPHeaderFault implements ExtensibilityElement,
   }
 
   /**
-   * Set the message for this SOAP header fault.
+   * Set the name for this SOAP fault.
    *
-   * @param message the desired message
+   * @param name the desired name
    */
-  public void setMessage(QName message)
+  public void setName(String name)
   {
-    this.message = message;
+    this.name = name;
   }
 
   /**
-   * Get the message for this SOAP header fault.
+   * Get the name for this SOAP fault.
    */
-  public QName getMessage()
+  public String getName()
   {
-    return message;
+    return name;
   }
 
   /**
-   * Set the part for this SOAP header fault.
-   *
-   * @param part the desired part
-   */
-  public void setPart(String part)
-  {
-    this.part = part;
-  }
-
-  /**
-   * Get the part for this SOAP header fault.
-   */
-  public String getPart()
-  {
-    return part;
-  }
-
-  /**
-   * Set the use for this SOAP header fault.
+   * Set the use for this SOAP fault.
    *
    * @param use the desired use
    */
@@ -103,7 +84,7 @@ public class SOAPHeaderFault implements ExtensibilityElement,
   }
 
   /**
-   * Get the use for this SOAP header fault.
+   * Get the use for this SOAP fault.
    */
   public String getUse()
   {
@@ -111,7 +92,7 @@ public class SOAPHeaderFault implements ExtensibilityElement,
   }
 
   /**
-   * Set the encodingStyles for this SOAP header fault.
+   * Set the encodingStyles for this SOAP fault.
    *
    * @param encodingStyles the desired encodingStyles
    */
@@ -121,7 +102,7 @@ public class SOAPHeaderFault implements ExtensibilityElement,
   }
 
   /**
-   * Get the encodingStyles for this SOAP header fault.
+   * Get the encodingStyles for this SOAP fault.
    */
   public List getEncodingStyles()
   {
@@ -129,7 +110,7 @@ public class SOAPHeaderFault implements ExtensibilityElement,
   }
 
   /**
-   * Set the namespace URI for this SOAP header fault.
+   * Set the namespace URI for this SOAP fault.
    *
    * @param namespaceURI the desired namespace URI
    */
@@ -139,7 +120,7 @@ public class SOAPHeaderFault implements ExtensibilityElement,
   }
 
   /**
-   * Get the namespace URI for this SOAP header fault.
+   * Get the namespace URI for this SOAP fault.
    */
   public String getNamespaceURI()
   {
@@ -150,17 +131,12 @@ public class SOAPHeaderFault implements ExtensibilityElement,
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("SOAPHeaderFault (" + elementType + "):");
+    strBuf.append("SOAPFault (" + elementType + "):");
     strBuf.append("\nrequired=" + required);
 
-    if (message != null)
+    if (name != null)
     {
-      strBuf.append("\nmessage=" + message);
-    }
-
-    if (part != null)
-    {
-      strBuf.append("\npart=" + part);
+      strBuf.append("\nname=" + name);
     }
 
     if (use != null)
