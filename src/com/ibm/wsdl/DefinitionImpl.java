@@ -141,6 +141,11 @@ public class DefinitionImpl implements Definition
     */
    public String getNamespace(String prefix)
    {
+     if (prefix == null)
+     {
+       prefix = "";
+     }
+
      return (String)namespaces.get(prefix);
    }
 
