@@ -1,9 +1,13 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import java.util.*;
 import org.w3c.dom.*;
-import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
+import javax.wsdl.extensions.AttributeExtensible;
 
 /**
  * This interface represents a port type. It contains information about

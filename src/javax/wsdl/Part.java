@@ -1,9 +1,12 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
-import java.util.*;
-import org.w3c.dom.*;
 import javax.xml.namespace.*;
-import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.AttributeExtensible;
+import org.w3c.dom.*;
 
 /**
  * This interface represents a message part and contains the part's

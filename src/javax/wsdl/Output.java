@@ -1,7 +1,11 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package javax.wsdl;
 
 import org.w3c.dom.*;
-import javax.wsdl.extensions.*;
+import javax.wsdl.extensions.AttributeExtensible;
 
 /**
  * This interface represents an output message, and contains the name
