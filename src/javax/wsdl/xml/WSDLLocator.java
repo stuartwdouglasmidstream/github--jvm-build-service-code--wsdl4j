@@ -10,6 +10,8 @@ import org.xml.sax.*;
  * retaining the ability to resolve imported documents using relative
  * URIs.
  *
+ * @author Owen Burroughs (owenb@uk.ibm.com)
+ *
  * @see WSDLReader#readWSDL(WSDLLocator)
  */
 public interface WSDLLocator
