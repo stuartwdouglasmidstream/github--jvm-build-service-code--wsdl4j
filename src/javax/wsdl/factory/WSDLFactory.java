@@ -3,46 +3,46 @@ package javax.wsdl.factory;
 import java.io.*;
 import java.util.*;
 import javax.wsdl.*;
+import javax.wsdl.xml.*;
 
 /**
  * This abstract class defines a factory API that enables applications
- * to obtain a DefinitionFactory capable of producing new Definition
- * instances. The WSDLReader and WSDLWriter interfaces should also
- * probably be abstracted in a similar manner.
+ * to obtain a WSDLFactory capable of producing new Definitions, new
+ * WSDLReaders, and new WSDLWriters.
  * 
  * Some ideas used here have been shamelessly copied from the
  * wonderful JAXP and Xerces work.
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public abstract class DefinitionFactory
+public abstract class WSDLFactory
 {
   private static final String PROPERTY_NAME =
-    "javax.wsdl.factory.DefinitionFactory";
+    "javax.wsdl.factory.WSDLFactory";
   private static final String PROPERTY_FILE_NAME =
     "wsdl.properties";
   private static final String DEFAULT_FACTORY_IMPL_NAME =
-    "com.ibm.wsdl.factory.DefinitionFactoryImpl";
+    "com.ibm.wsdl.factory.WSDLFactoryImpl";
 
   private static String fullPropertyFileName = null;
 
   /**
-   * Get a new instance of a DefinitionFactory. This method
+   * Get a new instance of a WSDLFactory. This method
    * follows (almost) the same basic sequence of steps that JAXP
    * follows to determine the fully-qualified class name of the
-   * class which implements DefinitionFactory. The steps (in order)
+   * class which implements WSDLFactory. The steps (in order)
    * are:
    *<pre>
-   *  Check the javax.wsdl.factory.DefinitionProperty system property.
+   *  Check the javax.wsdl.factory.WSDLFactory system property.
    *  Check the lib/wsdl.properties file in the JRE directory. The key
    * will have the same name as the above system property.
    *  Use the default value.
    *</pre>
-   * Once an instance of a DefinitionFactory is obtained, invoke
-   * newDefinition() on it to programmatically create a new instance
-   * of a Definition.
+   * Once an instance of a WSDLFactory is obtained, invoke
+   * newDefinition(), newWSDLReader(), or newWSDLWriter(), to create
+   * the desired instances.
    */
-  public static DefinitionFactory newInstance() throws WSDLException
+  public static WSDLFactory newInstance() throws WSDLException
   {
     String factoryImplName = findFactoryImplName();
 
@@ -50,17 +50,17 @@ public abstract class DefinitionFactory
   }
 
   /**
-   * Get a new instance of a DefinitionFactory. This method
+   * Get a new instance of a WSDLFactory. This method
    * returns an instance of the class factoryImplName.
-   * Once an instance of a DefinitionFactory is obtained, invoke
-   * newDefinition() on it to programmatically create a new instance
-   * of a Definition.
+   * Once an instance of a WSDLFactory is obtained, invoke
+   * newDefinition(), newWSDLReader(), or newWSDLWriter(), to create
+   * the desired instances.
    *
    * @param factoryImplName the fully-qualified class name of the
    * class which provides a concrete implementation of the abstract
-   * class DefinitionFactory.
+   * class WSDLFactory.
    */
-  public static DefinitionFactory newInstance(String factoryImplName)
+  public static WSDLFactory newInstance(String factoryImplName)
     throws WSDLException
   {
     if (factoryImplName != null)
@@ -69,7 +69,7 @@ public abstract class DefinitionFactory
       {
         Class cl = Class.forName(factoryImplName);
 
-        return (DefinitionFactory)cl.newInstance();
+        return (WSDLFactory)cl.newInstance();
       }
       catch (Exception e)
       {
@@ -97,6 +97,16 @@ public abstract class DefinitionFactory
    * Create a new instance of a Definition.
    */
   public abstract Definition newDefinition();
+
+  /**
+   * Create a new instance of a WSDLReader.
+   */
+  public abstract WSDLReader newWSDLReader();
+
+  /**
+   * Create a new instance of a WSDLWriter.
+   */
+  public abstract WSDLWriter newWSDLWriter();
 
   private static String findFactoryImplName()
   {

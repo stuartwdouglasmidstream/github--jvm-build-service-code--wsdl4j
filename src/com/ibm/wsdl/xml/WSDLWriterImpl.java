@@ -7,6 +7,7 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.factory.*;
 import javax.wsdl.xml.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
@@ -823,8 +824,9 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (argv.length == 1)
     {
-      WSDLReader wsdlReader = new WSDLReaderImpl();
-      WSDLWriter wsdlWriter = new WSDLWriterImpl();
+      WSDLFactory wsdlFactory = WSDLFactory.newInstance();
+      WSDLReader  wsdlReader  = wsdlFactory.newWSDLReader();
+      WSDLWriter  wsdlWriter  = wsdlFactory.newWSDLWriter();
 
       wsdlWriter.writeWSDL(wsdlReader.readWSDL(null, argv[0]), System.out);
     }

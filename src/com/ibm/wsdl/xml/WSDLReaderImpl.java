@@ -63,7 +63,7 @@ public class WSDLReaderImpl implements WSDLReader
   {
     checkElementName(defEl, Constants.Q_ELEM_DEFINITIONS);
 
-    DefinitionFactory factory = DefinitionFactory.newInstance();
+    WSDLFactory factory = WSDLFactory.newInstance();
     Definition def = factory.newDefinition();
     String name = DOMUtils.getAttribute(defEl, Constants.ATTR_NAME);
     String targetNamespace = DOMUtils.getAttribute(defEl,
