@@ -18,22 +18,25 @@ public interface WSDLLocator
 {
   /**
    * Returns an InputSource "pointed at" the base document.
+   * 
+   * @return the InputSource object or null if the base document could
+   * not be found
    */
   public InputSource getBaseInputSource();
 
   /**
-   * Returns an InputSource pointed at an imported wsdl document whose
-   * parent document was located at parentLocation and whose
-   * relative location to the parent document is specified by
-   * relativeLocation.
+   * Returns an InputSource "pointed at" an imported wsdl document.
    *
    * @param parentLocation a URI specifying the location of the
-   * document doing the importing.
-   * @param relativeLocation a URI specifying the location of the
-   * document to import, relative to the parent document's location.
+   * document doing the importing. This can be null if the import location
+   * is not relative to the parent location.
+   * @param importLocation a URI specifying the location of the
+   * document to import. This might be relative to the parent document's
+   * location.
+   * @return the InputSource object or null if the import cannot be found.
    */
   public InputSource getImportInputSource(String parentLocation,
-                                          String relativeLocation);
+                                          String importLocation);
 
   /**
    * Returns a URI representing the location of the base document.
@@ -42,7 +45,8 @@ public interface WSDLLocator
 
   /**
    * Returns a URI representing the location of the last import document
-   * to be resolved. This is useful when resolving nested imports.
+   * to be resolved. This is used in resolving nested imports where an
+   * import location is relative to the parent document.
    */
   public String getLatestImportURI();
 }
