@@ -4,6 +4,7 @@ import java.net.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 import javax.wsdl.*;
+import javax.wsdl.extensions.*;
 
 /**
  * This interface describes a collection of methods
@@ -22,6 +23,48 @@ public interface WSDLReader
   public void setImportDocuments(boolean importDocuments);
 
   public boolean getImportDocuments();
+
+  /**
+   * Set the extension registry to be used when reading
+   * WSDL documents into a WSDL definition. If an
+   * extension registry is set, that is the extension
+   * registry that will be set as the extensionRegistry
+   * property of the definitions resulting from invoking
+   * readWSDL(...). Default is null.
+   *
+   * @param extReg the extension registry to use for new
+   * definitions
+   */
+  public void setExtensionRegistry(ExtensionRegistry extReg);
+
+  /**
+   * Get the extension registry, if one was set. Default is
+   * null.
+   */
+  public ExtensionRegistry getExtensionRegistry();
+
+  /**
+   * Set a different factory implementation to use for
+   * creating definitions when reading WSDL documents.
+   * As some WSDLReader implementations may only be
+   * capable of creating definitions using the same
+   * factory implementation from which the reader was
+   * obtained, this method is optional. Default is null.
+   *
+   * @param factoryImplName the fully-qualified class name of the
+   * class which provides a concrete implementation of the abstract
+   * class WSDLFactory.
+   * @throws UnsupportedOperationException if this method
+   * is invoked on an implementation which does not
+   * support it.
+   */
+  public void setFactoryImplName(String factoryImplName)
+    throws UnsupportedOperationException;
+
+  /**
+   * Get the factoryImplName, if one was set. Default is null.
+   */
+  public String getFactoryImplName();
 
   /**
    * Read the WSDL document accessible via the specified

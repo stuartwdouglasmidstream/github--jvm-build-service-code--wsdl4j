@@ -3,6 +3,8 @@ package com.ibm.wsdl.extensions;
 import org.w3c.dom.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import com.ibm.wsdl.*;
+import com.ibm.wsdl.util.xml.*;
 
 /**
  * @author Matthew J. Duftler (duftler@us.ibm.com)
@@ -18,8 +20,17 @@ public class UnknownExtensionDeserializer implements ExtensionDeserializer,
                                            throws WSDLException
   {
     UnknownExtensibilityElement unknownExt = new UnknownExtensibilityElement();
+    String requiredStr = DOMUtils.getAttributeNS(el,
+                                                 Constants.NS_URI_WSDL,
+                                                 Constants.ATTR_REQUIRED);
 
     unknownExt.setElementType(elementType);
+
+    if (requiredStr != null)
+    {
+      unknownExt.setRequired(new Boolean(requiredStr));
+    }
+
     unknownExt.setElement(el);
 
     return unknownExt;
