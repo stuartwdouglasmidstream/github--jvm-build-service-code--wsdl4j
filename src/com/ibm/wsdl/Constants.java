@@ -1,6 +1,9 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl;
 
-import java.util.*;
 import javax.xml.namespace.*;
 
 /**
@@ -126,22 +129,4 @@ public class Constants
   public static final String FEATURE_IMPORT_DOCUMENTS =
     "javax.wsdl.importDocuments";
 
-  // For handling XSD documents (temporary).
-  public static final String NS_URI_XSD_1999 =
-    "http://www.w3.org/1999/XMLSchema";
-  public static final String NS_URI_XSD_2000 =
-    "http://www.w3.org/2000/10/XMLSchema";
-  public static final String NS_URI_XSD_2001 =
-    "http://www.w3.org/2001/XMLSchema";
-  public static final String SCHEMA = "schema";
-  public static final QName Q_ELEM_XSD_1999 =
-    new QName(NS_URI_XSD_1999, SCHEMA);
-  public static final QName Q_ELEM_XSD_2000 =
-    new QName(NS_URI_XSD_2000, SCHEMA);
-  public static final QName Q_ELEM_XSD_2001 =
-    new QName(NS_URI_XSD_2001, SCHEMA);
-  public static final List XSD_QNAME_LIST =
-    Arrays.asList(new QName[]{Q_ELEM_XSD_1999,
-                              Q_ELEM_XSD_2000,
-                              Q_ELEM_XSD_2001});
 }
