@@ -362,7 +362,24 @@ public class StringUtils
 
       if (content instanceof InputStream)
       {
-        return new InputStreamReader((InputStream)content);
+        Reader in = null;
+
+        /*
+          Create an InputStreamReader appropriate to the codepage of the
+          URL content. If the content is from the local file system, the
+          encoding can be defaulted. Otherwise, assume an ISO Latin 1
+          encoding.
+        */
+        if (url.getProtocol().equals("file"))
+        {
+          in = new InputStreamReader((InputStream)content);
+        }
+        else
+        {
+          in = new InputStreamReader((InputStream)content, "ISO-8859-1");
+        }
+
+        return in;
       }
       else
       {
