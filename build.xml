@@ -41,8 +41,8 @@ Author:
   <target name="init">
     <property name="name" value="wsdl4j"/>
     <property name="Name" value="WSDL4J"/>
-    <property name="version" value="1.0"/>
-    <property name="version.underscore" value="1_0"/>
+    <property name="version" value="1.2"/>
+    <property name="version.underscore" value="1_2"/>
     <property name="year" value="2002"/>
 
     <property name="build.compiler" value="classic"/>
@@ -79,17 +79,24 @@ Author:
   <target name="prepare" depends="init">
     <mkdir dir="${build.dir}"/>
 
-    <uptodate property="javac.notRequired"
-              targetfile="${build.lib}/${name}.jar">
-      <srcfiles dir="${src.dir}">
-        <patternset refid="javac.source.files"/>
-      </srcfiles>
-    </uptodate>
+    <available property="junit.present" classname="junit.framework.TestCase"/>
 
     <uptodate property="javadoc.required"
               targetfile="${build.lib}/${name}.jar">
       <srcfiles dir="${build.dir}" includes="**/*.html"/>
     </uptodate>
+
+    <antcall target="checkDependencies"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Warn the user about missing resources                               -->
+  <!-- =================================================================== -->
+  <target name="checkJUnit" unless="junit.present">
+    <echo message="Warning: JUnit dependencies were not resolved."/>
+  </target>
+  <target name="checkDependencies">
+    <antcall target="checkJUnit"/>
   </target>
 
   <!-- =================================================================== -->
@@ -226,5 +233,27 @@ Author:
   <target name="clean" depends="init">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir.root}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run's WSDL4J through the JWSDL TCK                                  -->
+  <!-- =================================================================== -->
+  <target name="test" depends="compile" if="junit.present">
+    <junit printsummary="on">
+      <sysproperty key="jwsdltck_home" value="./test"/>
+      <sysproperty key="javax.wsdl.factory.WSDLFactoryCandidate"
+                   value="com.ibm.wsdl.factory.WSDLFactoryImpl"/>
+
+      <classpath>
+        <pathelement location="${build.lib}/${name}.jar"/>
+        <pathelement location="${build.lib}/qname.jar"/>
+        <pathelement location="test/lib/jwsdltck.jar"/>
+      </classpath>
+
+      <formatter type="plain"/>
+
+      <test name="com.ibm.wsdl.tck.JWSDLTestSuite"
+            todir="./test"/>
+    </junit>
   </target>
 </project>
