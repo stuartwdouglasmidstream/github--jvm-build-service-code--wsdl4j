@@ -1353,7 +1353,7 @@ public class WSDLReaderImpl implements WSDLReader
     QName messageName =
       DOMUtils.getQualifiedAttributeValue(faultEl,
                                           Constants.ATTR_MESSAGE,
-                                          Constants.ELEM_INPUT,
+                                          Constants.ELEM_FAULT,
                                           false);
 
     if (name != null)
