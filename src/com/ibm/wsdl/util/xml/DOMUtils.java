@@ -251,6 +251,11 @@ public class DOMUtils {
   {
     String tempNSUri = def.getNamespace(prefix);
 
+    if (tempNSUri != null && tempNSUri.equals(namespaceURI))
+    {
+      return;
+    }
+
     while (tempNSUri != null && !tempNSUri.equals(namespaceURI))
     {
       prefix += "_";
