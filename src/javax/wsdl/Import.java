@@ -36,7 +36,7 @@ public interface Import extends java.io.Serializable
 
   /**
    * This property can be used to hang a referenced Definition,
-   * and the top-level Definition (i.e. the one with the <import>)
+   * and the top-level Definition (i.e. the one with the &lt;import&gt;)
    * will use this Definition when resolving referenced WSDL parts.
    * This would need to be made into a generic reference to handle
    * other types of referenced documents.
@@ -45,7 +45,7 @@ public interface Import extends java.io.Serializable
 
   /**
    * This property can be used to hang a referenced Definition,
-   * and the top-level Definition (i.e. the one with the <import>)
+   * and the top-level Definition (i.e. the one with the &lt;import&gt;)
    * will use this Definition when resolving referenced WSDL parts.
    * This would need to be made into a generic reference to handle
    * other types of referenced documents.
