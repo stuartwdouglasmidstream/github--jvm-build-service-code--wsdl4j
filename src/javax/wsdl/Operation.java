@@ -104,7 +104,7 @@ public interface Operation extends java.io.Serializable, ElementExtensible
    * Set the parameter ordering for a request-response,
    * or solicit-response operation.
    *
-   * @param parameterOrder, a list of named parameters
+   * @param parameterOrder a list of named parameters
    * containing the part names to reflect the desired
    * order of parameters for RPC-style operations
    */
