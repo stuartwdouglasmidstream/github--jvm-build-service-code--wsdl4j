@@ -99,6 +99,7 @@ Author:
   <!-- =================================================================== -->
   <patternset id="javac.source.files">
     <include name="javax/wsdl/**/*.java"/>
+    <include name="javax/xml/**/*.java"/>
     <include name="com/ibm/wsdl/*.java"/>
     <include name="com/ibm/wsdl/extensions/**/*.java"/>
     <include name="com/ibm/wsdl/factory/*.java"/>
