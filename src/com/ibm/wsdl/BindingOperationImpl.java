@@ -225,7 +225,7 @@ public class BindingOperationImpl implements BindingOperation
    */
   public Object getExtensionAttribute(QName name)
   {
-    return (QName)extensionAttributes.get(name);
+    return extensionAttributes.get(name);
   }
 
   /**

@@ -105,7 +105,7 @@ public class TypesImpl implements Types
    */
   public Object getExtensionAttribute(QName name)
   {
-    return (QName)extensionAttributes.get(name);
+    return extensionAttributes.get(name);
   }
 
   /**

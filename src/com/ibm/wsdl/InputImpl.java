@@ -118,7 +118,7 @@ public class InputImpl implements Input
    */
   public Object getExtensionAttribute(QName name)
   {
-    return (QName)extensionAttributes.get(name);
+    return extensionAttributes.get(name);
   }
 
   /**

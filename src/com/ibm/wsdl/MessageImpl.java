@@ -178,7 +178,7 @@ public class MessageImpl implements Message
    */
   public Object getExtensionAttribute(QName name)
   {
-    return (QName)extensionAttributes.get(name);
+    return extensionAttributes.get(name);
   }
 
   /**
