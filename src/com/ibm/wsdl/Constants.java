@@ -91,7 +91,7 @@ public class Constants
   public static final String[] BINDING_OUTPUT_ATTR_NAMES =
     new String[]{ATTR_NAME};
   public static final String[] FAULT_ATTR_NAMES =
-    new String[]{ATTR_NAME};
+    new String[]{ATTR_NAME, ATTR_MESSAGE};
   public static final String[] IMPORT_ATTR_NAMES =
     new String[]{ATTR_NAMESPACE, ATTR_LOCATION};
   public static final String[] INPUT_ATTR_NAMES =
