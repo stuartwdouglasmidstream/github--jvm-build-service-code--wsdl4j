@@ -185,16 +185,23 @@ Author:
       <fileset dir="${build.lib}"/>
     </copy>
 
-<!--
     <copy todir="${dist.dir}/docs">
-      <fileset dir="${docs.dir}"/>
+      <fileset dir="${docs.dir}">
+        <include name="*.html"/>
+      </fileset>
+      <filterset>
+        <filter token="version" value="${version.underscore}"/>
+      </filterset>
     </copy>
--->
 
-<!--
+    <copy todir="${dist.dir}/docs">
+      <fileset dir="${docs.dir}">
+        <include name="spec/*.pdf"/>
+      </fileset>
+    </copy>
+
     <copy file="license.html" tofile="${dist.dir}/license.html"/>
     <copy file="readme.txt" tofile="${dist.dir}/readme.txt"/>
--->
 
     <!-- ================================================================= -->
     <!-- Produces the zip file                                             -->
@@ -216,7 +223,7 @@ Author:
       </fileset>
     </copy>
 
-<!--    <copy file="LICENSE" tofile="${dist.dir}/LICENSE"/>-->
+    <copy file="license.html" tofile="${dist.dir}/license.html"/>
     <copy file="${build.file}" tofile="${dist.dir}/${build.file}"/>
 
     <!-- ================================================================= -->
