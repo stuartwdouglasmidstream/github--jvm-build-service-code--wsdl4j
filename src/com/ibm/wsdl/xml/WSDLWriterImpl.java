@@ -31,7 +31,12 @@ public class WSDLWriterImpl implements WSDLWriter
       return;
     }
 
-    pw.print('<' + Constants.ELEM_DEFINITIONS);
+    String tagName =
+      DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                 Constants.ELEM_DEFINITIONS,
+                                 def);
+
+    pw.print('<' + tagName);
 
     QName name = def.getQName();
     String targetNamespace = def.getTargetNamespace();
@@ -50,7 +55,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
     pw.println('>');
 
-    printImports(def.getImports(), pw);
+    printImports(def.getImports(), def, pw);
     printDocumentation(def.getDocumentationElement(), pw);
     printTypes(def.getTypes(), def, pw);
     printMessages(def.getMessages(), def, pw);
@@ -62,7 +67,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
     printExtensibilityElements(Definition.class, extElements, def, pw);
 
-    pw.println("</" + Constants.ELEM_DEFINITIONS + '>');
+    pw.println("</" + tagName + '>');
 
     pw.flush();
   }
@@ -74,13 +79,17 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (services != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_SERVICE,
+                                   def);
       Iterator serviceIterator = services.values().iterator();
 
       while (serviceIterator.hasNext())
       {
         Service service = (Service)serviceIterator.next();
 
-        pw.print("  <" + Constants.ELEM_SERVICE);
+        pw.print("  <" + tagName);
 
         QName name = service.getQName();
 
@@ -100,7 +109,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         printExtensibilityElements(Service.class, extElements, def, pw);
 
-        pw.println("  </" + Constants.ELEM_SERVICE + '>');
+        pw.println("  </" + tagName + '>');
       }
     }
   }
@@ -110,13 +119,17 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (ports != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_PORT,
+                                   def);
       Iterator portIterator = ports.values().iterator();
 
       while (portIterator.hasNext())
       {
         Port port = (Port)portIterator.next();
 
-        pw.print("    <" + Constants.ELEM_PORT);
+        pw.print("    <" + tagName);
 
         DOMUtils.printAttribute(Constants.ATTR_NAME, port.getName(), pw);
 
@@ -138,7 +151,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         printExtensibilityElements(Port.class, extElements, def, pw);
 
-        pw.println("    </" + Constants.ELEM_PORT + '>');
+        pw.println("    </" + tagName + '>');
       }
     }
   }
@@ -150,6 +163,10 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (bindings != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_BINDING,
+                                   def);
       Iterator bindingIterator = bindings.values().iterator();
 
       while (bindingIterator.hasNext())
@@ -158,7 +175,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         if (!binding.isUndefined())
         {
-          pw.print("  <" + Constants.ELEM_BINDING);
+          pw.print("  <" + tagName);
 
           QName name = binding.getQName();
 
@@ -189,7 +206,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
           printBindingOperations(binding.getBindingOperations(), def, pw);
 
-          pw.println("  </" + Constants.ELEM_BINDING + '>');
+          pw.println("  </" + tagName + '>');
         }
       }
     }
@@ -202,6 +219,10 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (bindingOperations != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_OPERATION,
+                                   def);
       Iterator bindingOperationIterator = bindingOperations.iterator();
 
       while (bindingOperationIterator.hasNext())
@@ -209,7 +230,7 @@ public class WSDLWriterImpl implements WSDLWriter
         BindingOperation bindingOperation =
           (BindingOperation)bindingOperationIterator.next();
 
-        pw.print("    <" + Constants.ELEM_OPERATION);
+        pw.print("    <" + tagName);
 
         DOMUtils.printAttribute(Constants.ATTR_NAME,
                                 bindingOperation.getName(),
@@ -230,7 +251,7 @@ public class WSDLWriterImpl implements WSDLWriter
         printBindingOutput(bindingOperation.getBindingOutput(), def, pw);
         printBindingFaults(bindingOperation.getBindingFaults(), def, pw);
 
-        pw.println("    </" + Constants.ELEM_OPERATION + '>');
+        pw.println("    </" + tagName + '>');
       }
     }
   }
@@ -242,7 +263,12 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (bindingInput != null)
     {
-      pw.print("      <" + Constants.ELEM_INPUT);
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_INPUT,
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_NAME,
                               bindingInput.getName(),
@@ -256,7 +282,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
       printExtensibilityElements(BindingInput.class, extElements, def, pw);
 
-      pw.println("      </" + Constants.ELEM_INPUT + '>');
+      pw.println("      </" + tagName + '>');
     }
   }
 
@@ -267,7 +293,12 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (bindingOutput != null)
     {
-      pw.print("      <" + Constants.ELEM_OUTPUT);
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_OUTPUT,
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_NAME,
                               bindingOutput.getName(),
@@ -281,7 +312,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
       printExtensibilityElements(BindingOutput.class, extElements, def, pw);
 
-      pw.println("      </" + Constants.ELEM_OUTPUT + '>');
+      pw.println("      </" + tagName + '>');
     }
   }
 
@@ -292,13 +323,17 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (bindingFaults != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_FAULT,
+                                   def);
       Iterator bindingFaultIterator = bindingFaults.values().iterator();
 
       while (bindingFaultIterator.hasNext())
       {
         BindingFault bindingFault = (BindingFault)bindingFaultIterator.next();
 
-        pw.print("      <" + Constants.ELEM_FAULT);
+        pw.print("      <" + tagName);
 
         DOMUtils.printAttribute(Constants.ATTR_NAME,
                                 bindingFault.getName(),
@@ -312,7 +347,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         printExtensibilityElements(BindingFault.class, extElements, def, pw);
 
-        pw.println("      </" + Constants.ELEM_FAULT + '>');
+        pw.println("      </" + tagName + '>');
       }
     }
   }
@@ -324,6 +359,10 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (portTypes != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_PORT_TYPE,
+                                   def);
       Iterator portTypeIterator = portTypes.values().iterator();
 
       while (portTypeIterator.hasNext())
@@ -332,7 +371,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         if (!portType.isUndefined())
         {
-          pw.print("  <" + Constants.ELEM_PORT_TYPE);
+          pw.print("  <" + tagName);
 
           QName name = portType.getQName();
 
@@ -348,7 +387,7 @@ public class WSDLWriterImpl implements WSDLWriter
           printDocumentation(portType.getDocumentationElement(), pw);
           printOperations(portType.getOperations(), def, pw);
 
-          pw.println("  </" + Constants.ELEM_PORT_TYPE + '>');
+          pw.println("  </" + tagName + '>');
         }
       }
     }
@@ -361,6 +400,10 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (operations != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_OPERATION,
+                                   def);
       Iterator operationIterator = operations.iterator();
 
       while (operationIterator.hasNext())
@@ -369,7 +412,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         if (!operation.isUndefined())
         {
-          pw.print("    <" + Constants.ELEM_OPERATION);
+          pw.print("    <" + tagName);
 
           DOMUtils.printAttribute(Constants.ATTR_NAME,
                                   operation.getName(),
@@ -406,7 +449,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
           printFaults(operation.getFaults(), def, pw);
 
-          pw.println("    </" + Constants.ELEM_OPERATION + '>');
+          pw.println("    </" + tagName + '>');
         }
       }
     }
@@ -419,7 +462,12 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (input != null)
     {
-      pw.print("      <" + Constants.ELEM_INPUT);
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_INPUT,
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_NAME, input.getName(), pw);
 
@@ -445,7 +493,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         printDocumentation(docEl, pw);
 
-        pw.println("      </" + Constants.ELEM_INPUT + '>');
+        pw.println("      </" + tagName + '>');
       }
     }
   }
@@ -457,7 +505,12 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (output != null)
     {
-      pw.print("      <" + Constants.ELEM_OUTPUT);
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_OUTPUT,
+                                   def);
+
+      pw.print("      <" + tagName);
 
       DOMUtils.printAttribute(Constants.ATTR_NAME, output.getName(), pw);
 
@@ -483,7 +536,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         printDocumentation(docEl, pw);
 
-        pw.println("      </" + Constants.ELEM_OUTPUT + '>');
+        pw.println("      </" + tagName + '>');
       }
     }
   }
@@ -495,13 +548,17 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (faults != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_FAULT,
+                                   def);
       Iterator faultIterator = faults.values().iterator();
 
       while (faultIterator.hasNext())
       {
         Fault fault = (Fault)faultIterator.next();
 
-        pw.print("      <" + Constants.ELEM_FAULT);
+        pw.print("      <" + tagName);
 
         DOMUtils.printAttribute(Constants.ATTR_NAME, fault.getName(), pw);
 
@@ -527,7 +584,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
           printDocumentation(docEl, pw);
 
-          pw.println("      </" + Constants.ELEM_FAULT + '>');
+          pw.println("      </" + tagName + '>');
         }
       }
     }
@@ -540,6 +597,10 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (messages != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_MESSAGE,
+                                   def);
       Iterator messageIterator = messages.values().iterator();
 
       while (messageIterator.hasNext())
@@ -548,7 +609,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
         if (!message.isUndefined())
         {
-          pw.print("  <" + Constants.ELEM_MESSAGE);
+          pw.print("  <" + tagName);
 
           QName name = message.getQName();
 
@@ -564,7 +625,7 @@ public class WSDLWriterImpl implements WSDLWriter
           printDocumentation(message.getDocumentationElement(), pw);
           printParts(message.getOrderedParts(null), def, pw);
 
-          pw.println("  </" + Constants.ELEM_MESSAGE + '>');
+          pw.println("  </" + tagName + '>');
         }
       }
     }
@@ -575,13 +636,17 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (parts != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_PART,
+                                   def);
       Iterator partIterator = parts.iterator();
 
       while (partIterator.hasNext())
       {
         Part part = (Part)partIterator.next();
 
-        pw.print("    <" + Constants.ELEM_PART);
+        pw.print("    <" + tagName);
 
         DOMUtils.printAttribute(Constants.ATTR_NAME, part.getName(), pw);
         DOMUtils.printQualifiedAttribute(Constants.ATTR_ELEMENT,
@@ -605,7 +670,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
           printDocumentation(docEl, pw);
 
-          pw.println("      </" + Constants.ELEM_PART + '>');
+          pw.println("      </" + tagName + '>');
         }
       }
     }
@@ -628,7 +693,11 @@ public class WSDLWriterImpl implements WSDLWriter
   {
     if (types != null)
     {
-      pw.println("  <" + Constants.ELEM_TYPES + '>');
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_TYPES,
+                                   def);
+      pw.println("  <" + tagName + '>');
 
       printDocumentation(types.getDocumentationElement(), pw);
 
@@ -636,15 +705,19 @@ public class WSDLWriterImpl implements WSDLWriter
 
       printExtensibilityElements(Types.class, extElements, def, pw);
 
-      pw.println("  </" + Constants.ELEM_TYPES + '>');
+      pw.println("  </" + tagName + '>');
     }
   }
 
-  private static void printImports(Map imports, PrintWriter pw)
+  private static void printImports(Map imports, Definition def, PrintWriter pw)
     throws WSDLException
   {
     if (imports != null)
     {
+      String tagName =
+        DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
+                                   Constants.ELEM_IMPORT,
+                                   def);
       Iterator importListIterator = imports.values().iterator();
 
       while (importListIterator.hasNext())
@@ -656,7 +729,7 @@ public class WSDLWriterImpl implements WSDLWriter
         {
           Import importDef = (Import)importIterator.next();
 
-          pw.print("  <" + Constants.ELEM_IMPORT);
+          pw.print("  <" + tagName);
 
           DOMUtils.printAttribute(Constants.ATTR_NAMESPACE,
                                   importDef.getNamespaceURI(),
@@ -677,7 +750,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
             printDocumentation(docEl, pw);
 
-            pw.println("      </" + Constants.ELEM_IMPORT + '>');
+            pw.println("      </" + tagName + '>');
           }
         }
       }
