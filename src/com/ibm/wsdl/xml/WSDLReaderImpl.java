@@ -9,6 +9,7 @@ import org.xml.sax.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.factory.*;
+import javax.wsdl.xml.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
@@ -22,7 +23,7 @@ import com.ibm.wsdl.util.xml.*;
  * @author Matthew J. Duftler
  * @author Nirmal Mukhi
  */
-public class WSDLReader
+public class WSDLReaderImpl implements WSDLReader
 {
   // Used for determining the style of operations.
   private static final List STYLE_ONE_WAY =
@@ -34,32 +35,31 @@ public class WSDLReader
   private static final List STYLE_NOTIFICATION =
     Arrays.asList(new String[]{Constants.ELEM_OUTPUT});
 
-  private static boolean verbose = true;
-  private static boolean importDocuments = true;
+  private boolean verbose = true;
+  private boolean importDocuments = true;
 
-  public static void setVerbose(boolean verb)
+  public void setVerbose(boolean verbose)
   {
-    verbose = verb;
+    this.verbose = verbose;
   }
 
-  public static boolean getVerbose()
+  public boolean getVerbose()
   {
     return verbose;
   }
 
-  public static void setImportDocuments(boolean importDocs)
+  public void setImportDocuments(boolean importDocuments)
   {
-    importDocuments = importDocs;
+    this.importDocuments = importDocuments;
   }
 
-  public static boolean getImportDocuments()
+  public boolean getImportDocuments()
   {
     return importDocuments;
   }
 
-  private static Definition parseDefinitions(URL documentBase,
-                                             Element defEl)
-                                               throws WSDLException
+  private Definition parseDefinitions(URL documentBase, Element defEl)
+    throws WSDLException
   {
     checkElementName(defEl, Constants.Q_ELEM_DEFINITIONS);
 
@@ -151,7 +151,7 @@ public class WSDLReader
     return def;
   }
 
-  private static Import parseImport(Element importEl, Definition def)
+  private Import parseImport(Element importEl, Definition def)
     throws WSDLException
   {
     Import importDef = def.createImport();
@@ -1010,8 +1010,8 @@ public class WSDLReader
    * WSDL XML definition.
    * @return the definition.
    */
-  public static Definition readWSDL(URL contextURL,
-                                    String wsdlURI) throws WSDLException
+  public Definition readWSDL(URL contextURL, String wsdlURI)
+    throws WSDLException
   {
     try
     {
@@ -1054,8 +1054,7 @@ public class WSDLReader
    * document obeying the WSDL schema.
    * @return the definition described in the document.
    */
-  public static Definition readWSDL(URL documentBase,
-                                    Document wsdlDocument)
+  public Definition readWSDL(URL documentBase, Document wsdlDocument)
     throws WSDLException
   {
     Element defEl = wsdlDocument.getDocumentElement();
@@ -1075,8 +1074,7 @@ public class WSDLReader
    * @return the definition described in the document pointed to
    * by the InputSource.
    */
-  public static Definition readWSDL(URL documentBase,
-                                    InputSource inputSource)
+  public Definition readWSDL(URL documentBase, InputSource inputSource)
     throws WSDLException
   {
     return readWSDL(documentBase,

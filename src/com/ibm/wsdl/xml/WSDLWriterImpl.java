@@ -7,6 +7,7 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
+import javax.wsdl.xml.*;
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
@@ -19,7 +20,7 @@ import com.ibm.wsdl.util.xml.*;
  * @author Matthew J. Duftler
  * @author Nirmal Mukhi
  */
-public class WSDLWriter
+public class WSDLWriterImpl implements WSDLWriter
 {
   private static void printDefinition(Definition def, PrintWriter pw)
     throws WSDLException
@@ -763,7 +764,7 @@ public class WSDLWriter
   /**
    * Return a document generated from the specified WSDL model.
    */
-  public static Document getDocument(Definition wsdlDef) throws WSDLException
+  public Document getDocument(Definition wsdlDef) throws WSDLException
   {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
@@ -782,7 +783,7 @@ public class WSDLWriter
    * @param wsdlDef the WSDL definition to be written.
    * @param sink the Writer to write the xml to.
    */
-  public static void writeWSDL(Definition wsdlDef, Writer sink)
+  public void writeWSDL(Definition wsdlDef, Writer sink)
     throws WSDLException
   {
     PrintWriter pw = new PrintWriter(sink);
@@ -798,7 +799,7 @@ public class WSDLWriter
    * @param wsdlDef the WSDL definition to be written.
    * @param sink the OutputStream to write the xml to.
    */
-  public static void writeWSDL(Definition wsdlDef, OutputStream sink)
+  public void writeWSDL(Definition wsdlDef, OutputStream sink)
     throws WSDLException
   {
     Writer writer = new OutputStreamWriter(sink);
@@ -811,7 +812,7 @@ public class WSDLWriter
    *<code>
    *<pre>Usage:</pre>
    *<p>
-   *<pre>  java com.ibm.wsdl.xml.WSDLWriter filename|URL</pre>
+   *<pre>  java com.ibm.wsdl.xml.WSDLWriterImpl filename|URL</pre>
    *<p>
    *<pre>    This test driver simply reads a WSDL document into a model
    *    (using a WSDLReader), and then serializes it back to
@@ -822,13 +823,16 @@ public class WSDLWriter
   {
     if (argv.length == 1)
     {
-      writeWSDL(WSDLReader.readWSDL(null, argv[0]), System.out);
+      WSDLReader wsdlReader = new WSDLReaderImpl();
+      WSDLWriter wsdlWriter = new WSDLWriterImpl();
+
+      wsdlWriter.writeWSDL(wsdlReader.readWSDL(null, argv[0]), System.out);
     }
     else
     {
       System.err.println("Usage:");
       System.err.println();
-      System.err.println("  java " + WSDLWriter.class.getName() +
+      System.err.println("  java " + WSDLWriterImpl.class.getName() +
                          " filename|URL");
       System.err.println();
       System.err.println("This test driver simply reads a WSDL document " +
