@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl;
 
 import java.util.*;
@@ -112,10 +116,10 @@ public class PartImpl implements Part
 
   /**
    * Get the map containing all the extension attributes defined
-   * on this part. The keys are the qnames of the attributes.
+   * on this element. The keys are the qnames of the attributes.
    *
    * @return a map containing all the extension attributes defined
-   * on this part
+   * on this element
    *
    * @see #setExtensionAttribute
    * @see #getExtensionAttribute
