@@ -1,3 +1,10 @@
+1537 javax.wsdl.AttributeExtensible
+{
+  1025 javax.xml.namespace.QName getExtensionAttribute (javax.xml.namespace.QName)
+  1025 java.util.Map getExtensionAttributes ()
+  1025 java.util.List getNativeAttributeNames ()
+  1025 void setExtensionAttribute (javax.xml.namespace.QName,javax.xml.namespace.QName)
+}
 1537 javax.wsdl.Binding implements java.io.Serializable
 {
   1025 void addBindingOperation (javax.wsdl.BindingOperation)
@@ -193,17 +200,14 @@
   1025 void setMessage (javax.wsdl.Message)
   1025 void setName (java.lang.String)
 }
-1537 javax.wsdl.Part implements java.io.Serializable
+1537 javax.wsdl.Part implements java.io.Serializable,javax.wsdl.AttributeExtensible
 {
   1025 org.w3c.dom.Element getDocumentationElement ()
   1025 javax.xml.namespace.QName getElementName ()
-  1025 javax.xml.namespace.QName getExtensionAttribute (javax.xml.namespace.QName)
-  1025 java.util.Map getExtensionAttributes ()
   1025 java.lang.String getName ()
   1025 javax.xml.namespace.QName getTypeName ()
   1025 void setDocumentationElement (org.w3c.dom.Element)
   1025 void setElementName (javax.xml.namespace.QName)
-  1025 void setExtensionAttribute (javax.xml.namespace.QName,javax.xml.namespace.QName)
   1025 void setName (java.lang.String)
   1025 void setTypeName (javax.xml.namespace.QName)
 }
