@@ -355,6 +355,17 @@ public class WSDLReaderImpl implements WSDLReader
 
           if (importedDef == null)
           {
+            if (reader == null)
+            {
+              throw new WSDLException(WSDLException.OTHER_ERROR,
+                                      "Unable to locate imported document " +
+                                      "at '" + locationURI + "'" +
+                                      (contextURI == null
+                                       ? "."
+                                       : ", relative to '" + contextURI +
+                                         "'."));
+            }
+
             InputSource inputSource = new InputSource(reader);
             Document doc = getDocument(inputSource, locationURI);
             Element documentElement = doc.getDocumentElement();
@@ -1471,9 +1482,15 @@ public class WSDLReaderImpl implements WSDLReader
   public Definition readWSDL(WSDLLocator locator) throws WSDLException
   {
     Reader reader = locator.getBaseReader();
-    InputSource is = new InputSource(reader);
     String base = locator.getBaseURI();
 
+    if (reader == null)
+    {
+      throw new WSDLException(WSDLException.OTHER_ERROR,
+                              "Unable to locate document at '" + base + "'.");
+    }
+
+    InputSource is = new InputSource(reader);
     this.loc = locator;
 
     if (verbose)
