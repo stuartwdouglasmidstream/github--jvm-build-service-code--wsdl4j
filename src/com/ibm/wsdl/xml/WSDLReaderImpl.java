@@ -114,8 +114,10 @@ public class WSDLReaderImpl implements WSDLReader
     return factoryImplName;
   }
 
-  private Definition parseDefinitions(String documentBaseURI, Element defEl)
-    throws WSDLException
+  private Definition parseDefinitions(String documentBaseURI,
+                                      Element defEl,
+                                      Map importedDefs)
+                                        throws WSDLException
   {
     checkElementName(defEl, Constants.Q_ELEM_DEFINITIONS);
 
@@ -177,7 +179,17 @@ public class WSDLReaderImpl implements WSDLReader
     {
       if (Constants.Q_ELEM_IMPORT.matches(tempEl))
       {
-        def.addImport(parseImport(tempEl, def));
+        if (importedDefs == null)
+        {
+          importedDefs = new Hashtable();
+        }
+
+        if (documentBaseURI != null)
+        {
+          importedDefs.put(documentBaseURI, def);
+        }
+
+        def.addImport(parseImport(tempEl, def, importedDefs));
       }
       else if (Constants.Q_ELEM_DOCUMENTATION.matches(tempEl))
       {
@@ -215,8 +227,10 @@ public class WSDLReaderImpl implements WSDLReader
     return def;
   }
 
-  private Import parseImport(Element importEl, Definition def)
-    throws WSDLException
+  private Import parseImport(Element importEl,
+                             Definition def,
+                             Map importedDefs)
+                               throws WSDLException
   {
     Import importDef = def.createImport();
     String namespaceURI = DOMUtils.getAttribute(importEl,
@@ -242,30 +256,43 @@ public class WSDLReaderImpl implements WSDLReader
                            ? StringUtils.getURL(null, contextURI)
                            : null;
           URL url = StringUtils.getURL(contextURL, locationURI);
-          Reader reader = StringUtils.getContentAsReader(url);
-          InputSource inputSource = new InputSource(reader);
-          Document doc = getDocument(inputSource, locationURI);
-          Element documentElement = doc.getDocumentElement();
+          Definition importedDef =
+            (Definition)importedDefs.get(url.toString());
 
-          /*
-            Check if it's a wsdl document.
-            If it's not, don't retrieve and process it.
-            This should later be extended to allow other types of
-            documents to be retrieved and processed, such as schema
-            documents (".xsd"), etc...
-          */
-          if (Constants.Q_ELEM_DEFINITIONS.matches(documentElement))
+          if (importedDef == null)
           {
-            if (verbose)
-            {
-              System.out.println("Retrieving document at '" + locationURI +
-                                 "'" +
-                                 (contextURI == null
-                                  ? "."
-                                  : ", relative to '" + contextURI + "'."));
-            }
+            Reader reader = StringUtils.getContentAsReader(url);
+            InputSource inputSource = new InputSource(reader);
+            Document doc = getDocument(inputSource, locationURI);
+            Element documentElement = doc.getDocumentElement();
 
-            importDef.setDefinition(readWSDL(url.toString(), documentElement));
+            /*
+              Check if it's a wsdl document.
+              If it's not, don't retrieve and process it.
+              This should later be extended to allow other types of
+              documents to be retrieved and processed, such as schema
+              documents (".xsd"), etc...
+            */
+            if (Constants.Q_ELEM_DEFINITIONS.matches(documentElement))
+            {
+              if (verbose)
+              {
+                System.out.println("Retrieving document at '" + locationURI +
+                                   "'" +
+                                   (contextURI == null
+                                    ? "."
+                                    : ", relative to '" + contextURI + "'."));
+              }
+
+              importedDef = readWSDL(url.toString(),
+                                     documentElement,
+                                     importedDefs);
+            }
+          }
+
+          if (importedDef != null)
+          {
+            importDef.setDefinition(importedDef);
           }
         }
         catch (WSDLException e)
@@ -1173,7 +1200,15 @@ public class WSDLReaderImpl implements WSDLReader
                              Element definitionsElement)
                                throws WSDLException
   {
-    return parseDefinitions(documentBaseURI, definitionsElement);
+    return readWSDL(documentBaseURI, definitionsElement, null);
+  }
+
+  private Definition readWSDL(String documentBaseURI,
+                              Element definitionsElement,
+                              Map importedDefs)
+                                throws WSDLException
+  {
+    return parseDefinitions(documentBaseURI, definitionsElement, importedDefs);
   }
 
   /**
