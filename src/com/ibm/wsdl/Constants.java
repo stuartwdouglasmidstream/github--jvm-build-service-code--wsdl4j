@@ -83,7 +83,4 @@ public class Constants
   // XML Declaration string.
   public static final String XML_DECL =
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-
-  // File suffixes.
-  public static final String SUFFIX_WSDL = ".wsdl";
 }
