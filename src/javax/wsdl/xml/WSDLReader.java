@@ -28,18 +28,23 @@ public interface WSDLReader
    *     <th>Default Value</th>
    *   </tr>
    *   <tr>
-   *     <td><center>verbose</center></td>
+   *     <td><center>javax.wsdl.verbose</center></td>
    *     <td>If set to true, status messages will be displayed.</td>
    *     <td><center>true</center></td>
    *   </tr>
    *   <tr>
-   *     <td><center>importDocuments</center></td>
+   *     <td><center>javax.wsdl.importDocuments</center></td>
    *     <td>If set to true, imported WSDL documents will be
    *         retrieved and processed.</td>
    *     <td><center>true</center></td>
    *   </tr>
    * </table>
    * <p>
+   * All feature names must be fully-qualified, Java package style. All
+   * names starting with javax.wsdl. are reserved for features defined
+   * by the JWSDL specification. It is recommended that implementation-
+   * specific features be fully-qualified to match the package name
+   * of that implementation. For example: com.abc.featureName
    *
    * @param name the name of the feature to be set.
    * @param value the value to set the feature to.

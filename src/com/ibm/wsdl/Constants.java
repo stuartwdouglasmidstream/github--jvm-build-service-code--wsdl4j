@@ -85,6 +85,7 @@ public class Constants
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
   // Feature names.
-  public static final String FEATURE_VERBOSE = "verbose";
-  public static final String FEATURE_IMPORT_DOCUMENTS = "importDocuments";
+  public static final String FEATURE_VERBOSE = "javax.wsdl.verbose";
+  public static final String FEATURE_IMPORT_DOCUMENTS =
+    "javax.wsdl.importDocuments";
 }
