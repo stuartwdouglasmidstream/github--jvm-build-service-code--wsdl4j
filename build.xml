@@ -201,7 +201,7 @@ Author:
 
     <copy todir="${dist.dir}/docs">
       <fileset dir="${docs.dir}">
-        <include name="pfd/*.pdf"/>
+        <include name="fab/JSR110_final_approval_ballot.pdf"/>
       </fileset>
     </copy>
 
