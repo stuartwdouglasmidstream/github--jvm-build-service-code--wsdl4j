@@ -36,11 +36,11 @@ public class WSDLReaderImpl implements WSDLReader
   private static final List STYLE_NOTIFICATION =
     Arrays.asList(new String[]{Constants.ELEM_OUTPUT});
 
-  private boolean verbose = true;
-  private boolean importDocuments = true;
-  private ExtensionRegistry extReg = null;
-  private String factoryImplName = null;
-  private WSDLLocator loc = null;
+  protected boolean verbose = true;
+  protected boolean importDocuments = true;
+  protected ExtensionRegistry extReg = null;
+  protected String factoryImplName = null;
+  protected WSDLLocator loc = null;
 
   /**
    * Sets the specified feature to the specified value.
@@ -183,10 +183,10 @@ public class WSDLReaderImpl implements WSDLReader
     return factoryImplName;
   }
 
-  private Definition parseDefinitions(String documentBaseURI,
-                                      Element defEl,
-                                      Map importedDefs)
-                                        throws WSDLException
+  protected Definition parseDefinitions(String documentBaseURI,
+                                        Element defEl,
+                                        Map importedDefs)
+                                          throws WSDLException
   {
     checkElementName(defEl, Constants.Q_ELEM_DEFINITIONS);
 
@@ -296,10 +296,10 @@ public class WSDLReaderImpl implements WSDLReader
     return def;
   }
 
-  private Import parseImport(Element importEl,
-                             Definition def,
-                             Map importedDefs)
-                               throws WSDLException
+  protected Import parseImport(Element importEl,
+                               Definition def,
+                               Map importedDefs)
+                                 throws WSDLException
   {
     Import importDef = def.createImport();
     String namespaceURI = DOMUtils.getAttribute(importEl,
@@ -480,7 +480,7 @@ public class WSDLReaderImpl implements WSDLReader
     return importDef;
   }
 
-  private static Types parseTypes(Element typesEl, Definition def)
+  protected Types parseTypes(Element typesEl, Definition def)
     throws WSDLException
   {
     Types types = def.createTypes();
@@ -504,7 +504,7 @@ public class WSDLReaderImpl implements WSDLReader
     return types;
   }
 
-  private static Binding parseBinding(Element bindingEl, Definition def)
+  protected Binding parseBinding(Element bindingEl, Definition def)
     throws WSDLException
   {
     Binding binding = null;
@@ -576,8 +576,10 @@ public class WSDLReaderImpl implements WSDLReader
     return binding;
   }
 
-  private static BindingOperation parseBindingOperation(
-    Element bindingOperationEl, PortType portType, Definition def)
+  protected BindingOperation parseBindingOperation(
+    Element bindingOperationEl,
+    PortType portType,
+    Definition def)
       throws WSDLException
   {
     BindingOperation bindingOperation = def.createBindingOperation();
@@ -641,9 +643,9 @@ public class WSDLReaderImpl implements WSDLReader
     return bindingOperation;
   }
 
-  private static BindingInput parseBindingInput(Element bindingInputEl,
-                                                Definition def)
-                                                  throws WSDLException
+  protected BindingInput parseBindingInput(Element bindingInputEl,
+                                           Definition def)
+                                             throws WSDLException
   {
     BindingInput bindingInput = def.createBindingInput();
     String name = DOMUtils.getAttribute(bindingInputEl,
@@ -674,9 +676,9 @@ public class WSDLReaderImpl implements WSDLReader
     return bindingInput;
   }
 
-  private static BindingOutput parseBindingOutput(Element bindingOutputEl,
-                                                  Definition def)
-                                                    throws WSDLException
+  protected BindingOutput parseBindingOutput(Element bindingOutputEl,
+                                             Definition def)
+                                               throws WSDLException
   {
     BindingOutput bindingOutput = def.createBindingOutput();
     String name = DOMUtils.getAttribute(bindingOutputEl,
@@ -707,9 +709,9 @@ public class WSDLReaderImpl implements WSDLReader
     return bindingOutput;
   }
 
-  private static BindingFault parseBindingFault(Element bindingFaultEl,
-                                                Definition def)
-                                                  throws WSDLException
+  protected BindingFault parseBindingFault(Element bindingFaultEl,
+                                           Definition def)
+                                             throws WSDLException
   {
     BindingFault bindingFault = def.createBindingFault();
     String name = DOMUtils.getAttribute(bindingFaultEl,
@@ -740,7 +742,7 @@ public class WSDLReaderImpl implements WSDLReader
     return bindingFault;
   }
 
-  private static Message parseMessage(Element msgEl, Definition def)
+  protected Message parseMessage(Element msgEl, Definition def)
     throws WSDLException
   {
     Message msg = null;
@@ -789,7 +791,7 @@ public class WSDLReaderImpl implements WSDLReader
     return msg;
   }
 
-  private static Part parsePart(Element partEl, Definition def)
+  protected Part parsePart(Element partEl, Definition def)
     throws WSDLException
   {
     Part part = def.createPart();
@@ -845,8 +847,8 @@ public class WSDLReaderImpl implements WSDLReader
     return part;
   }
 
-  private static Map getPartAttributes(Element el,
-                                       Definition def) throws WSDLException
+  protected Map getPartAttributes(Element el,
+                                  Definition def) throws WSDLException
   {
     Map attributes = new HashMap();
     NamedNodeMap nodeMap = el.getAttributes();
@@ -912,7 +914,7 @@ public class WSDLReaderImpl implements WSDLReader
     return attributes;
   }
 
-  private static PortType parsePortType(Element portTypeEl, Definition def)
+  protected PortType parsePortType(Element portTypeEl, Definition def)
     throws WSDLException
   {
     PortType portType = null;
@@ -961,10 +963,10 @@ public class WSDLReaderImpl implements WSDLReader
     return portType;
   }
 
-  private static Operation parseOperation(Element opEl,
-                                          PortType portType,
-                                          Definition def)
-                                            throws WSDLException
+  protected Operation parseOperation(Element opEl,
+                                     PortType portType,
+                                     Definition def)
+                                       throws WSDLException
   {
     Operation op = null;
     String name = DOMUtils.getAttribute(opEl, Constants.ATTR_NAME);
@@ -1120,7 +1122,7 @@ public class WSDLReaderImpl implements WSDLReader
     return op;
   }
 
-  private static Service parseService(Element serviceEl, Definition def)
+  protected Service parseService(Element serviceEl, Definition def)
     throws WSDLException
   {
     Service service = def.createService();
@@ -1155,7 +1157,7 @@ public class WSDLReaderImpl implements WSDLReader
     return service;
   }
 
-  private static Port parsePort(Element portEl, Definition def)
+  protected Port parsePort(Element portEl, Definition def)
     throws WSDLException
   {
     Port port = def.createPort();
@@ -1206,8 +1208,11 @@ public class WSDLReaderImpl implements WSDLReader
     return port;
   }
 
-  private static ExtensibilityElement parseExtensibilityElement(
-    Class parentType, Element el, Definition def) throws WSDLException
+  protected ExtensibilityElement parseExtensibilityElement(
+    Class parentType,
+    Element el,
+    Definition def)
+      throws WSDLException
   {
     QName elementType = QNameUtils.newQName(el);
 
@@ -1241,7 +1246,7 @@ public class WSDLReaderImpl implements WSDLReader
     }
   }
 
-  private static Input parseInput(Element inputEl, Definition def)
+  protected Input parseInput(Element inputEl, Definition def)
     throws WSDLException
   {
     Input input = def.createInput();
@@ -1290,7 +1295,7 @@ public class WSDLReaderImpl implements WSDLReader
     return input;
   }
 
-  private static Output parseOutput(Element outputEl, Definition def)
+  protected Output parseOutput(Element outputEl, Definition def)
     throws WSDLException
   {
     Output output = def.createOutput();
@@ -1339,7 +1344,7 @@ public class WSDLReaderImpl implements WSDLReader
     return output;
   }
 
-  private static Fault parseFault(Element faultEl, Definition def)
+  protected Fault parseFault(Element faultEl, Definition def)
     throws WSDLException
   {
     Fault fault = def.createFault();
@@ -1507,10 +1512,10 @@ public class WSDLReaderImpl implements WSDLReader
     return readWSDL(documentBaseURI, definitionsElement, null);
   }
 
-  private Definition readWSDL(String documentBaseURI,
-                              Element definitionsElement,
-                              Map importedDefs)
-                                throws WSDLException
+  protected Definition readWSDL(String documentBaseURI,
+                                Element definitionsElement,
+                                Map importedDefs)
+                                  throws WSDLException
   {
     return parseDefinitions(documentBaseURI, definitionsElement, importedDefs);
   }
