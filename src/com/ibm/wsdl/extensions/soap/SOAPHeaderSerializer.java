@@ -140,7 +140,8 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
       DOMUtils.getQualifiedAttributeValue(el,
                                           Constants.ATTR_MESSAGE,
                                           SOAPConstants.ELEM_HEADER,
-                                          false);
+                                          false,
+                                          def);
     String part = DOMUtils.getAttribute(el, SOAPConstants.ATTR_PART);
     String use = DOMUtils.getAttribute(el, SOAPConstants.ATTR_USE);
     String encStyleStr = DOMUtils.getAttribute(el,
@@ -190,7 +191,8 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
           parseSoapHeaderFault(SOAPHeader.class,
                                SOAPConstants.Q_ELEM_SOAP_HEADER_FAULT,
                                tempEl,
-                               extReg));
+                               extReg,
+                               def));
       }
       else
       {
@@ -206,7 +208,8 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
   private static SOAPHeaderFault parseSoapHeaderFault(Class parentType,
                                                       QName elementType,
                                                       Element el,
-                                                      ExtensionRegistry extReg)
+                                                      ExtensionRegistry extReg,
+                                                      Definition def)
                                                         throws WSDLException
   {
     SOAPHeaderFault soapHeaderFault =
@@ -215,7 +218,8 @@ public class SOAPHeaderSerializer implements ExtensionSerializer,
       DOMUtils.getQualifiedAttributeValue(el,
                                           Constants.ATTR_MESSAGE,
                                           SOAPConstants.ELEM_HEADER,
-                                          false);
+                                          false,
+                                          def);
     String part = DOMUtils.getAttribute(el, SOAPConstants.ATTR_PART);
     String use = DOMUtils.getAttribute(el, SOAPConstants.ATTR_USE);
     String encStyleStr = DOMUtils.getAttribute(el,

@@ -73,7 +73,8 @@ public class SOAPFaultSerializer implements ExtensionSerializer,
     QName message = DOMUtils.getQualifiedAttributeValue(el,
                                                     Constants.ATTR_MESSAGE,
                                                     SOAPConstants.ELEM_HEADER,
-                                                    false);
+                                                    false,
+                                                    def);
     String name = DOMUtils.getAttribute(el, Constants.ATTR_NAME);
     String use = DOMUtils.getAttribute(el, SOAPConstants.ATTR_USE);
     String encStyleStr = DOMUtils.getAttribute(el,

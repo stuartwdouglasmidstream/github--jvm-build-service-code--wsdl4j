@@ -18,7 +18,7 @@ public class DOMUtils {
    * returns "" if an attrib is not found).
    *
    * @param el       Element whose attrib is looked for
-   * @param attrName name of attribute to look for 
+   * @param attrName name of attribute to look for
    * @return the attribute value
    */
   static public String getAttribute (Element el, String attrName) {
@@ -37,8 +37,8 @@ public class DOMUtils {
    * returns "" if an attrib is not found).
    *
    * @param el       Element whose attrib is looked for
-   * @param namespaceURI namespace URI of attribute to look for 
-   * @param localPart local part of attribute to look for 
+   * @param namespaceURI namespace URI of attribute to look for
+   * @param localPart local part of attribute to look for
    * @return the attribute value
    */
   static public String getAttributeNS (Element el,
@@ -65,7 +65,7 @@ public class DOMUtils {
   static public String getChildCharacterData (Element parentEl) {
     if (parentEl == null) {
       return null;
-    } 
+    }
     Node          tempNode = parentEl.getFirstChild();
     StringBuffer  strBuf   = new StringBuffer();
     CharacterData charData;
@@ -124,7 +124,7 @@ public class DOMUtils {
    *
    * @return the first matching child element.
    */
-  public static Element findChildElementWithAttribute (Element elem, 
+  public static Element findChildElementWithAttribute (Element elem,
                    String attrName,
                    String attrValue) {
     for (Node n = elem.getFirstChild (); n != null; n = n.getNextSibling ()) {
@@ -137,7 +137,7 @@ public class DOMUtils {
     return  null;
   }
 
-  /** 
+  /**
    * Count number of children of a certain type of the given element.
    *
    * @param elem the element whose kids are to be counted
@@ -211,7 +211,8 @@ public class DOMUtils {
   }
 
   public static QName getQName(String prefixedValue,
-                               Element contextEl)
+                               Element contextEl,
+                               Definition def)
                                  throws WSDLException
   {
     int    index        = prefixedValue.indexOf(':');
@@ -223,6 +224,8 @@ public class DOMUtils {
 
     if (namespaceURI != null)
     {
+      registerUniquePrefix(prefix, namespaceURI, def);
+
       return new QName(namespaceURI, localPart);
     }
     else
@@ -242,17 +245,33 @@ public class DOMUtils {
     }
   }
 
+  public static void registerUniquePrefix(String prefix,
+                                          String namespaceURI,
+                                          Definition def)
+  {
+    String tempNSUri = def.getNamespace(prefix);
+
+    while (tempNSUri != null && !tempNSUri.equals(namespaceURI))
+    {
+      prefix += "_";
+      tempNSUri = def.getNamespace(prefix);
+    }
+
+    def.addNamespace(prefix, namespaceURI);
+  }
+
   public static QName getQualifiedAttributeValue(Element el,
                                                  String attrName,
                                                  String elDesc,
-                                                 boolean isRequired)
+                                                 boolean isRequired,
+                                                 Definition def)
                                                    throws WSDLException
   {
     String attrValue = DOMUtils.getAttribute(el, attrName);
 
     if (attrValue != null)
     {
-      return getQName(attrValue, el);
+      return getQName(attrValue, el, def);
     }
     else if (isRequired)
     {
@@ -451,3 +470,4 @@ public class DOMUtils {
     return strBuf.toString();
   }
 }
+
