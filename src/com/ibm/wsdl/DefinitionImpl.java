@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl;
 
 import java.util.*;
@@ -5,7 +9,6 @@ import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
 import org.w3c.dom.*;
-import com.ibm.wsdl.util.xml.*;
 
 /**
  * This class represents a WSDL definition.
@@ -31,10 +34,6 @@ public class DefinitionImpl implements Definition
   protected ExtensionRegistry extReg = null;
 
   public static final long serialVersionUID = 1;
-
-  public DefinitionImpl()
-  {
-  }
 
   /**
    * Set the document base URI of this definition. Can be used to
@@ -81,7 +80,7 @@ public class DefinitionImpl implements Definition
   /**
    * Set the target namespace in which WSDL elements are defined.
    *
-   * @param namespace the target namespace
+   * @param targetNamespace the target namespace
    */
   public void setTargetNamespace(String targetNamespace)
   {
