@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.extensions.soap;
 
 import java.io.*;
@@ -70,6 +74,7 @@ public class SOAPFaultSerializer implements ExtensionSerializer,
   {
     SOAPFault soapFault = (SOAPFault)extReg.createExtension(parentType,
                                                             elementType);
+    //TODO: remove unused variable, message
     QName message = DOMUtils.getQualifiedAttributeValue(el,
                                                     Constants.ATTR_MESSAGE,
                                                     SOAPConstants.ELEM_HEADER,

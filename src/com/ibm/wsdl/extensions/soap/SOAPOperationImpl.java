@@ -1,6 +1,9 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.extensions.soap;
 
-import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
 import javax.xml.namespace.*;
 
@@ -62,7 +65,7 @@ public class SOAPOperationImpl implements SOAPOperation
 	/**
 	 * Set the SOAP action attribute.
    *
-	 * @param soapAction the desired value of the SOAP
+	 * @param soapActionURI the desired value of the SOAP
 	 * action header for this operation.
 	 */
 	public void setSoapActionURI(String soapActionURI)

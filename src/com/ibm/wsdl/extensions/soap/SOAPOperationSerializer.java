@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.extensions.soap;
 
 import java.io.*;
@@ -7,7 +11,6 @@ import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
 import javax.xml.namespace.*;
 import com.ibm.wsdl.*;
-import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
 
 /**

@@ -1,3 +1,7 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.extensions.soap;
 
 import java.io.*;
@@ -10,7 +14,6 @@ import javax.wsdl.extensions.soap.*;
 import javax.xml.namespace.*;
 import com.ibm.wsdl.*;
 // MIMEPart.class is needed so <soap:body> can be indented properly.
-import com.ibm.wsdl.extensions.mime.*;
 import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
 

@@ -1,7 +1,10 @@
+/*
+ * (c) Copyright IBM Corp 2001, 20054 
+ */
+
 package com.ibm.wsdl.extensions.soap;
 
 import java.util.*;
-import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
 import javax.xml.namespace.*;
 

@@ -1,7 +1,10 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.extensions.soap;
 
 import java.util.*;
-import javax.wsdl.extensions.*;
 import javax.wsdl.extensions.soap.*;
 import javax.xml.namespace.*;
 
@@ -114,7 +117,7 @@ public class SOAPBodyImpl implements SOAPBody
   /**
    * Set the namespace URI for this SOAP body.
    *
-   * @param namespace the desired namespace URI
+   * @param namespaceURI the desired namespace URI
    */
   public void setNamespaceURI(String namespaceURI)
   {

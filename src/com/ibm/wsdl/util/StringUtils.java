@@ -1,10 +1,13 @@
+/*
+ * (c) Copyright IBM Corp 2001, 2005 
+ */
+
 package com.ibm.wsdl.util;
 
 import java.io.*;
 import java.util.*;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.beans.Introspector;
 
 /**
  * Deals with strings (probably need to elaborate some more).
