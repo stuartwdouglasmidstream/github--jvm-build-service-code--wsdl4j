@@ -34,7 +34,6 @@ public class DefinitionImpl implements Definition
 
   public DefinitionImpl()
   {
-    addNamespace(null, Constants.NS_URI_WSDL);
   }
 
   /**
@@ -106,9 +105,6 @@ public class DefinitionImpl implements Definition
    * top of a &lt;wsdl:definition&gt; element. This has nothing to do
    * with the &lt;wsdl:import&gt; element; there are separate methods for
    * dealing with information described by &lt;wsdl:import&gt; elements.
-   * There is a default namespace association (which can be
-   * overridden) between the null prefix and
-   * http://schemas.xmlsoap.org/wsdl/.
    *
    * @param prefix the prefix to use for this namespace (when
    * rendering this information as XML). Use null or an empty string

@@ -227,7 +227,11 @@ public class DOMUtils {
     }
     else
     {
-      WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
+      String faultCode = (prefix == null)
+                         ? WSDLException.NO_PREFIX_SPECIFIED
+                         : WSDLException.UNBOUND_PREFIX;
+
+      WSDLException wsdlExc = new WSDLException(faultCode,
                                                 "Unable to determine " +
                                                 "namespace of '" +
                                                 prefixedValue + "'.");

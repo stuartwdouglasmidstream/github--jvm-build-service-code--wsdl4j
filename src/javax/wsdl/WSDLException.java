@@ -10,6 +10,8 @@ public class WSDLException extends Exception
   public static final String PARSER_ERROR = "PARSER_ERROR";
   public static final String OTHER_ERROR = "OTHER_ERROR";
   public static final String CONFIGURATION_ERROR = "CONFIGURATION_ERROR";
+  public static final String UNBOUND_PREFIX = "UNBOUND_PREFIX";
+  public static final String NO_PREFIX_SPECIFIED = "NO_PREFIX_SPECIFIED";
 
   private String faultCode = null;
   private Throwable targetThrowable = null;

@@ -109,6 +109,19 @@ public class WSDLWriterImpl implements WSDLWriter
       return;
     }
 
+    if (def.getPrefix(Constants.NS_URI_WSDL) == null)
+    {
+      String prefix = "wsdl";
+      int subscript = 0;
+
+      while (def.getNamespace(prefix) != null)
+      {
+        prefix = "wsdl" + subscript++;
+      }
+
+      def.addNamespace(prefix, Constants.NS_URI_WSDL);
+    }
+
     String tagName =
       DOMUtils.getQualifiedValue(Constants.NS_URI_WSDL,
                                  Constants.ELEM_DEFINITIONS,

@@ -517,11 +517,9 @@ public class WSDLReaderImpl implements WSDLReader
   {
     Binding binding = null;
     String name = DOMUtils.getAttribute(bindingEl, Constants.ATTR_NAME);
-    QName portTypeName =
-      DOMUtils.getQualifiedAttributeValue(bindingEl,
-                                          Constants.ATTR_TYPE,
-                                          Constants.ELEM_BINDING,
-                                          false);
+    QName portTypeName = getQualifiedAttributeValue(bindingEl,
+                                                    Constants.ATTR_TYPE,
+                                                    Constants.ELEM_BINDING);
     PortType portType = null;
 
     if (name != null)
@@ -804,16 +802,12 @@ public class WSDLReaderImpl implements WSDLReader
   {
     Part part = def.createPart();
     String name = DOMUtils.getAttribute(partEl, Constants.ATTR_NAME);
-    QName elementName =
-      DOMUtils.getQualifiedAttributeValue(partEl,
-                                          Constants.ATTR_ELEMENT,
-                                          Constants.ELEM_MESSAGE,
-                                          false);
-    QName typeName =
-      DOMUtils.getQualifiedAttributeValue(partEl,
-                                          Constants.ATTR_TYPE,
-                                          Constants.ELEM_MESSAGE,
-                                          false);
+    QName elementName = getQualifiedAttributeValue(partEl,
+                                                   Constants.ATTR_ELEMENT,
+                                                   Constants.ELEM_MESSAGE);
+    QName typeName = getQualifiedAttributeValue(partEl,
+                                                Constants.ATTR_TYPE,
+                                                Constants.ELEM_MESSAGE);
 
     if (name != null)
     {
@@ -1163,11 +1157,9 @@ public class WSDLReaderImpl implements WSDLReader
   {
     Port port = def.createPort();
     String name = DOMUtils.getAttribute(portEl, Constants.ATTR_NAME);
-    QName bindingStr = 
-      DOMUtils.getQualifiedAttributeValue(portEl,
-                                          Constants.ATTR_BINDING,
-                                          Constants.ELEM_PORT,
-                                          false);
+    QName bindingStr = getQualifiedAttributeValue(portEl,
+                                                  Constants.ATTR_BINDING,
+                                                  Constants.ELEM_PORT);
 
     if (name != null)
     {
@@ -1252,11 +1244,9 @@ public class WSDLReaderImpl implements WSDLReader
   {
     Input input = def.createInput();
     String name = DOMUtils.getAttribute(inputEl, Constants.ATTR_NAME);
-    QName messageName =
-      DOMUtils.getQualifiedAttributeValue(inputEl,
-                                          Constants.ATTR_MESSAGE,
-                                          Constants.ELEM_INPUT,
-                                          false);
+    QName messageName = getQualifiedAttributeValue(inputEl,
+                                                   Constants.ATTR_MESSAGE,
+                                                   Constants.ELEM_INPUT);
 
     if (name != null)
     {
@@ -1301,11 +1291,9 @@ public class WSDLReaderImpl implements WSDLReader
   {
     Output output = def.createOutput();
     String name = DOMUtils.getAttribute(outputEl, Constants.ATTR_NAME);
-    QName messageName =
-      DOMUtils.getQualifiedAttributeValue(outputEl,
-                                          Constants.ATTR_MESSAGE,
-                                          Constants.ELEM_OUTPUT,
-                                          false);
+    QName messageName = getQualifiedAttributeValue(outputEl,
+                                                   Constants.ATTR_MESSAGE,
+                                                   Constants.ELEM_OUTPUT);
 
     if (name != null)
     {
@@ -1350,11 +1338,9 @@ public class WSDLReaderImpl implements WSDLReader
   {
     Fault fault = def.createFault();
     String name = DOMUtils.getAttribute(faultEl, Constants.ATTR_NAME);
-    QName messageName =
-      DOMUtils.getQualifiedAttributeValue(faultEl,
-                                          Constants.ATTR_MESSAGE,
-                                          Constants.ELEM_FAULT,
-                                          false);
+    QName messageName = getQualifiedAttributeValue(faultEl,
+                                                   Constants.ATTR_MESSAGE,
+                                                   Constants.ELEM_FAULT);
 
     if (name != null)
     {
@@ -1392,6 +1378,30 @@ public class WSDLReaderImpl implements WSDLReader
     }
 
     return fault;
+  }
+
+  private static QName getQualifiedAttributeValue(Element el,
+                                                  String attrName,
+                                                  String elDesc)
+                                                    throws WSDLException
+  {
+    try
+    {
+      return DOMUtils.getQualifiedAttributeValue(el, attrName, elDesc, false);
+    }
+    catch (WSDLException e)
+    {
+      if (e.getFaultCode().equals(WSDLException.NO_PREFIX_SPECIFIED))
+      {
+        String attrValue = DOMUtils.getAttribute(el, attrName);
+
+        return new QName(attrValue);
+      }
+      else
+      {
+        throw e;
+      }
+    }
   }
 
   private static void checkElementName(Element el, QName qname)
