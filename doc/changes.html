@@ -15,6 +15,31 @@ content="text/html; charset=iso-8859-1">
 most recent version is at the top.</p>
 
 <ul>
+  <li><strong>Version 1.4</strong>
+    <ul>
+      <li><code>build.xml</code></li>
+      <ul>
+        <li>Modified the build script to add version information
+            to the <code>MANIFEST.MF</code> files generated in the
+            created jars.</li>
+        <li>Made naming of generated zip files more consistent.</li>
+      </ul>
+      <li><code>com.ibm.wsdl.util.StringUtils</code></li>
+      <ul>
+        <li>Re-wrote <code>getURL(...)</code> to not open connections
+            when invoked.</li>
+      </ul>
+      <li><code>com.ibm.wsdl.xml.WSDLWriterImpl</code></li>
+      <ul>
+        <li>Changed <code>printDefinition(...)</code> so that
+            <code>&lt;wsdl:documentation></code> elements are printed
+            prior to <code>&lt;wsdl:import></code> elements. This was
+            done to respect the order defined in the WSDL schema.</li>
+        <li>Changed all but "utility" methods from
+            <code>private static</code> to <code>protected</code>.</li>
+      </ul>
+    </ul>
+  </li>
   <li><strong>Version 1.3</strong>
     <ul>
       <li>Base version. No changes.</li>
