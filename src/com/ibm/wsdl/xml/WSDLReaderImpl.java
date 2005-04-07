@@ -356,6 +356,8 @@ public class WSDLReaderImpl implements WSDLReader
               String liu = loc.getLatestImportURI();
 
               importedDef = (Definition)importedDefs.get(liu);
+              
+              inputSource.setSystemId(liu);
             }
             else
             {
@@ -373,6 +375,7 @@ public class WSDLReaderImpl implements WSDLReader
                 if (inputStream != null)
                 {
                   inputSource = new InputSource(inputStream);
+                  inputSource.setSystemId(url.toString());
                 }
               }
             }
@@ -390,8 +393,7 @@ public class WSDLReaderImpl implements WSDLReader
                                          "'."));
               }
 
-              inputSource.setSystemId(url.toString());
-              Document doc = getDocument(inputSource, url.toString());
+              Document doc = getDocument(inputSource, inputSource.getSystemId());
 
               if (inputStream != null)
               {
