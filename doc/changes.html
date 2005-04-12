@@ -19,6 +19,174 @@
 most recent version is at the top.</p>
 
 <ul>
+
+  <li><strong>Version 1.5 - further changes for the JWSDL 1.1 maintenance release</strong>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Classes Affected</th>
+          <th>Changes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.BindingFaultImpl,<br>
+            com.ibm.wsdl.BindingImpl,<br>
+            com.ibm.wsdl.BindingInputImpl,<br> 
+            com.ibm.wsdl.BindingOperationImpl,<br>
+            com.ibm.wsdl.BindingOutputImpl,<br> 
+            com.ibm.wsdl.PortImpl,<br>
+            com.ibm.wsdl.ServiceImpl,<br> 
+            com.ibm.wsdl.TypesImpl
+          </td>
+          <td>
+            Removed support for extensibility attributes, to comply with the
+            WSDL 1.1 schema at <code>http://schemas.xmlsoap.org/wsdl/</code>.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.Binding,<br>
+            javax.wsdl.BindingFault,<br>
+            javax.wsdl.BindingInput,<br>
+            javax.wsdl.BindingOperation,<br>
+            javax.wsdl.BindingOutput,<br>
+            javax.wsdl.Port,<br>
+            javax.wsdl.Service,<br>
+            javax.wsdl.Types
+          </td>
+          <td>
+            Removed support for extensibility attributes, to comply with the
+            WSDL 1.1 schema at <code>http://schemas.xmlsoap.org/wsdl/</code>,
+            and have refactored methods for extensibility elements into a new 
+            <code>ElementExtensible</code> interface. 
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.MessageImpl,<br>
+            com.ibm.wsdl.OperationImpl,<br>
+            javax.wsdl.Message,<br>
+            javax.wsdl.Operation
+          </td>
+          <td>
+            Removed support for extensibility attributes and added support
+            for extensibility elements, to comply with the WSDL 1.1
+            schema at <code>http://schemas.xmlsoap.org/wsdl/</code>.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.Definition,<br>
+            javax.wsdl.extensions.ElementExtensible
+          </td>
+          <td>
+            Refactored methods for extensibility elements into a new 
+            <code>ElementExtensible</code> interface.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.DefinitionImpl
+          </td>
+          <td>
+            Removed a noarg constructor with an empty method implementation
+            and corrected a Javadoc parameter.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.Constants
+          </td>
+          <td>
+            Removed constants for XML schema, to a new <code>SchemaConstants</code>
+            class.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.extensions.schema.SchemaConstants,<br>
+            com.ibm.wsdl.extensions.schema.SchemaDeserializer,<br>
+            com.ibm.wsdl.extensions.schema.SchemaImpl,<br>
+            com.ibm.wsdl.extensions.schema.SchemaImportImpl,<br>
+            com.ibm.wsdl.extensions.schema.SchemaReferenceImpl,<br>
+            com.ibm.wsdl.extensions.schema.SchemaSerializer,<br>
+            javax.wsdl.extensions.schema.Schema,<br>
+            javax.wsdl.extensions.schema.SchemaImport,<br>
+            javax.wsdl.extensions.schema.SchemaReference
+          </td>
+          <td>
+            Created new interfaces and classes for XML schema support.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.extensions.ExtensionRegistry
+          </td>
+          <td>
+            Modified the <code>createExtension</code> method to ensure the
+            element type is initialized.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.extensions.PopulatedExtensionRegistry
+          </td>
+          <td>
+            Added the registration of XML schema type, serializer and 
+            deserializer.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            Added support for parsing XML schemas and added error checking 
+            to detect unexpected attributes on WSDL elements that do not 
+            support extensibility attributes, as defined by the WSDL 1.1 
+            schema at <code>http://schemas.xmlsoap.org/wsdl/</code>.
+
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLWriterImpl
+          </td>
+          <td>
+            To comply with the WSDL 1.1 schema at 
+            <code>http://schemas.xmlsoap.org/wsdl/</code>, some
+            WSDL elements should not support extensibility attributes. 
+            Have removed the printing of extensibility attributes for 
+            these elements. Also, changed the use of XML Encoding to use
+            new <code>DOM2Writer</code> utility method for encoding.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.xml.DOM2Writer
+          </td>
+          <td>
+            Added a method to serialize an element (e.g. a schema) as a 
+            document by prefixing it with an xml document declaration.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.xml.DOMUtils
+          </td>
+          <td>
+            Added new methods to track unexpected attributes on WSDL 
+            elements that do not support extensibility attributes, 
+            as defined by the WSDL 1.1 schema at 
+            <code>http://schemas.xmlsoap.org/wsdl/</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+
   <li><strong>Version 1.5</strong>
     <table border="1">
       <thead>
