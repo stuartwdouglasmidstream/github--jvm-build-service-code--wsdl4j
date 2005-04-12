@@ -20,6 +20,51 @@ most recent version is at the top.</p>
 
 <ul>
 
+  <li><strong>Version 1.5.1</strong>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Classes Affected</th>
+          <th>Changes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            In parseOperation, fixed a logic error that was incorrectly 
+            causing duplicate operation errors.
+            <p>
+            In parseExtensibilityElements, added a check that the 
+            extensibility element is not in the WSDL namespace.
+            <p>
+            Set base URI on <code>InputSource</code> so relative URIs get 
+            resolved when parsing the Document. Made this change to 
+            <code>readWSDL</code>, <code>parseImport</code> and 
+            <code>parseSchema</code> methods. Also, corrected related error 
+            messages to use full URI where possible, not just the relative URI.
+            <p>
+            Fixed NPE when <code>WSDLLocator</code> used in 
+            <code>parseImport</code> by ensuring base URI
+            is set on <code>InputSource</code> - thanks to Pete Hendry and David Jencks 
+            for their suggestions.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.xml.DOMUtils
+          </td>
+          <td>
+            Corrected error checking to ignore namespace declarations when 
+            checking for unexpected extensibility attributes.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+
   <li><strong>Version 1.5 - further changes for the JWSDL 1.1 maintenance release</strong>
     <table border="1">
       <thead>
