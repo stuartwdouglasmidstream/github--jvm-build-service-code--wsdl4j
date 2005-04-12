@@ -2140,8 +2140,11 @@ public class WSDLReaderImpl implements WSDLReader
   public Definition readWSDL(String documentBaseURI, InputSource inputSource)
     throws WSDLException
   {
+    String location = (inputSource.getSystemId() != null ? 
+                       inputSource.getSystemId() : "- WSDL Document -");
+    
     return readWSDL(documentBaseURI,
-                    getDocument(inputSource, "- WSDL Document -"));
+                    getDocument(inputSource, location));
   }
 
   /**
@@ -2155,6 +2158,7 @@ public class WSDLReaderImpl implements WSDLReader
   {
     InputSource is = locator.getBaseInputSource();
     String base = locator.getBaseURI();
+    is.setSystemId(base);
 
     if (is == null)
     {
