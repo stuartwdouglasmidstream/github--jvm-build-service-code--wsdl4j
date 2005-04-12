@@ -50,6 +50,12 @@ most recent version is at the top.</p>
             <code>parseImport</code> by ensuring base URI
             is set on <code>InputSource</code> - thanks to Pete Hendry and David Jencks 
             for their suggestions.
+            <p>
+            In method <code>readWSDL(WSDLLocator)</code>, set the base URI 
+            of the <code>InputSource</code> so that subsequent relative URIs will 
+            be resolved correctly. Also changed method 
+            <code>readWSDL(String,InputSource)</code>, to use this URI
+            if it is present.   
           </td>
         </tr>
         <tr>
