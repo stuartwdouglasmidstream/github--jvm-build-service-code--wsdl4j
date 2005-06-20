@@ -438,6 +438,15 @@ public class WSDLReaderImpl implements WSDLReader
 
                 if (SchemaConstants.XSD_QNAME_LIST.contains(docElementQName))
                 {
+                  if (verbose)
+                  {
+                    System.out.println("Retrieving schema wsdl:imported from '" + locationURI +
+                                       "'" +
+                                       (contextURI == null
+                                        ? "."
+                                        : ", relative to '" + contextURI + "'."));
+                  }
+                    
                   WSDLFactory factory =
                     (factoryImplName != null)
                     ? WSDLFactory.newInstance(factoryImplName)
