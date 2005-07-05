@@ -50,6 +50,7 @@ public class WSDLReaderImpl implements WSDLReader
   protected ExtensionRegistry extReg = null;
   protected String factoryImplName = null;
   protected WSDLLocator loc = null;
+  protected WSDLFactory factory = null;
   
   //Contains all schemas used by this wsdl, either in-line or nested 
   //via wsdl imports or schema imports, includes or redefines
@@ -167,6 +168,21 @@ public class WSDLReaderImpl implements WSDLReader
   {
     return extReg;
   }
+  
+  /**
+   * Get the WSDLFactory object cached in the reader, or use lazy
+   * instantiation if it is not cached yet.
+   */
+  protected WSDLFactory getWSDLFactory() throws WSDLException
+  {
+    if (factory == null)
+    {
+      factory = (factoryImplName != null)
+        ? WSDLFactory.newInstance(factoryImplName)
+        : WSDLFactory.newInstance();
+    }
+    return factory;
+  }
 
   /**
    * Set a different factory implementation to use for
@@ -186,6 +202,10 @@ public class WSDLReaderImpl implements WSDLReader
   public void setFactoryImplName(String factoryImplName)
     throws UnsupportedOperationException
   {
+    //the factory object is cached in the reader so set it
+    //to null if the factory impl name is reset.
+    this.factory = null;
+      
     this.factoryImplName = factoryImplName;
   }
 
@@ -204,9 +224,7 @@ public class WSDLReaderImpl implements WSDLReader
   {
     checkElementName(defEl, Constants.Q_ELEM_DEFINITIONS);
 
-    WSDLFactory factory = (factoryImplName != null)
-                          ? WSDLFactory.newInstance(factoryImplName)
-                          : WSDLFactory.newInstance();
+    WSDLFactory factory = getWSDLFactory();
     Definition def = factory.newDefinition();
 
     if (extReg != null)
@@ -447,10 +465,7 @@ public class WSDLReaderImpl implements WSDLReader
                                         : ", relative to '" + contextURI + "'."));
                   }
                     
-                  WSDLFactory factory =
-                    (factoryImplName != null)
-                    ? WSDLFactory.newInstance(factoryImplName)
-                    : WSDLFactory.newInstance();
+                  WSDLFactory factory = getWSDLFactory();
 
                   importedDef = factory.newDefinition();
 
@@ -804,9 +819,7 @@ public class WSDLReaderImpl implements WSDLReader
   	  	      //implementation changes (ie: its use of definition changes) we may need 
   	  	      //to rethink this approach.
   	  	      
-  	  	      WSDLFactory factory = (factoryImplName != null)
-              ? WSDLFactory.newInstance(factoryImplName)
-              : WSDLFactory.newInstance();
+              WSDLFactory factory = getWSDLFactory();
               Definition dummyDef = factory.newDefinition();
             
               dummyDef.setDocumentBaseURI(location);
