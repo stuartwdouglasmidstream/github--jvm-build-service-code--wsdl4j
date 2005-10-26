@@ -2180,13 +2180,13 @@ public class WSDLReaderImpl implements WSDLReader
   {
     InputSource is = locator.getBaseInputSource();
     String base = locator.getBaseURI();
-    is.setSystemId(base);
 
     if (is == null)
     {
       throw new WSDLException(WSDLException.OTHER_ERROR,
                               "Unable to locate document at '" + base + "'.");
     }
+    is.setSystemId(base);
 
     this.loc = locator;
 
