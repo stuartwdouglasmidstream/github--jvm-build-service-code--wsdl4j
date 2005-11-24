@@ -20,6 +20,46 @@ most recent version is at the top.</p>
 
 <ul>
 
+  <li><strong>Version 1.5.2</strong>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Classes Affected</th>
+          <th>Changes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            v1.41 - Added verbose trace to <code>parseImport</code> to differentiate schemas 
+            imported by &lt;wsdl:import&gt; from those imported by &lt;xsd:import&gt;
+            <p>
+            v1.42 - Refactored the calls to <code>WSDLFactory.newInstance</code> 
+            into a new protected method, <code>getWSDLFactory</code>, and cache the factory object 
+            in the reader. When factory impl name gets set, clear the cached factory object.
+            <p>
+            v1.43 - In <code>readWSDL(WSDLLocator)</code>, moved <code>is.setSystemId</code> to after the null 
+            test on <code>is</code> to avoid NPE. Thanks to Pete Hendry for pointing this out.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.OperationType
+          </td>
+          <td>
+            v1.4 - In javax.wsdl.OperationType, implemented a typesafe enumeration 
+            and a readResolve method to ensure that at deserialization the original 
+            instances of the static variables are recreated. Thanks to David Jencks 
+            for his bug report and suggested fix and to Pete Hendry for his suggestions.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li><br>
+
   <li><strong>Version 1.5.1</strong>
     <table border="1">
       <thead>
@@ -69,7 +109,7 @@ most recent version is at the top.</p>
         </tr>
       </tbody>
     </table>
-  </li>
+  </li><br>
 
   <li><strong>Version 1.5 - further changes for the JWSDL 1.1 maintenance release</strong>
     <table border="1">
@@ -236,7 +276,7 @@ most recent version is at the top.</p>
         </tr>
       </tbody>
     </table>
-  </li>
+  </li><br>
 
   <li><strong>Version 1.5</strong>
     <table border="1">
@@ -391,7 +431,7 @@ most recent version is at the top.</p>
         </tr>
       </tbody>
     </table>
-  </li>
+  </li><br>
   <li><strong>Version 1.4</strong>
     <table border="1">
       <thead>
@@ -429,7 +469,7 @@ most recent version is at the top.</p>
         </tr>
       </tbody>
     </table>
-  </li>
+  </li><br>
   <li><strong>Version 1.3</strong>
     <table border="1">
       <caption>Base version. No changes.</caption>
