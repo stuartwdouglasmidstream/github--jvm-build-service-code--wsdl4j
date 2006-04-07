@@ -58,7 +58,7 @@ public class OperationType implements java.io.Serializable
    */
   public boolean equals(OperationType operationType)
   {
-    return id.equals(operationType.getId());
+    return operationType != null && id.equals(operationType.getId());
   }
 
   public String toString()
