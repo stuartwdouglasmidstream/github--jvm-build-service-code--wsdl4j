@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.util;
@@ -120,30 +120,22 @@ public class StringUtils
   public static URL getURL(URL contextURL, String spec)
     throws MalformedURLException
   {
-    if (contextURL != null)
-    {
-      File tempFile = new File(spec);
-
-      if (tempFile.isAbsolute())
-      {
-        return tempFile.toURL();
-      }
-    }
-
     try
     {
       return new URL(contextURL, spec);
     }
     catch (MalformedURLException e)
     {
-      if (contextURL == null)
+      File tempFile = new File(spec);
+      if (contextURL == null ||
+          (contextURL != null && tempFile.isAbsolute()))
       {
-        return new File(spec).toURL();
+        return tempFile.toURL();
       }
-      else
-      {
-        throw e;
-      }
+      
+      // only reach here if the contextURL !null, spec is relative path and
+      // MalformedURLException thrown
+      throw e;
     }
   }
 
