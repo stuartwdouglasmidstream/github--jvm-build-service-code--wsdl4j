@@ -1,10 +1,8 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
-
-import java.io.*;
 
 public class WSDLException extends Exception
 {
@@ -23,9 +21,8 @@ public class WSDLException extends Exception
 
   public WSDLException(String faultCode, String msg, Throwable t)
   {
-    super(msg);
-    setFaultCode(faultCode);
-    setTargetException(t);
+    super(msg, t);
+    setFaultCode(faultCode);    
   }
 
   public WSDLException(String faultCode, String msg)
@@ -50,7 +47,8 @@ public class WSDLException extends Exception
 
   public Throwable getTargetException()
   {
-    return targetThrowable;
+    if(targetThrowable == null) return getCause();
+    else return targetThrowable;
   }
 
   /**
@@ -96,9 +94,13 @@ public class WSDLException extends Exception
     }
 
     String thisMsg = super.getMessage();
-    String targetMsg = (targetThrowable != null)
-                       ? targetThrowable.getMessage()
-                       : null;
+    String targetMsg = null;
+    String targetName = null;
+    if(getTargetException() != null)
+    {
+      targetMsg = getTargetException().getMessage();
+      targetName = getTargetException().getClass().getName();
+    }
 
     if (thisMsg != null
         && (targetMsg == null || !thisMsg.equals(targetMsg)))
@@ -106,26 +108,16 @@ public class WSDLException extends Exception
       strBuf.append(": " + thisMsg);
     }
 
+    if (targetName != null)
+    {
+      strBuf.append(": " + targetName);
+    }
+    
     if (targetMsg != null)
     {
       strBuf.append(": " + targetMsg);
     }
 
     return strBuf.toString();
-  }
-
-  public String toString()
-  {
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw);
-
-    pw.print(getMessage() + ": ");
-
-    if (targetThrowable != null)
-    {
-      targetThrowable.printStackTrace(pw);
-    }
-
-    return sw.toString();
   }
 }
