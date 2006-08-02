@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.xml;
@@ -1008,11 +1008,15 @@ public class WSDLWriterImpl implements WSDLWriter
 
       return doc;
     }
-    catch (Throwable t)
+    catch (RuntimeException e)
+    {
+      throw e;
+    }
+    catch (Exception e)
     {
       throw new WSDLException(WSDLException.PARSER_ERROR,
                               "Problem parsing '" + desc + "'.",
-                              t);
+                              e);
     }
   }
 

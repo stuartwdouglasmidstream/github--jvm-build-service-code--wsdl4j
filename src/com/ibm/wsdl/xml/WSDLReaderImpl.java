@@ -502,14 +502,18 @@ public class WSDLReaderImpl implements WSDLReader
           {
            throw e;
           }
-          catch (Throwable t)
+          catch (RuntimeException e)
+          {
+            throw e;
+          }
+          catch (Exception e)
           {
             throw new WSDLException(WSDLException.OTHER_ERROR,
                                     "Unable to resolve imported document at '" +
                                     locationURI + 
                                     (contextURI == null 
                                     ? "'." : "', relative to '" + contextURI + "'")
-                                    , t);
+                                    , e);
           }
         } //end importDocs
       } //end locationURI
@@ -842,15 +846,19 @@ public class WSDLReaderImpl implements WSDLReader
   	    {
   	      throw e;
   	    }
-  	    catch (Throwable t)
+            catch (RuntimeException e)
+            {
+              throw e;
+            }
+  	    catch (Exception e)
   	    {
-  	      throw new WSDLException(WSDLException.OTHER_ERROR,
+              throw new WSDLException(WSDLException.OTHER_ERROR,
   	                "An error occurred trying to resolve schema referenced at '" 
   	  	            + schemaRef.getSchemaLocationURI() 
   	  	            + "'"
   		            + (schema.getDocumentBaseURI() == null ? "." : ", relative to '"
   		            + schema.getDocumentBaseURI() + "'."),
-  	  	            t);
+  	  	            e);
   	    }
   	    
   	  } //end while loop
@@ -2030,11 +2038,15 @@ public class WSDLReaderImpl implements WSDLReader
 
       return doc;
     }
-    catch (Throwable t)
+    catch (RuntimeException e)
+    {
+      throw e;
+    }
+    catch (Exception e)
     {
       throw new WSDLException(WSDLException.PARSER_ERROR,
-                              "Problem parsing '" + desc + "'.",
-                              t);
+                                "Problem parsing '" + desc + "'.",
+                                e);
     }
   }
 
@@ -2094,7 +2106,11 @@ public class WSDLReaderImpl implements WSDLReader
     {
       throw e;
     }
-    catch (Throwable t)
+    catch (RuntimeException e)
+    {
+      throw e;
+    }
+    catch (Exception e)
     {
       throw new WSDLException(WSDLException.OTHER_ERROR,
                               "Unable to resolve imported document at '" +
@@ -2102,7 +2118,7 @@ public class WSDLReaderImpl implements WSDLReader
                               (contextURI == null
                               ? "'."
                               : "', relative to '" + contextURI + "'.")
-                              , t);
+                              , e);
     }
   }
 
