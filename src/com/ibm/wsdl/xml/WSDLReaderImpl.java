@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.xml;
@@ -202,11 +202,17 @@ public class WSDLReaderImpl implements WSDLReader
   public void setFactoryImplName(String factoryImplName)
     throws UnsupportedOperationException
   {
-    //the factory object is cached in the reader so set it
-    //to null if the factory impl name is reset.
-    this.factory = null;
-      
-    this.factoryImplName = factoryImplName;
+    //check to see if we really need to change the factory name and clear the cache
+    if((this.factoryImplName == null && factoryImplName != null) ||
+       (this.factoryImplName != null && !this.factoryImplName.equals(factoryImplName))) 
+    {
+      //the factory object is cached in the reader so set it
+      //to null if the factory impl name is reset.
+      this.factory = null;
+        
+      this.factoryImplName = factoryImplName;
+      if(verbose) System.out.println("WSDLFactory Impl Name set to : "+factoryImplName);
+    }
   }
 
   /**
