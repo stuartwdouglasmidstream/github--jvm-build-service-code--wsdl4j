@@ -246,6 +246,12 @@ public class WSDLReaderImpl implements WSDLReader
     if (documentBaseURI != null)
     {
       def.setDocumentBaseURI(documentBaseURI);
+      
+      if (importedDefs == null)
+      {
+        importedDefs = new Hashtable();
+      }
+      importedDefs.put(documentBaseURI, def);
     }
 
     if (name != null)
@@ -286,16 +292,6 @@ public class WSDLReaderImpl implements WSDLReader
     {
       if (QNameUtils.matches(Constants.Q_ELEM_IMPORT, tempEl))
       {
-        if (importedDefs == null)
-        {
-          importedDefs = new Hashtable();
-        }
-
-        if (documentBaseURI != null)
-        {
-          importedDefs.put(documentBaseURI, def);
-        }
-
         def.addImport(parseImport(tempEl, def, importedDefs));
       }
       else if (QNameUtils.matches(Constants.Q_ELEM_DOCUMENTATION, tempEl))
