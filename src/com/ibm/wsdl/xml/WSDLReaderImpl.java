@@ -537,6 +537,10 @@ public class WSDLReaderImpl implements WSDLReader
 	  throw e; 
 	}
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = importEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(importEl);
 
     while (tempEl != null)
@@ -570,6 +574,10 @@ public class WSDLReaderImpl implements WSDLReader
         DOMUtils.throwWSDLException(typesEl, remainingAttrs);;
     }
       
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = typesEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Types types = def.createTypes();
     Element tempEl = DOMUtils.getFirstChildElement(typesEl);
     QName tempElType;
@@ -942,6 +950,10 @@ public class WSDLReaderImpl implements WSDLReader
       binding.setPortType(portType);
     }
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = bindingEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(bindingEl);
 
     while (tempEl != null)
@@ -991,6 +1003,10 @@ public class WSDLReaderImpl implements WSDLReader
     {
       bindingOperation.setName(name);
     }
+
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = bindingOperationEl.getAttributes();
+    registerNSDeclarations(attrs, def);
 
     Element tempEl = DOMUtils.getFirstChildElement(bindingOperationEl);
 
@@ -1073,6 +1089,10 @@ public class WSDLReaderImpl implements WSDLReader
       bindingInput.setName(name);
     }
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = bindingInputEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(bindingInputEl);
 
     while (tempEl != null)
@@ -1115,6 +1135,10 @@ public class WSDLReaderImpl implements WSDLReader
       bindingOutput.setName(name);
     }
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = bindingOutputEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(bindingOutputEl);
 
     while (tempEl != null)
@@ -1156,6 +1180,10 @@ public class WSDLReaderImpl implements WSDLReader
     {
       bindingFault.setName(name);
     }
+
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = bindingFaultEl.getAttributes();
+    registerNSDeclarations(attrs, def);
 
     Element tempEl = DOMUtils.getFirstChildElement(bindingFaultEl);
 
@@ -1211,6 +1239,10 @@ public class WSDLReaderImpl implements WSDLReader
     // Whether it was retrieved or created, the definition has been found.
     msg.setUndefined(false);
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = msgEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(msgEl);
 
     while (tempEl != null)
@@ -1263,6 +1295,10 @@ public class WSDLReaderImpl implements WSDLReader
     {
       part.setTypeName(typeName);
     }
+
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = partEl.getAttributes();
+    registerNSDeclarations(attrs, def);
 
     Element tempEl = DOMUtils.getFirstChildElement(partEl);
 
@@ -1417,6 +1453,10 @@ public class WSDLReaderImpl implements WSDLReader
     // Whether it was retrieved or created, the definition has been found.
     portType.setUndefined(false);
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = portTypeEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(portTypeEl);
 
     while (tempEl != null)
@@ -1466,6 +1506,10 @@ public class WSDLReaderImpl implements WSDLReader
         DOMUtils.throwWSDLException(opEl, remainingAttrs);;
     }
     
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = opEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(opEl);
     List messageOrder = new Vector();
     Element docEl = null;
@@ -1656,6 +1700,10 @@ public class WSDLReaderImpl implements WSDLReader
       service.setQName(new QName(def.getTargetNamespace(), name));
     }
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = serviceEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(serviceEl);
 
     while (tempEl != null)
@@ -1717,6 +1765,10 @@ public class WSDLReaderImpl implements WSDLReader
 
       port.setBinding(binding);
     }
+
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = portEl.getAttributes();
+    registerNSDeclarations(attrs, def);
 
     Element tempEl = DOMUtils.getFirstChildElement(portEl);
 
@@ -1819,6 +1871,10 @@ public class WSDLReaderImpl implements WSDLReader
       input.setMessage(message);
     }
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = inputEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(inputEl);
 
     while (tempEl != null)
@@ -1869,6 +1925,10 @@ public class WSDLReaderImpl implements WSDLReader
       output.setMessage(message);
     }
 
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = outputEl.getAttributes();
+    registerNSDeclarations(attrs, def);
+
     Element tempEl = DOMUtils.getFirstChildElement(outputEl);
 
     while (tempEl != null)
@@ -1918,6 +1978,10 @@ public class WSDLReaderImpl implements WSDLReader
 
       fault.setMessage(message);
     }
+
+    //register any NS decls with the Definition
+    NamedNodeMap attrs = faultEl.getAttributes();
+    registerNSDeclarations(attrs, def);
 
     Element tempEl = DOMUtils.getFirstChildElement(faultEl);
 
@@ -2050,6 +2114,31 @@ public class WSDLReaderImpl implements WSDLReader
     }
   }
 
+  private static void registerNSDeclarations(NamedNodeMap attrs, Definition def)
+  {
+      int size = attrs.getLength();
+
+      for (int i = 0; i < size; i++)
+      {
+        Attr attr = (Attr)attrs.item(i);
+        String namespaceURI = attr.getNamespaceURI();
+        String localPart = attr.getLocalName();
+        String value = attr.getValue();
+
+        if (namespaceURI != null && namespaceURI.equals(Constants.NS_URI_XMLNS))
+        {
+          if (localPart != null && !localPart.equals(Constants.ATTR_XMLNS))
+          {
+            DOMUtils.registerUniquePrefix(localPart, value, def);
+          }
+          else
+          {
+            DOMUtils.registerUniquePrefix(null, value, def);
+          }
+        }
+      }
+  }
+  
   /**
    * Read the WSDL document accessible via the specified
    * URI into a WSDL definition.

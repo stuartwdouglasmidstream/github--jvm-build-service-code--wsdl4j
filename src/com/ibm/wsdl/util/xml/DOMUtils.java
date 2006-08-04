@@ -4,11 +4,21 @@
 
 package com.ibm.wsdl.util.xml;
 
-import java.io.*;
-import java.util.*;
-import org.w3c.dom.*;
-import javax.wsdl.*;
-import javax.xml.namespace.*;
+import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Vector;
+
+import javax.wsdl.Definition;
+import javax.wsdl.WSDLException;
+import javax.xml.namespace.QName;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 public class DOMUtils {
   /**
@@ -314,14 +324,25 @@ public class DOMUtils {
   {
     String tempNSUri = def.getNamespace(prefix);
 
+    //Check if the prefix and namespace are already registered.
     if (tempNSUri != null && tempNSUri.equals(namespaceURI))
+    {
+      return;
+    }
+    
+    /* Check if the namespace is already registered with some other prefix,
+     * in which case do not register it again with this prefix. The existing
+     * prefix/namespace association will suffice (i.e. semantically equivalent).
+     */
+    Collection nSpaces = def.getNamespaces().values();
+    if(nSpaces.contains(namespaceURI))
     {
       return;
     }
 
     while (tempNSUri != null && !tempNSUri.equals(namespaceURI))
     {
-      prefix += "_";
+      prefix = (prefix != null ? prefix + "_" : "_");
       tempNSUri = def.getNamespace(prefix);
     }
 
