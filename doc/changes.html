@@ -20,6 +20,75 @@ most recent version is at the top.</p>
 
 <ul>
 
+  <li><strong>Version 1.5.3</strong>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Classes Affected</th>
+          <th>Changes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.StringUtils
+          </td>
+          <td>
+            v1.7 - Modified getURL method to fix SourceForge bug tracker 1465927: 
+            readWSDL("http://foo.ibm.com/bar", "/my.wsdl"); tries to read 'file:/my.wsdl' on Unix. 
+            It should try to read 'http://foo.ibm.com/my.wsdl'.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.xml.DOMUtils
+          </td>
+          <td>
+            v1.10 - Sourceforge WSDL4J Tracker 1534528. Improve parsing of namespace declarations.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            v1.44 - Bug tracker 1533036 - Check if FactoryImplName has changed before clearing cache
+            <p>
+            v1.45 - Bug tracker 1533111 - Duplicate <wsdl:import> not resolved to a single Definition
+            <p>
+            v1.46 - Bug tracker 1533106 - Don't catch Throwable, catch only checked exceptions
+            <p>
+            v1.47 - Bug tracker 1534528 - Improve parsing of namespace declarations.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLWriterImpl
+          </td>
+          <td>
+            v1.21 - Bug tracker 1533106 - Don't catch Throwable, catch only checked exceptions
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.OperationType
+          </td>
+          <td>
+            v1.5 - Fixed potential NPE in equals method, reported by  Anli Shundi in bug Tracker 1460305.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.WSDLException
+          </td>
+          <td>
+            v1.5 - Bug tracker 1526751: Don't printStackTrace in WSDLException.toString()
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li><br>
+
   <li><strong>Version 1.5.2</strong>
     <table border="1">
       <thead>
