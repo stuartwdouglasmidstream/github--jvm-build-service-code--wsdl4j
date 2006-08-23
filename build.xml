@@ -41,12 +41,12 @@ Author:
   <target name="init">
     <property name="name" value="wsdl4j"/>
     <property name="Name" value="WSDL4J"/>
-    <property name="wsdl4j.version" value="1.5.2"/>
-    <property name="wsdl4j.version.underscore" value="1_5_2"/>
+    <property name="wsdl4j.version" value="1.5.3"/>
+    <property name="wsdl4j.version.underscore" value="1_5_3"/>
     <property name="jwsdl.version" value="1.1"/>
     <property name="jwsdl.version.underscore" value="1_1"/>
     <property name="qname.version" value="1.0"/>
-    <property name="year" value="2003,2005"/>
+    <property name="year" value="2003,2006"/>
 
     <property name="build.compiler" value="classic"/>
     <property name="debug" value="off"/>
