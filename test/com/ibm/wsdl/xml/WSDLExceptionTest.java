@@ -10,11 +10,9 @@ import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLLocator;
 import javax.wsdl.xml.WSDLReader;
 
-import org.xml.sax.InputSource;
-
-import com.ibm.wsdl.factory.WSDLFactoryImpl3;
-
 import junit.framework.TestCase;
+
+import org.xml.sax.InputSource;
 
 
 public class WSDLExceptionTest extends TestCase
