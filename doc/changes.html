@@ -15,10 +15,246 @@
 
 <h2 align="center">Change History</h2>
 
-<p>This document lists the changes from version to version. The
+<p>This document lists the WSDL4J changes from version to version. The
 most recent version is at the top.</p>
 
 <ul>
+
+  <li><strong>Version 1.6</strong>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Classes Affected</th>
+          <th>Changes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.DefinitionImpl,<br>
+            javax.wsdl.Definition
+          </td>
+          <td>
+            Tracker 1526754. Added new methods getAllPortTypes, getAllBindings and 
+            getAllServices to retrieve all objects, whether they are defined in
+            the local Definition or imported (i.e. flatten the WSDL import tree).
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.WSDLException
+          </td>
+          <td>
+            Tracker 1526751. Change toString() behaviour to return the short message
+            rather than printing stack trace. Did this by removing the toString() method 
+            and inheriting it from java.lang.Exception instead. 
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.extensions.PopulatedExtensionRegistry,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12AddressImpl,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12AddressSerializer,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12BindingImpl,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12BindingSerializer,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12BodyImpl,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12BodySerializer,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12Constants,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12FaultImpl,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12FaultSerializer,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12HeaderFaultImpl,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12HeaderImpl,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12HeaderSerializer,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12OperationImpl,<br>
+            com.ibm.wsdl.extensions.soap12.SOAP12OperationSerializer,<br>
+            javax.wsdl.extensions.soap12.Address,<br>
+            javax.wsdl.extensions.soap12.Binding,<br>
+            javax.wsdl.extensions.soap12.Body,<br>
+            javax.wsdl.extensions.soap12.Fault,<br>
+            javax.wsdl.extensions.soap12.Header,<br>
+            javax.wsdl.extensions.soap12.HeaderFault,<br>
+            javax.wsdl.extensions.soap12.Operation
+          </td>
+          <td>
+            Tracker 1526750. Added SOAP 1.2 binding extensions. 
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.Constants
+          </td>
+          <td>
+            Tracker 1526749. Added constant for native attributes of Definition.
+            <p>
+            Tracker 1444755. Added constant ":none" for specifying unnamed input or 
+            output messages on operation accessor methods in PortType and Binding.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.AbstractWSDLElement
+          </td>
+          <td>
+            Tracker 1526749. Initial commit of abstract superclass that refactors
+            common methods for extensibility and documentation.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.BindingFaultImpl,<br>
+            com.ibm.wsdl.BindingImpl,<br>
+            com.ibm.wsdl.BindingInputImpl,<br>
+            com.ibm.wsdl.BindingOperationImpl,<br>
+            com.ibm.wsdl.BindingOutputImpl,<br>
+            com.ibm.wsdl.DefinitionImpl,<br>
+            com.ibm.wsdl.FaultImpl,<br>
+            com.ibm.wsdl.ImportImpl,<br>
+            com.ibm.wsdl.InputImpl,<br>
+            com.ibm.wsdl.MessageImpl,<br>
+            com.ibm.wsdl.OperationImpl,<br>
+            com.ibm.wsdl.OutputImpl,<br>
+            com.ibm.wsdl.PartImpl,<br>
+            com.ibm.wsdl.PortImpl,<br>
+            com.ibm.wsdl.PortTypeImpl,<br>
+            com.ibm.wsdl.ServiceImpl,<br>
+            com.ibm.wsdl.TypesImpl,<br>
+            com.ibm.wsdl.xml.WSDLReaderImpl,<br>
+            com.ibm.wsdl.xml.WSDLWriterImpl 
+          </td>
+          <td>
+            Tracker 1526749. Per WS-I BP 1.1, all WSDL elements now support extension
+            elements and extension attributes. Common behaviour for extensibility
+            and documentation refactored into new superclass AbstractWSDLElement.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.WSDLElement
+          </td>
+          <td>
+            Tracker 1526749. Initial commit of abstract super interface that refactors
+            common methods for extensibility and documentation.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.Binding,<br>
+            javax.wsdl.BindingFault,<br>
+            javax.wsdl.BindingInput,<br>
+            javax.wsdl.BindingOperation,<br>
+            javax.wsdl.BindingOutput,<br>
+            javax.wsdl.Definition,<br>
+            javax.wsdl.Fault,<br>
+            javax.wsdl.Import,<br>
+            javax.wsdl.Input,<br>
+            javax.wsdl.Message,<br>
+            javax.wsdl.Operation,<br>
+            javax.wsdl.Output,<br>
+            javax.wsdl.Part,<br>
+            javax.wsdl.Port,<br>
+            javax.wsdl.PortType,<br>
+            javax.wsdl.Service,<br>
+            javax.wsdl.Types
+          </td>
+          <td>
+            Tracker 1526749. Per WS-I BP 1.1, all WSDL elements now support extension
+            elements and extension attributes. Common behaviour for extensibility
+            and documentation refactored into new super interface WSDLElement.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.extension.schema.SchemaSerializer,<br>
+            com.ibm.wsdl.util.ObjectRegistry,<br>
+            com.ibm.wsdl.util.xml.DOM2Writer,<br>
+            com.ibm.wsdl.util.xml.DOMUtils,<br>
+            javax.wsdl.extensions.UnknownExtensionSerializer
+          </td>
+          <td>
+            Improve the printing of namespace declarations.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.BindingImpl,<br>
+            com.ibm.wsdl.BindingOperationImpl,<br>
+            com.ibm.wsdl.DefinitionImpl,<br>
+            com.ibm.wsdl.MessageImpl,<br>
+            com.ibm.wsdl.OperationImpl,<br>
+            com.ibm.wsdl.PortTypeImpl,<br>
+            com.ibm.wsdl.ServiceImpl,<br>
+            com.ibm.wsdl.extensions.mime.MIMEMultipartRelatedImpl,<br>
+            com.ibm.wsdl.extensions.mime.MIMEPartImpl,<br>
+            com.ibm.wsdl.extensions.soap.SOAPHeaderImpl,<br>
+            javax.wsdl.Binding,<br>
+            javax.wsdl.BindingOperation,<br>
+            javax.wsdl.Definition,<br>
+            javax.wsdl.Message,<br>
+            javax.wsdl.Operation,<br>
+            javax.wsdl.PortType,<br>
+            javax.wsdl.Service,<br>
+            javax.wsdl.extensions.ElementExtensible,<br>
+            javax.wsdl.extensions.mime.MIMEMultipartRelated,<br>
+            javax.wsdl.extensions.mime.MIMEPart,<br>
+            javax.wsdl.extensions.soap.SOAPHeader
+          </td>
+          <td>
+            Tracker 1526732. Ensure every addXXX method has a matching removeXXX method.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.xml.WSDLWriter
+          </td>
+          <td>
+            Javadoc improvement - added @return statement.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.xml.WSDLLocator
+          </td>
+          <td>
+            Tracker 1523891. New method close() to do 'clean up' after use.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl,<br>
+            javax.wsdl.xml.WSDLReader
+          </td>
+          <td>
+            Tracker 1523867. New method readWSDL(WSDLLocator,Element).
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.BindingImpl,<br>
+            com.ibm.wsdl.PortTypeImpl,<br>
+            javax.wsdl.Binding,<br>
+            javax.wsdl.PortType,<br>
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            Tracker 1444755. Change the behaviour of methods get/removeOperation and get/removeBindingOperation
+            so that operations with unnamed input or output messages can be searched for by specifying
+            the value ":none" for the inputName and outputName method arguments.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            javax.wsdl.factory.WSDLFactory
+          </td>
+          <td>
+            Tracker 1439548. When searching for factory impl class name check first for
+            the /META-INF/services/javax.wsdl.factory.WSDLFactory property file.
+            <p>
+            Tracker 1226908. New static method WSDLFactory.newInstance(String,Classloader)
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li><br>
 
   <li><strong>Version 1.5.3</strong>
     <table border="1">
