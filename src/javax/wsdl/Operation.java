@@ -1,12 +1,10 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
 
 import java.util.*;
-import javax.wsdl.extensions.*;
-import org.w3c.dom.Element;
 
 /**
  * This interface represents a WSDL operation.
@@ -17,7 +15,7 @@ import org.w3c.dom.Element;
  * @author Nirmal Mukhi (nmukhi@us.ibm.com)
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public interface Operation extends java.io.Serializable, ElementExtensible
+public interface Operation extends WSDLElement
 {
   /**
    * Set the name of this operation.
@@ -79,6 +77,14 @@ public interface Operation extends java.io.Serializable, ElementExtensible
   public Fault getFault(String name);
 
   /**
+   * Remove the specified fault message.
+   *
+   * @param name the name of the fault message to be removed.
+   * @return the fault message which was removed
+   */
+  public Fault removeFault(String name);
+  
+  /**
    * Get all the fault messages associated with this operation.
    *
    * @return names of fault messages
@@ -117,24 +123,6 @@ public interface Operation extends java.io.Serializable, ElementExtensible
    * of message part names
    */
   public List getParameterOrdering();
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
 
   public void setUndefined(boolean isUndefined);
 

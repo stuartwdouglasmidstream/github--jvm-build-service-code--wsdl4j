@@ -1,12 +1,10 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
 
 import javax.xml.namespace.*;
-import javax.wsdl.extensions.AttributeExtensible;
-import org.w3c.dom.*;
 
 /**
  * This interface represents a message part and contains the part's
@@ -16,7 +14,7 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Part extends java.io.Serializable, AttributeExtensible
+public interface Part extends WSDLElement
 {
   /**
    * Set the name of this part.
@@ -39,22 +37,4 @@ public interface Part extends java.io.Serializable, AttributeExtensible
   public void setTypeName(QName typeName);
 
   public QName getTypeName();
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
 }

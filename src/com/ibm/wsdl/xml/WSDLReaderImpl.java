@@ -15,6 +15,7 @@ import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.wsdl.factory.*;
 import javax.wsdl.xml.*;
+
 import com.ibm.wsdl.*;
 import com.ibm.wsdl.util.*;
 import com.ibm.wsdl.util.xml.*;
@@ -119,6 +120,7 @@ public class WSDLReaderImpl implements WSDLReader
    * Gets the value of the specified feature.
    *
    * @param name the name of the feature to get the value of.
+   * @return the value of the feature.
    * @throws IllegalArgumentException if the feature name is not recognized.
    * @see #setFeature(String, boolean)
    */
@@ -211,7 +213,7 @@ public class WSDLReaderImpl implements WSDLReader
       this.factory = null;
         
       this.factoryImplName = factoryImplName;
-      if(verbose) System.out.println("WSDLFactory Impl Name set to : "+factoryImplName);
+      //if(verbose) System.out.println("WSDLFactory Impl Name set to : "+factoryImplName);
     }
   }
 
@@ -327,6 +329,8 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    parseExtensibilityAttributes(defEl, Definition.class, def, def);
+    
     return def;
   }
 
@@ -551,7 +555,8 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else
       {
-        DOMUtils.throwWSDLException(tempEl);
+        importDef.addExtensibilityElement(
+          parseExtensibilityElement(Import.class, tempEl, def));        
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -566,14 +571,6 @@ public class WSDLReaderImpl implements WSDLReader
   protected Types parseTypes(Element typesEl, Definition def)
     throws WSDLException
   {
-    List remainingAttrs = DOMUtils.getAttributes(typesEl);
-    
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(typesEl, remainingAttrs);;
-    }
-      
     //register any NS decls with the Definition
     NamedNodeMap attrs = typesEl.getAttributes();
     registerNSDeclarations(attrs, def);
@@ -605,6 +602,8 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    parseExtensibilityAttributes(typesEl, Types.class, types, def);
+    
     return types;
   }
   
@@ -907,13 +906,7 @@ public class WSDLReaderImpl implements WSDLReader
                                                     Constants.ELEM_BINDING,
                                                     def,
                                                     remainingAttrs);
-    
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(bindingEl, remainingAttrs);;
-    }
-    
+        
     PortType portType = null;
 
     if (name != null)
@@ -993,12 +986,6 @@ public class WSDLReaderImpl implements WSDLReader
                                         Constants.ATTR_NAME,
                                         remainingAttrs);
     
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(bindingOperationEl, remainingAttrs);;
-    }
-
     if (name != null)
     {
       bindingOperation.setName(name);
@@ -1041,10 +1028,12 @@ public class WSDLReaderImpl implements WSDLReader
     {
       BindingInput bindingInput = bindingOperation.getBindingInput();
       BindingOutput bindingOutput = bindingOperation.getBindingOutput();
-      String inputName =
-        (bindingInput != null ? bindingInput.getName() : null);
-      String outputName =
-        (bindingOutput != null ? bindingOutput.getName() : null);
+      String inputName = (bindingInput != null 
+              ? (bindingInput.getName() != null ? bindingInput.getName() : Constants.NONE)
+              : null);
+      String outputName = (bindingOutput != null 
+              ? (bindingOutput.getName() != null ? bindingOutput.getName() : Constants.NONE) 
+              : null);
       Operation op = portType.getOperation(name, inputName, outputName);
 
       if (op == null)
@@ -1064,6 +1053,8 @@ public class WSDLReaderImpl implements WSDLReader
       bindingOperation.setOperation(op);
     }
 
+    parseExtensibilityAttributes(bindingOperationEl, BindingOperation.class, bindingOperation, def);
+    
     return bindingOperation;
   }
 
@@ -1078,12 +1069,6 @@ public class WSDLReaderImpl implements WSDLReader
                                         Constants.ATTR_NAME,
                                         remainingAttrs);
     
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(bindingInputEl, remainingAttrs);;
-    }
-
     if (name != null)
     {
       bindingInput.setName(name);
@@ -1124,12 +1109,6 @@ public class WSDLReaderImpl implements WSDLReader
                                         Constants.ATTR_NAME,
                                         remainingAttrs);
     
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(bindingOutputEl, remainingAttrs);;
-    }
-
     if (name != null)
     {
       bindingOutput.setName(name);
@@ -1169,12 +1148,6 @@ public class WSDLReaderImpl implements WSDLReader
     String name = DOMUtils.getAttribute(bindingFaultEl,
                                         Constants.ATTR_NAME,
                                         remainingAttrs);
-
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(bindingFaultEl, remainingAttrs);;
-    }
     
     if (name != null)
     {
@@ -1202,6 +1175,8 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    parseExtensibilityAttributes(bindingFaultEl, BindingFault.class, bindingFault, def);
+    
     return bindingFault;
   }
 
@@ -1212,12 +1187,6 @@ public class WSDLReaderImpl implements WSDLReader
     
     List remainingAttrs = DOMUtils.getAttributes(msgEl);
     String name = DOMUtils.getAttribute(msgEl, Constants.ATTR_NAME, remainingAttrs);
-
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(msgEl, remainingAttrs);;
-    }
     
     if (name != null)
     {
@@ -1264,6 +1233,8 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    parseExtensibilityAttributes(msgEl, Message.class, msg, def);
+    
     return msg;
   }
 
@@ -1310,7 +1281,8 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else
       {
-        DOMUtils.throwWSDLException(tempEl);
+        part.addExtensibilityElement(
+          parseExtensibilityElement(Part.class, tempEl, def));
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -1476,7 +1448,8 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else
       {
-        DOMUtils.throwWSDLException(tempEl);
+        portType.addExtensibilityElement(
+          parseExtensibilityElement(PortType.class, tempEl, def));
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -1499,13 +1472,7 @@ public class WSDLReaderImpl implements WSDLReader
     String parameterOrderStr = DOMUtils.getAttribute(opEl,
                                                      Constants.ATTR_PARAMETER_ORDER,
                                                      remainingAttrs);
-    
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(opEl, remainingAttrs);;
-    }
-    
+        
     //register any NS decls with the Definition
     NamedNodeMap attrs = opEl.getAttributes();
     registerNSDeclarations(attrs, def);
@@ -1550,8 +1517,12 @@ public class WSDLReaderImpl implements WSDLReader
 
     if (name != null)
     {
-      String inputName = (input != null ? input.getName() : null);
-      String outputName = (output != null ? output.getName() : null);
+      String inputName = (input != null 
+              ? (input.getName() != null ? input.getName() : Constants.NONE) 
+              : null);
+      String outputName = (output != null 
+              ? (output.getName() != null ? output.getName() : Constants.NONE) 
+              : null);
 
       op = portType.getOperation(name, inputName, outputName);
 
@@ -1678,6 +1649,8 @@ public class WSDLReaderImpl implements WSDLReader
       op = null;
     }
 
+    parseExtensibilityAttributes(opEl, Operation.class, op, def);
+    
     return op;
   }
 
@@ -1689,12 +1662,6 @@ public class WSDLReaderImpl implements WSDLReader
     List remainingAttrs = DOMUtils.getAttributes(serviceEl);
     String name = DOMUtils.getAttribute(serviceEl, Constants.ATTR_NAME, remainingAttrs);
     
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(serviceEl, remainingAttrs);;
-    }
-
     if (name != null)
     {
       service.setQName(new QName(def.getTargetNamespace(), name));
@@ -1725,6 +1692,8 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    parseExtensibilityAttributes(serviceEl, Service.class, service, def);
+    
     return service;
   }
 
@@ -1741,12 +1710,6 @@ public class WSDLReaderImpl implements WSDLReader
                                                   def,
                                                   remainingAttrs);
     
-    //This element cannot contain extension attributes, so check for
-    //unexpected remaining attributes.
-    if (!remainingAttrs.isEmpty()) {
-        DOMUtils.throwWSDLException(portEl, remainingAttrs);;
-    }
-
     if (name != null)
     {
       port.setName(name);
@@ -1788,6 +1751,8 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    parseExtensibilityAttributes(portEl, Port.class, port, def);
+    
     return port;
   }
 
@@ -1885,7 +1850,8 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else
       {
-        DOMUtils.throwWSDLException(tempEl);
+        input.addExtensibilityElement(
+          parseExtensibilityElement(Input.class, tempEl, def));
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -1939,7 +1905,8 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else
       {
-        DOMUtils.throwWSDLException(tempEl);
+        output.addExtensibilityElement(
+          parseExtensibilityElement(Output.class, tempEl, def));
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -1993,7 +1960,8 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else
       {
-        DOMUtils.throwWSDLException(tempEl);
+        fault.addExtensibilityElement(
+            parseExtensibilityElement(Fault.class, tempEl, def));
       }
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
@@ -2229,6 +2197,34 @@ public class WSDLReaderImpl implements WSDLReader
     return readWSDL(documentBaseURI, definitionsElement, null);
   }
 
+  /**
+   * Read the specified &lt;wsdl:definitions&gt; element into a WSDL
+   * definition. The WSDLLocator is used to provide the document
+   * base URIs. The InputSource of the WSDLLocator is ignored, instead
+   * the WSDL is parsed from the given Element. 
+   *
+   * @param locator A WSDLLocator object used to provide 
+   * the document base URI of the WSDL definition described by the
+   * element.
+   * @param definitionsElement the &lt;wsdl:definitions&gt; element
+   * @return the definition described by the element.
+   */
+  public Definition readWSDL(WSDLLocator locator,
+                             Element definitionsElement)
+                               throws WSDLException
+  {
+    try
+    {
+      this.loc = locator;
+      return readWSDL(locator.getBaseURI(), definitionsElement, null);
+    }
+    finally
+    {
+      locator.close();
+      this.loc = null;
+    }
+  }
+  
   protected Definition readWSDL(String documentBaseURI,
                                 Element definitionsElement,
                                 Map importedDefs)
@@ -2302,6 +2298,14 @@ public class WSDLReaderImpl implements WSDLReader
       System.out.println("Retrieving document at '" + base + "'.");
     }
 
-    return readWSDL(base, is);
+    try
+    {
+      return readWSDL(base, is);
+    }
+    finally
+    {
+      this.loc.close();
+      this.loc = null;
+    }
   }
 }

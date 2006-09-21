@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.util.xml;
@@ -61,11 +61,11 @@ public class DOM2Writer
   /**
    * Return a string containing this node serialized as XML.
    */
-  public static String nodeToString(Node node)
+  public static String nodeToString(Node node, Map namespaces)
   {
     StringWriter sw = new StringWriter();
 
-    serializeAsXML(node, sw);
+    serializeAsXML(node, namespaces, sw);
 
     return sw.toString();
   }
@@ -74,7 +74,7 @@ public class DOM2Writer
   /**
    * Print an XML declaration before serializing the element.
    */
-  public static void serializeElementAsDocument(Element el, Writer writer)
+  public static void serializeElementAsDocument(Element el, Map namespaces, Writer writer)
   {
     PrintWriter pw = new PrintWriter(writer);
     String javaEncoding = (writer instanceof OutputStreamWriter)
@@ -94,15 +94,15 @@ public class DOM2Writer
       pw.println("<?xml version=\"1.0\"?>");
     }
 
-    serializeAsXML(el, writer);
+    serializeAsXML(el, namespaces, writer);
   }
   
   /**
   * Serialize this node into the writer as XML.
   */
-  public static void serializeAsXML(Node node, Writer writer)
+  public static void serializeAsXML(Node node, Map namespaces, Writer writer)
   {
-    ObjectRegistry namespaceStack = new ObjectRegistry();
+    ObjectRegistry namespaceStack = new ObjectRegistry(namespaces);
 
     namespaceStack.register("xml", NS_URI_XML);
 

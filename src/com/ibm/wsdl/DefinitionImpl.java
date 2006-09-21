@@ -1,14 +1,14 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl;
 
 import java.util.*;
+
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
-import org.w3c.dom.*;
 
 /**
  * This class represents a WSDL definition.
@@ -17,7 +17,7 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public class DefinitionImpl implements Definition
+public class DefinitionImpl extends AbstractWSDLElement implements Definition
 {
   protected String documentBaseURI = null;
   protected QName name = null;
@@ -29,8 +29,8 @@ public class DefinitionImpl implements Definition
   protected Map bindings = new HashMap();
   protected Map portTypes = new HashMap();
   protected Map services = new HashMap();
-  protected Element docEl = null;
-  protected List extElements = new Vector();
+  protected List nativeAttributeNames =
+    Arrays.asList(Constants.DEFINITION_ATTR_NAMES);
   protected ExtensionRegistry extReg = null;
 
   public static final long serialVersionUID = 1;
@@ -145,6 +145,22 @@ public class DefinitionImpl implements Definition
 
      return (String)namespaces.get(prefix);
    }
+   
+   /**
+    * Remove the namespace URI associated with this prefix.
+    *
+    * @param prefix the prefix of the namespace to be removed.
+    * @return the namespace URI which was removed
+    */
+   public String removeNamespace(String prefix)
+   {
+     if (prefix == null)
+     {
+       prefix = "";
+     }
+
+     return (String)namespaces.remove(prefix);
+   }
 
    /**
     * Get a prefix associated with this namespace URI. Or null if
@@ -227,6 +243,24 @@ public class DefinitionImpl implements Definition
 
     importList.add(importDef);
   }
+  
+  /**
+   * Remove an import from this WSDL description.
+   *
+   * @param importDef the import to be removed
+   */
+  public Import removeImport(Import importDef)
+  {
+    String namespaceURI = importDef.getNamespaceURI();
+    List importList = (List)imports.get(namespaceURI);
+
+    Import removed = null;
+    if (importList != null && importList.remove(importDef))
+    {
+      removed = importDef;
+    }
+    return removed;
+  }
 
   /**
    * Get the list of imports for the specified namespaceURI.
@@ -290,7 +324,7 @@ public class DefinitionImpl implements Definition
    */
   public Message removeMessage(QName name)
   {
-    return (Message)messages.remove(name);
+    return (Message) messages.remove(name);
   }
 
   /**
@@ -339,11 +373,11 @@ public class DefinitionImpl implements Definition
    */
   public Binding removeBinding(QName name)
   {
-    return (Binding)bindings.remove(name);
+    return (Binding) bindings.remove(name);
   }
 
   /**
-   * Get all the bindings defined here.
+   * Get all the bindings defined in this Definition.
    */
   public Map getBindings()
   {
@@ -388,11 +422,11 @@ public class DefinitionImpl implements Definition
    */
   public PortType removePortType(QName name)
   {
-    return (PortType)portTypes.remove(name);
+    return (PortType) portTypes.remove(name);
   }
 
   /**
-   * Get all the portTypes defined here.
+   * Get all the portTypes defined in this Definition.
    */
   public Map getPortTypes()
   {
@@ -437,57 +471,15 @@ public class DefinitionImpl implements Definition
    */
   public Service removeService(QName name)
   {
-    return (Service)services.remove(name);
+    return (Service) services.remove(name);
   }
 
   /**
-   * Get all the services defined here.
+   * Get all the services defined in this Definition.
    */
   public Map getServices()
   {
     return services;
-  }
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl)
-  {
-    this.docEl = docEl;
-  }
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement()
-  {
-    return docEl;
-  }
-
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement)
-  {
-    extElements.add(extElement);
-  }
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements()
-  {
-    return extElements;
   }
 
   /**
@@ -783,6 +775,105 @@ public class DefinitionImpl implements Definition
       }
     }
 
+    String superString = super.toString();
+    if(!superString.equals(""))
+    {
+      strBuf.append("\n");
+      strBuf.append(superString);
+    }
+    
     return strBuf.toString();
+  }
+  
+  /**
+   * Get the list of local attribute names defined for this element in
+   * the WSDL specification.
+   *
+   * @return a List of Strings, one for each local attribute name
+   */
+  public List getNativeAttributeNames()
+  {
+    return nativeAttributeNames;
+  }
+
+  /**
+   * Get all the bindings defined in this Definition and
+   * those in any imported Definitions in the WSDL tree.
+   */
+  public Map getAllBindings()
+  {
+    Map allBindings = new HashMap(getBindings());
+    Map importMap = getImports();
+    Iterator mapItr = importMap.values().iterator();
+    while(mapItr.hasNext())
+    {
+      Vector importDefs = (Vector) mapItr.next();
+      Iterator vecItr = importDefs.iterator();
+      while(vecItr.hasNext())
+      {
+        Import importDef = (Import) vecItr.next(); 
+        Definition importedDef = importDef.getDefinition();
+        //importedDef may be null (e.g. if the javax.wsdl.importDocuments feature is disabled).
+        if(importedDef != null)
+        {
+          allBindings.putAll(importedDef.getAllBindings());
+        }
+      }
+    }
+    return allBindings;
+  }
+
+  /**
+   * Get all the portTypes defined in this Definition and
+   * those in any imported Definitions in the WSDL tree.
+   */
+  public Map getAllPortTypes()
+  {
+    Map allPortTypes = new HashMap(getPortTypes());
+    Map importMap = getImports();
+    Iterator mapItr = importMap.values().iterator();
+    while(mapItr.hasNext())
+    {
+      Vector importDefs = (Vector) mapItr.next();
+      Iterator vecItr = importDefs.iterator();
+      while(vecItr.hasNext())
+      {
+        Import importDef = (Import) vecItr.next(); 
+        Definition importedDef = importDef.getDefinition();
+        //importedDef may be null (e.g. if the javax.wsdl.importDocuments feature is disabled).
+        if(importedDef != null)
+        {
+          allPortTypes.putAll(importedDef.getAllPortTypes());
+        }
+      }
+    }
+    return allPortTypes;
+  }
+
+  /**
+   * Get all the services defined in this Definition and
+   * those in any imported Definitions in the WSDL tree.
+   */
+  public Map getAllServices()
+  {
+    Map allServices = new HashMap(getServices());
+    Map importMap = getImports();
+    Iterator mapItr = importMap.values().iterator();
+    while(mapItr.hasNext())
+    {
+      Vector importDefs = (Vector) mapItr.next();
+      Iterator vecItr = importDefs.iterator();
+      while(vecItr.hasNext())
+      {
+        Import importDef = (Import) vecItr.next(); 
+        Definition importedDef = importDef.getDefinition();
+        //importedDef may be null (e.g. if the javax.wsdl.importDocuments feature is disabled).
+        if(importedDef != null)
+        {
+          allServices.putAll(importedDef.getAllServices());
+        }
+      }
+    }
+    return allServices;
   }
 }

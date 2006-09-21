@@ -1,11 +1,10 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
 
 import java.util.*;
-import org.w3c.dom.*;
 import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
 
@@ -16,7 +15,7 @@ import javax.xml.namespace.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Definition extends java.io.Serializable, ElementExtensible
+public interface Definition extends WSDLElement
 {
   /**
    * Set the document base URI of this definition. Can be used to
@@ -87,6 +86,14 @@ public interface Definition extends java.io.Serializable, ElementExtensible
     * @see #getPrefix(String)
     */
    public String getNamespace(String prefix);
+   
+   /**
+    * Remove the namespace URI associated with this prefix.
+    * 
+    * @param prefix the prefix of the namespace to be removed.
+    * @return the namespace URI which was removed.
+    */
+   public String removeNamespace(String prefix);
 
    /**
     * Get a prefix associated with this namespace URI. Or null if
@@ -126,6 +133,14 @@ public interface Definition extends java.io.Serializable, ElementExtensible
    */
   public void addImport(Import importDef);
 
+  /**
+   * Remove an import from this WSDL description.
+   *
+   * @param importDef the import to be removed
+   * @return the removed Import
+   */
+  public Import removeImport(Import importDef);
+  
   /**
    * Get the list of imports for the specified namespaceURI.
    *
@@ -200,9 +215,15 @@ public interface Definition extends java.io.Serializable, ElementExtensible
   public Binding removeBinding(QName name);
 
   /**
-   * Get all the bindings defined here.
+   * Get all the bindings defined in this Definition.
    */
   public Map getBindings();
+  
+  /**
+   * Get all the bindings defined in this Definition and
+   * those in any imported Definitions down the WSDL tree.
+   */
+  public Map getAllBindings();
 
   /**
    * Add a portType to this WSDL description.
@@ -230,10 +251,16 @@ public interface Definition extends java.io.Serializable, ElementExtensible
   public PortType removePortType(QName name);
 
   /**
-   * Get all the portTypes defined here.
+   * Get all the portTypes defined in this Definition.
    */
   public Map getPortTypes();
 
+  /**
+   * Get all the portTypes defined in this Definition and
+   * those in any imported Definitions down the WSDL tree.
+   */
+  public Map getAllPortTypes();
+  
   /**
    * Add a service to this WSDL description.
    *
@@ -260,28 +287,16 @@ public interface Definition extends java.io.Serializable, ElementExtensible
   public Service removeService(QName name);
 
   /**
-   * Get all the services defined here.
+   * Get all the services defined in this Definition.
    */
   public Map getServices();
 
   /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
+   * Get all the services defined in this Definition and
+   * those in any imported Definitions down the WSDL tree.
    */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
-
+  public Map getAllServices();
+  
   /**
    * Create a new binding.
    *

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl.extensions.soap;
@@ -73,7 +73,25 @@ public interface SOAPHeader extends ExtensibilityElement, java.io.Serializable
    */
   public String getNamespaceURI();
 
+  /**
+   * Add a SOAP header fault.
+   * 
+   * @param soapHeaderFault the SOAP Header fault to be added.
+   */
   public void addSOAPHeaderFault(SOAPHeaderFault soapHeaderFault);
+  
+  /**
+   * Remove a SOAP header fault.
+   * 
+   * @param soapHeaderFault the SOAP header fault to be removed.
+   * @return the SOAP header fault which was removed.
+   */
+  public SOAPHeaderFault removeSOAPHeaderFault(SOAPHeaderFault soapHeaderFault);
 
+  /**
+   * Get a list of all SOAP header faults contained in this SOAP header.
+   * 
+   * @return a list of all SOAP header faults contained in this SOAP header.
+   */
   public List getSOAPHeaderFaults();
 }

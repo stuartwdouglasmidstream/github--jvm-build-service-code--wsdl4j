@@ -120,11 +120,4 @@ public class WSDLException extends Exception
 
     return strBuf.toString();
   }
-  
-  public String toString()
-  {
-    //This method now just inherits the super class behaviour, but the method
-    //signature has been retained in this class for JWSDL 1.1 TCK compatibility.
-    return super.toString();
-  }
 }

@@ -1,11 +1,8 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
-
-import org.w3c.dom.*;
-import javax.wsdl.extensions.*;
 
 /**
  * This interface represents a fault binding. That is, it contains
@@ -15,7 +12,7 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler
  */
-public interface BindingFault extends java.io.Serializable, ElementExtensible
+public interface BindingFault extends WSDLElement
 {
   /**
    * Set the name of this fault binding.
@@ -30,23 +27,5 @@ public interface BindingFault extends java.io.Serializable, ElementExtensible
    * @return the fault binding name
    */
   public String getName();
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
 
 }

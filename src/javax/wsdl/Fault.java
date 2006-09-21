@@ -1,11 +1,8 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
-
-import org.w3c.dom.Element;
-import javax.wsdl.extensions.AttributeExtensible;
 
 /**
  * This interface represents a fault message, and contains the name
@@ -13,7 +10,7 @@ import javax.wsdl.extensions.AttributeExtensible;
  *
  * @author Matthew J. Duftler
  */
-public interface Fault extends java.io.Serializable, AttributeExtensible
+public interface Fault extends WSDLElement
 {
   /**
    * Set the name of this fault message.
@@ -32,22 +29,4 @@ public interface Fault extends java.io.Serializable, AttributeExtensible
   public void setMessage(Message message);
 
   public Message getMessage();
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
 }

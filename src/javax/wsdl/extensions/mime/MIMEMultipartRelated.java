@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl.extensions.mime;
@@ -19,6 +19,14 @@ public interface MIMEMultipartRelated extends ExtensibilityElement,
    * @param mimePart the MIME part to be added
    */
   public void addMIMEPart(MIMEPart mimePart);
+  
+  /**
+   * Remove a MIME part to this MIME multipart related.
+   *
+   * @param mimePart the MIME part to be remove.
+   * @return the MIME part which was removed.
+   */
+  public MIMEPart removeMIMEPart(MIMEPart mimePart);
 
   /**
    * Get all the MIME parts defined here.

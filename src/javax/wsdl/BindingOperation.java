@@ -1,12 +1,10 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
 
 import java.util.*;
-import org.w3c.dom.*;
-import javax.wsdl.extensions.*;
 
 /**
  * This interface represents a WSDL operation binding.
@@ -16,7 +14,7 @@ import javax.wsdl.extensions.*;
  *
  * @author Matthew J. Duftler (duftler@us.ibm.com)
  */
-public interface BindingOperation extends java.io.Serializable, ElementExtensible
+public interface BindingOperation extends WSDLElement
 {
   /**
    * Set the name of this operation binding.
@@ -74,12 +72,20 @@ public interface BindingOperation extends java.io.Serializable, ElementExtensibl
    */
   public BindingOutput getBindingOutput();
 
-	/**
-	 * Add a fault binding.
+  /**
+   * Add a fault binding.
    *
-	 * @param bindingFault the new fault binding
-	 */
+   * @param bindingFault the new fault binding
+   */
   public void addBindingFault(BindingFault bindingFault);
+  
+  /**
+   * Remove a fault binding.
+   *
+   * @param name the name of the fault binding to be removed
+   * @return the BindingFault which was removed
+   */
+  public BindingFault removeBindingFault(String name);
 
   /**
    * Get the specified fault binding.
@@ -90,29 +96,11 @@ public interface BindingOperation extends java.io.Serializable, ElementExtensibl
    */
   public BindingFault getBindingFault(String name);
 
-	/**
-	 * Get all the fault bindings associated with this operation binding.
+  /**
+   * Get all the fault bindings associated with this operation binding.
    *
-	 * @return names of fault bindings
-	 */
+   * @return names of fault bindings
+   */
   public Map getBindingFaults();
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
 
 }

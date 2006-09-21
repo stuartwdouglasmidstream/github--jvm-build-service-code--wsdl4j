@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl;
@@ -7,7 +7,6 @@ package com.ibm.wsdl;
 import java.util.*;
 import javax.wsdl.*;
 import javax.xml.namespace.*;
-import org.w3c.dom.*;
 
 /**
  * This class represents a port type. It contains information about
@@ -17,16 +16,14 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public class PortTypeImpl implements PortType
+public class PortTypeImpl extends AbstractWSDLElement implements PortType
 {
   protected QName name = null;
   protected List operations = new Vector();
-  protected Element docEl = null;
-  protected Map extensionAttributes = new HashMap();
   protected List nativeAttributeNames =
     Arrays.asList(Constants.PORT_TYPE_ATTR_NAMES);
   protected boolean isUndefined = true;
-
+  
   public static final long serialVersionUID = 1;
 
   /**
@@ -64,14 +61,33 @@ public class PortTypeImpl implements PortType
    * be overloaded within a PortType. In case of overloading, the
    * names of the input and output messages can be used to further
    * refine the search.
+   * <p>
+   * The search criteria will be the operation name parameter and any 
+   * non-null input or output message name parameters. 
+   * To exclude the input or output message name from the search criteria,
+   * specify a null value for the input or output message name parameter.
+   * To search for operations with unnamed input or output messages 
+   * (i.e. &lt;input&gt; or &lt;output&gt; elements with the 'name' attribute omitted), 
+   * specify the string "<code>:none</code>" for the input or output message name parameter.
+   * <p>
+   * Note: the use of a string value "<code>:none</code>" rather than null to search for 
+   * unnamed input or output messages is necessary to retain backward compatibility
+   * with earlier versions of the JWSDL API, which defined a null value to
+   * mean 'ignore this parameter'.
+   * The colon in "<code>:none</code>" is to avoid name clashes with input or output
+   * message names, which must be of type NCName (i.e. they cannot contain colons). 
    *
    * @param name the name of the desired operation.
    * @param inputName the name of the input message; if this is null
-   * it will be ignored.
+   * it will be ignored, if this is "<code>:none</code>" it means search for an input 
+   * message without a name.
    * @param outputName the name of the output message; if this is null
-   * it will be ignored.
+   * it will be ignored, if this is "<code>:none</code>" it means search for an output 
+   * message without a name.
    * @return the corresponding operation, or null if there wasn't
    * any matching operation
+   * 
+   * @throws IllegalArgumentException if duplicate operations are found.
    */
   public Operation getOperation(String name,
                                 String inputName,
@@ -113,6 +129,7 @@ public class PortTypeImpl implements PortType
         }
 
         boolean specifiedDefault = inputName.equals(defaultInputName);
+        
         Input input = op.getInput();
 
         if (input != null)
@@ -121,7 +138,7 @@ public class PortTypeImpl implements PortType
 
           if (opInputName == null)
           {
-            if (!specifiedDefault)
+            if (!specifiedDefault && !inputName.equals(Constants.NONE))
             {
               op = null;
             }
@@ -149,6 +166,7 @@ public class PortTypeImpl implements PortType
         }
 
         boolean specifiedDefault = outputName.equals(defaultOutputName);
+        
         Output output = op.getOutput();
 
         if (output != null)
@@ -157,7 +175,7 @@ public class PortTypeImpl implements PortType
 
           if (opOutputName == null)
           {
-            if (!specifiedDefault)
+            if (!specifiedDefault && !outputName.equals(Constants.NONE))
             {
               op = null;
             }
@@ -194,7 +212,7 @@ public class PortTypeImpl implements PortType
           ret = op;
         }
       }
-    }
+    }  //end while loop
 
     return ret;
   }
@@ -208,29 +226,40 @@ public class PortTypeImpl implements PortType
   }
 
   /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
+   * Remove the specified operation. Note that operation names can
+   * be overloaded within a PortType. In case of overloading, the
+   * names of the input and output messages can be used to further
+   * refine the search.
+   * <p>
+   * Usage of the input and output message name parameters is as 
+   * described for the <code>getOperation</code> method.
+   * 
+   * @param name the name of the desired operation.
+   * @param inputName the name of the input message; if this is null
+   * it will be ignored, if this is "<code>:none</code>" it means search for an input 
+   * message without a name.
+   * @param outputName the name of the output message; if this is null
+   * it will be ignored, if this is "<code>:none</code>" it means search for an output 
+   * message without a name.
+   * @return the operation which was removed, or null if there wasn't
+   * any matching operation
+   * 
+   * @throws IllegalArgumentException if duplicate operations are found.
+   * 
+   * @see #getOperation(String, String, String) 
    */
-  public void setDocumentationElement(Element docEl)
+  public Operation removeOperation(String name,
+                                String inputName,
+                                String outputName)
   {
-    this.docEl = docEl;
+    Operation op = getOperation(name,inputName,outputName);
+    if(operations.remove(op))
+    {
+      return op;
+    }
+    else return null;
   }
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement()
-  {
-    return docEl;
-  }
-
+  
   public void setUndefined(boolean isUndefined)
   {
     this.isUndefined = isUndefined;
@@ -239,66 +268,6 @@ public class PortTypeImpl implements PortType
   public boolean isUndefined()
   {
     return isUndefined;
-  }
-
-  /**
-   * Set an extension attribute on this element. Pass in a null value to remove
-   * an extension attribute.
-   *
-   * @param name the extension attribute name
-   * @param value the extension attribute value. Can be a String, a QName, a
-   * List of Strings, or a List of QNames.
-   *
-   * @see #getExtensionAttribute
-   * @see #getExtensionAttributes
-   * @see ExtensionRegistry#registerExtensionAttributeType
-   * @see ExtensionRegistry#queryExtensionAttributeType
-   */
-  public void setExtensionAttribute(QName name, Object value)
-  {
-    if (value != null)
-    {
-      extensionAttributes.put(name, value);
-    }
-    else
-    {
-      extensionAttributes.remove(name);
-    }
-  }
-
-  /**
-   * Retrieve an extension attribute from this element. If the extension
-   * attribute is not defined, null is returned.
-   *
-   * @param name the extension attribute name
-   *
-   * @return the value of the extension attribute, or null if
-   * it is not defined. Can be a String, a QName, a List of Strings, or a List
-   * of QNames.
-   *
-   * @see #setExtensionAttribute
-   * @see #getExtensionAttributes
-   * @see ExtensionRegistry#registerExtensionAttributeType
-   * @see ExtensionRegistry#queryExtensionAttributeType
-   */
-  public Object getExtensionAttribute(QName name)
-  {
-    return extensionAttributes.get(name);
-  }
-
-  /**
-   * Get the map containing all the extension attributes defined
-   * on this element. The keys are the qnames of the attributes.
-   *
-   * @return a map containing all the extension attributes defined
-   * on this element
-   *
-   * @see #setExtensionAttribute
-   * @see #getExtensionAttribute
-   */
-  public Map getExtensionAttributes()
-  {
-    return extensionAttributes;
   }
 
   /**
@@ -328,14 +297,11 @@ public class PortTypeImpl implements PortType
       }
     }
 
-    Iterator keys = extensionAttributes.keySet().iterator();
-
-    while (keys.hasNext())
+    String superString = super.toString();
+    if(!superString.equals(""))
     {
-      QName name = (QName)keys.next();
-
-      strBuf.append("\nextension attribute: " + name + "=" +
-                    extensionAttributes.get(name));
+      strBuf.append("\n");
+      strBuf.append(superString);
     }
 
     return strBuf.toString();

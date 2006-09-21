@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.util;
@@ -22,6 +22,15 @@ public class ObjectRegistry {
   ObjectRegistry parent = null;
 
   public ObjectRegistry () {
+  }
+  
+  public ObjectRegistry (Map initialValues) {
+    Iterator itr = initialValues.keySet().iterator();
+    while(itr.hasNext())
+    {
+      String name = (String) itr.next();
+      register(name, initialValues.get(name));
+    }
   }
 
   public ObjectRegistry (ObjectRegistry parent) {

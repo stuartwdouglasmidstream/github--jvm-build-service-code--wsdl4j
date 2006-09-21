@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl.xml;
@@ -61,6 +61,7 @@ public interface WSDLReader
    * Gets the value of the specified feature.
    *
    * @param name the name of the feature to get the value of.
+   * @return the value of feature
    * @throws IllegalArgumentException if the feature name is not recognized.
    * @see #setFeature(String, boolean)
    */
@@ -144,6 +145,22 @@ public interface WSDLReader
    * @return the definition described by the element.
    */
   public Definition readWSDL(String documentBaseURI,
+                             Element definitionsElement)
+                               throws WSDLException;
+  
+  /**
+   * Read the specified &lt;wsdl:definitions&gt; element into a WSDL
+   * definition. The WSDLLocator is used to provide the document
+   * base URIs. The InputSource of the WSDLLocator is ignored, instead
+   * the WSDL is parsed from the given Element. 
+   *
+   * @param locator A WSDLLocator object used to provide 
+   * the document base URI of the WSDL definition described by the
+   * element.
+   * @param definitionsElement the &lt;wsdl:definitions&gt; element
+   * @return the definition described by the element.
+   */
+  public Definition readWSDL(WSDLLocator locator,
                              Element definitionsElement)
                                throws WSDLException;
 

@@ -1,13 +1,11 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
 
 import java.util.*;
-import javax.wsdl.extensions.*;
 import javax.xml.namespace.QName;
-import org.w3c.dom.Element;
 
 /**
  * This interface describes a message used for communication with an operation.
@@ -16,7 +14,7 @@ import org.w3c.dom.Element;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Message extends java.io.Serializable, ElementExtensible
+public interface Message extends WSDLElement
 {
   /**
    * Set the name of this message.
@@ -49,6 +47,14 @@ public interface Message extends java.io.Serializable, ElementExtensible
   public Part getPart(String name);
 
   /**
+   * Remove the specified part.
+   *
+   * @param name the name of the part to be removed.
+   * @return the part which was removed
+   */
+  public Part removePart(String name);
+
+  /**
    * Get all the parts defined here.
    */
   public Map getParts();
@@ -63,24 +69,6 @@ public interface Message extends java.io.Serializable, ElementExtensible
    * @return the list of parts
    */
   public List getOrderedParts(List partOrder);
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
 
   public void setUndefined(boolean isUndefined);
 

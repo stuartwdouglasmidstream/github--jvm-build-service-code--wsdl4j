@@ -41,10 +41,10 @@ Author:
   <target name="init">
     <property name="name" value="wsdl4j"/>
     <property name="Name" value="WSDL4J"/>
-    <property name="wsdl4j.version" value="1.5.3"/>
-    <property name="wsdl4j.version.underscore" value="1_5_3"/>
-    <property name="jwsdl.version" value="1.1"/>
-    <property name="jwsdl.version.underscore" value="1_1"/>
+    <property name="wsdl4j.version" value="1.6"/>
+    <property name="wsdl4j.version.underscore" value="1_6"/>
+    <property name="jwsdl.version" value="1.2"/>
+    <property name="jwsdl.version.underscore" value="1_2"/>
     <property name="qname.version" value="1.0"/>
     <property name="year" value="2003,2006"/>
 
@@ -225,9 +225,9 @@ Author:
       </filterset>
     </copy>
 
-    <copy tofile="${dist.dir}/docs/spec/jsr110-1.1.pdf">
+    <copy tofile="${dist.dir}/docs/spec/jsr110-1.2.pdf">
       <fileset dir="${docs.dir}">
-        <include name="spec/maint_rel_1.1/jsr110-1.1.pdf"/>
+        <include name="spec/maint_rel_1.2/jsr110-1.2.pdf"/>
       </fileset>
     </copy>
 

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl.extensions;
@@ -36,7 +36,7 @@ public class UnknownExtensionSerializer implements ExtensionSerializer,
 
     pw.print("    ");
 
-    DOM2Writer.serializeAsXML(unknownExt.getElement(), pw);
+    DOM2Writer.serializeAsXML(unknownExt.getElement(), def.getNamespaces(), pw);
 
     pw.println();
   }

@@ -1,13 +1,12 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl;
 
 import java.util.*;
+
 import javax.wsdl.*;
-import javax.wsdl.extensions.*;
-import org.w3c.dom.*;
 
 /**
  * This class represents a port, an endpoint for the
@@ -17,12 +16,12 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public class PortImpl implements Port
+public class PortImpl extends AbstractWSDLElement implements Port
 {
   protected String name = null;
   protected Binding binding = null;
-  protected Element docEl = null;
-  protected List extElements = new Vector();
+  protected List nativeAttributeNames =
+    Arrays.asList(Constants.PORT_ATTR_NAMES);
 
   public static final long serialVersionUID = 1;
 
@@ -66,48 +65,6 @@ public class PortImpl implements Port
     return binding;
   }
 
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl)
-  {
-    this.docEl = docEl;
-  }
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement()
-  {
-    return docEl;
-  }
-
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement)
-  {
-    extElements.add(extElement);
-  }
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements()
-  {
-    return extElements;
-  }
-
   public String toString()
   {
     StringBuffer strBuf = new StringBuffer();
@@ -119,16 +76,24 @@ public class PortImpl implements Port
       strBuf.append("\n" + binding);
     }
 
-    if (extElements != null)
+    String superString = super.toString();
+    if(!superString.equals(""))
     {
-      Iterator extIterator = extElements.iterator();
-
-      while (extIterator.hasNext())
-      {
-        strBuf.append("\n" + extIterator.next());
-      }
+      strBuf.append("\n");
+      strBuf.append(superString);
     }
 
     return strBuf.toString();
+  }
+  
+  /**
+   * Get the list of local attribute names defined for this element in
+   * the WSDL specification.
+   *
+   * @return a List of Strings, one for each local attribute name
+   */
+  public List getNativeAttributeNames()
+  {
+    return nativeAttributeNames;
   }
 }

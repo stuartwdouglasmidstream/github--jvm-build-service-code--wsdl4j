@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.extensions.mime;
@@ -66,6 +66,20 @@ public class MIMEMultipartRelatedImpl implements MIMEMultipartRelated
   public void addMIMEPart(MIMEPart mimePart)
   {
     mimeParts.add(mimePart);
+  }
+  
+  /**
+   * Remove a MIME part from this MIME multipart related.
+   *
+   * @param mimePart the MIME part to be removed.
+   * @return the MIME part which was removed.
+   */
+  public MIMEPart removeMIMEPart(MIMEPart mimePart)
+  {
+    if(mimeParts.remove(mimePart))
+      return mimePart;
+    else
+      return null;
   }
 
   /**

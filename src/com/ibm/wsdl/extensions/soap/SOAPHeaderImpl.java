@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.extensions.soap;
@@ -155,6 +155,14 @@ public class SOAPHeaderImpl implements SOAPHeader
   public void addSOAPHeaderFault(SOAPHeaderFault soapHeaderFault)
   {
     soapHeaderFaults.add(soapHeaderFault);
+  }
+  
+  public SOAPHeaderFault removeSOAPHeaderFault(SOAPHeaderFault soapHeaderFault)
+  {
+    if(soapHeaderFaults.remove(soapHeaderFault))
+      return soapHeaderFault;
+    else
+      return null;
   }
 
   public List getSOAPHeaderFaults()

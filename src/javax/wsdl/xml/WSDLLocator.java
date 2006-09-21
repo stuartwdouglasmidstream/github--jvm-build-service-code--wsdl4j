@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2002, 2005 
+ * (c) Copyright IBM Corp 2002, 2006 
  */
 
 package javax.wsdl.xml;
@@ -52,5 +52,11 @@ public interface WSDLLocator
    * import location is relative to the parent document.
    */
   public String getLatestImportURI();
+  
+  /**
+   * Releases all associated system resources such as the InputStreams
+   * associated with the Base and Import InputSources. 
+   */
+  public void close();
 }
 

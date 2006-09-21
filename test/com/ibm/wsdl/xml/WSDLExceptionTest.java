@@ -10,9 +10,11 @@ import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLLocator;
 import javax.wsdl.xml.WSDLReader;
 
-import junit.framework.TestCase;
-
 import org.xml.sax.InputSource;
+
+import com.ibm.wsdl.factory.WSDLFactoryImpl3;
+
+import junit.framework.TestCase;
 
 
 public class WSDLExceptionTest extends TestCase
@@ -41,6 +43,12 @@ public class WSDLExceptionTest extends TestCase
     public String getLatestImportURI()
     {
       throw new RuntimeException("Test Runtime Exception");
+    }
+
+    public void close()
+    {
+      // TODO Auto-generated method stub
+      
     }
   }
 

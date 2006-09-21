@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2004, 2005 
+ * (c) Copyright IBM Corp 2004, 2006 
  */
 
 package javax.wsdl.extensions;
@@ -21,6 +21,14 @@ public interface ElementExtensible {
      * @param extElement the extensibility element to be added
      */
     public void addExtensibilityElement(ExtensibilityElement extElement);
+    
+    /**
+     * Remove an extensibility element.
+     *
+     * @param extElement the extensibility element to be removed
+     * @return the extensibility element which was removed
+     */
+    public ExtensibilityElement removeExtensibilityElement(ExtensibilityElement extElement);
 
     /**
      * Get all the extensibility elements defined here.

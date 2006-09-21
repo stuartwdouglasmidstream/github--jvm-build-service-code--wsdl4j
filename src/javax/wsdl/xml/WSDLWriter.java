@@ -40,6 +40,7 @@ public interface WSDLWriter
    * Gets the value of the specified feature.
    *
    * @param name the name of the feature to get the value of.
+   * @return the value of the feature.
    * @throws IllegalArgumentException if the feature name is not recognized.
    * @see #setFeature(String, boolean)
    */

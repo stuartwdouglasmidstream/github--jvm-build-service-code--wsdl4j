@@ -62,6 +62,7 @@ public class WSDLWriterImpl implements WSDLWriter
    * Gets the value of the specified feature.
    *
    * @param name the name of the feature to get the value of.
+   * @return the value of the feature.
    * @throws IllegalArgumentException if the feature name is not recognized.
    * @see #setFeature(String, boolean)
    */
@@ -119,11 +120,13 @@ public class WSDLWriterImpl implements WSDLWriter
                             targetNamespace,
                             pw);
 
+    printExtensibilityAttributes(Definition.class, def, def, pw);
+    
     printNamespaceDeclarations(namespaces, pw);
 
     pw.println('>');
 
-    printDocumentation(def.getDocumentationElement(), pw);
+    printDocumentation(def.getDocumentationElement(), def, pw);
     printImports(def.getImports(), def, pw);
     printTypes(def.getTypes(), def, pw);
     printMessages(def.getMessages(), def, pw);
@@ -168,9 +171,11 @@ public class WSDLWriterImpl implements WSDLWriter
                                   pw);
         }
 
+        printExtensibilityAttributes(Service.class, service, def, pw);
+        
         pw.println('>');
 
-        printDocumentation(service.getDocumentationElement(), pw);
+        printDocumentation(service.getDocumentationElement(), def, pw);
         printPorts(service.getPorts(), def, pw);
 
         List extElements = service.getExtensibilityElements();
@@ -211,9 +216,11 @@ public class WSDLWriterImpl implements WSDLWriter
                                            pw);
         }
 
+        printExtensibilityAttributes(Port.class, port, def, pw);
+        
         pw.println('>');
 
-        printDocumentation(port.getDocumentationElement(), pw);
+        printDocumentation(port.getDocumentationElement(), def, pw);
 
         List extElements = port.getExtensibilityElements();
 
@@ -266,7 +273,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
           pw.println('>');
 
-          printDocumentation(binding.getDocumentationElement(), pw);
+          printDocumentation(binding.getDocumentationElement(), def, pw);
 
           List extElements = binding.getExtensibilityElements();
 
@@ -303,10 +310,12 @@ public class WSDLWriterImpl implements WSDLWriter
         DOMUtils.printAttribute(Constants.ATTR_NAME,
                                 bindingOperation.getName(),
                                 pw);
+        
+        printExtensibilityAttributes(BindingOperation.class, bindingOperation, def, pw);
 
         pw.println('>');
 
-        printDocumentation(bindingOperation.getDocumentationElement(), pw);
+        printDocumentation(bindingOperation.getDocumentationElement(), def, pw);
 
         List extElements = bindingOperation.getExtensibilityElements();
 
@@ -342,9 +351,11 @@ public class WSDLWriterImpl implements WSDLWriter
                               bindingInput.getName(),
                               pw);
 
+      printExtensibilityAttributes(BindingInput.class, bindingInput, def, pw);
+      
       pw.println('>');
 
-      printDocumentation(bindingInput.getDocumentationElement(), pw);
+      printDocumentation(bindingInput.getDocumentationElement(), def, pw);
 
       List extElements = bindingInput.getExtensibilityElements();
 
@@ -374,7 +385,7 @@ public class WSDLWriterImpl implements WSDLWriter
 
       pw.println('>');
 
-      printDocumentation(bindingOutput.getDocumentationElement(), pw);
+      printDocumentation(bindingOutput.getDocumentationElement(), def, pw);
 
       List extElements = bindingOutput.getExtensibilityElements();
 
@@ -406,10 +417,12 @@ public class WSDLWriterImpl implements WSDLWriter
         DOMUtils.printAttribute(Constants.ATTR_NAME,
                                 bindingFault.getName(),
                                 pw);
+        
+        printExtensibilityAttributes(BindingFault.class, bindingFault, def, pw);
 
         pw.println('>');
 
-        printDocumentation(bindingFault.getDocumentationElement(), pw);
+        printDocumentation(bindingFault.getDocumentationElement(), def, pw);
 
         List extElements = bindingFault.getExtensibilityElements();
 
@@ -454,9 +467,12 @@ public class WSDLWriterImpl implements WSDLWriter
 
           pw.println('>');
 
-          printDocumentation(portType.getDocumentationElement(), pw);
+          printDocumentation(portType.getDocumentationElement(), def, pw);
           printOperations(portType.getOperations(), def, pw);
 
+          List extElements = portType.getExtensibilityElements();
+          printExtensibilityElements(PortType.class, extElements, def, pw);
+          
           pw.println("  </" + tagName + '>');
         }
       }
@@ -491,9 +507,11 @@ public class WSDLWriterImpl implements WSDLWriter
                    StringUtils.getNMTokens(operation.getParameterOrdering()),
                    pw);
 
+          printExtensibilityAttributes(Operation.class, operation, def, pw);
+          
           pw.println('>');
 
-          printDocumentation(operation.getDocumentationElement(), pw);
+          printDocumentation(operation.getDocumentationElement(), def, pw);
 
           OperationType operationType = operation.getStyle();
 
@@ -557,20 +575,15 @@ public class WSDLWriterImpl implements WSDLWriter
 
       printExtensibilityAttributes(Input.class, input, def, pw);
 
-      Element docEl = input.getDocumentationElement();
+      pw.println('>');
 
-      if (docEl == null)
-      {
-        pw.println("/>");
-      }
-      else
-      {
-        pw.println('>');
+      printDocumentation(input.getDocumentationElement(), def, pw);
 
-        printDocumentation(docEl, pw);
+      List extElements = input.getExtensibilityElements();
 
-        pw.println("      </" + tagName + '>');
-      }
+      printExtensibilityElements(Input.class, extElements, def, pw);
+
+      pw.println("    </" + tagName + '>');
     }
   }
 
@@ -602,20 +615,15 @@ public class WSDLWriterImpl implements WSDLWriter
 
       printExtensibilityAttributes(Output.class, output, def, pw);
 
-      Element docEl = output.getDocumentationElement();
+      pw.println('>');
 
-      if (docEl == null)
-      {
-        pw.println("/>");
-      }
-      else
-      {
-        pw.println('>');
+      printDocumentation(output.getDocumentationElement(), def, pw);
 
-        printDocumentation(docEl, pw);
+      List extElements = output.getExtensibilityElements();
 
-        pw.println("      </" + tagName + '>');
-      }
+      printExtensibilityElements(Output.class, extElements, def, pw);
+
+      pw.println("    </" + tagName + '>');
     }
   }
 
@@ -652,20 +660,15 @@ public class WSDLWriterImpl implements WSDLWriter
 
         printExtensibilityAttributes(Fault.class, fault, def, pw);
 
-        Element docEl = fault.getDocumentationElement();
+        pw.println('>');
 
-        if (docEl == null)
-        {
-          pw.println("/>");
-        }
-        else
-        {
-          pw.println('>');
+        printDocumentation(fault.getDocumentationElement(), def, pw);
 
-          printDocumentation(docEl, pw);
+        List extElements = fault.getExtensibilityElements();
 
-          pw.println("      </" + tagName + '>');
-        }
+        printExtensibilityElements(Fault.class, extElements, def, pw);
+
+        pw.println("    </" + tagName + '>');
       }
     }
   }
@@ -700,9 +703,11 @@ public class WSDLWriterImpl implements WSDLWriter
                                     pw);
           }
 
+          printExtensibilityAttributes(Message.class, message, def, pw);
+          
           pw.println('>');
 
-          printDocumentation(message.getDocumentationElement(), pw);
+          printDocumentation(message.getDocumentationElement(), def, pw);
           printParts(message.getOrderedParts(null), def, pw);
           
           List extElements = message.getExtensibilityElements();
@@ -744,20 +749,15 @@ public class WSDLWriterImpl implements WSDLWriter
 
         printExtensibilityAttributes(Part.class, part, def, pw);
 
-        Element docEl = part.getDocumentationElement();
+        pw.println('>');
 
-        if (docEl == null)
-        {
-          pw.println("/>");
-        }
-        else
-        {
-          pw.println('>');
+        printDocumentation(part.getDocumentationElement(), def, pw);
 
-          printDocumentation(docEl, pw);
+        List extElements = part.getExtensibilityElements();
 
-          pw.println("      </" + tagName + '>');
-        }
+        printExtensibilityElements(Part.class, extElements, def, pw);
+
+        pw.println("    </" + tagName + '>');
       }
     }
   }
@@ -848,12 +848,13 @@ public class WSDLWriterImpl implements WSDLWriter
   }
 
   protected void printDocumentation(Element docElement,
+                                    Definition def,
                                     PrintWriter pw)
                                       throws WSDLException
   {
     if (docElement != null)
     {
-      DOM2Writer.serializeAsXML(docElement, pw);
+      DOM2Writer.serializeAsXML(docElement, def.getNamespaces(), pw);
 
       pw.println();
     }
@@ -870,9 +871,11 @@ public class WSDLWriterImpl implements WSDLWriter
                                    def);
       pw.print("  <" + tagName);
 
+      printExtensibilityAttributes(Types.class, types, def, pw);
+      
       pw.println('>');
 
-      printDocumentation(types.getDocumentationElement(), pw);
+      printDocumentation(types.getDocumentationElement(), def, pw);
 
       List extElements = types.getExtensibilityElements();
 
@@ -913,20 +916,15 @@ public class WSDLWriterImpl implements WSDLWriter
 
           printExtensibilityAttributes(Import.class, importDef, def, pw);
 
-          Element docEl = importDef.getDocumentationElement();
+          pw.println('>');
 
-          if (docEl == null)
-          {
-            pw.println("/>");
-          }
-          else
-          {
-            pw.println('>');
+          printDocumentation(importDef.getDocumentationElement(), def, pw);
 
-            printDocumentation(docEl, pw);
+          List extElements = importDef.getExtensibilityElements();
 
-            pw.println("      </" + tagName + '>');
-          }
+          printExtensibilityElements(Import.class, extElements, def, pw);
+
+          pw.println("    </" + tagName + '>');
         }
       }
     }

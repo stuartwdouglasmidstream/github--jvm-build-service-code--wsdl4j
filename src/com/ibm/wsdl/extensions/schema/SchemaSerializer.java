@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2004, 2005 
+ * (c) Copyright IBM Corp 2004, 2006 
  */
 
 package com.ibm.wsdl.extensions.schema;
@@ -42,7 +42,7 @@ public class SchemaSerializer implements ExtensionSerializer, Serializable
 
     pw.print("    ");
 
-    DOM2Writer.serializeAsXML(schema.getElement(), pw);
+    DOM2Writer.serializeAsXML(schema.getElement(), def.getNamespaces(), pw);
 
     pw.println();
   }

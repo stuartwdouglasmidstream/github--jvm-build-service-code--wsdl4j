@@ -1,14 +1,13 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl;
 
 import java.util.*;
+
 import javax.wsdl.*;
-import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
-import org.w3c.dom.*;
 
 /**
  * This class represents a port type binding and describes the
@@ -18,13 +17,13 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public class BindingImpl implements Binding
+public class BindingImpl extends AbstractWSDLElement implements Binding
 {
   protected QName name = null;
   protected PortType portType = null;
   protected List bindingOperations = new Vector();
-  protected Element docEl = null;
-  protected List extElements = new Vector();
+  protected List nativeAttributeNames =
+    Arrays.asList(Constants.BINDING_ATTR_NAMES);
   protected boolean isUndefined = true;
 
   public static final long serialVersionUID = 1;
@@ -84,14 +83,33 @@ public class BindingImpl implements Binding
    * be overloaded within a PortType. In case of overloading, the
    * names of the input and output messages can be used to further
    * refine the search.
+   * <p>
+   * The search criteria will be the operation name parameter and any 
+   * non-null input or output message name parameters. 
+   * To exclude the input or output message name from the search criteria,
+   * specify a null value for the input or output message name parameter.
+   * To search for operations with unnamed input or output messages 
+   * (i.e. &lt;input&gt; or &lt;output&gt; elements with the 'name' attribute omitted), 
+   * specify the string "<code>:none</code>" for the input or output message name parameter.
+   * <p>
+   * Note: the use of a string value "<code>:none</code>" rather than null to search for 
+   * unnamed input or output messages is necessary to retain backward compatibility
+   * with earlier versions of the JWSDL API, which defined a null value to
+   * mean 'ignore this parameter'.
+   * The colon in "<code>:none</code>" is to avoid name clashes with input or output
+   * message names, which must be of type NCName (i.e. they cannot contain colons). 
    *
    * @param name the name of the desired operation binding.
    * @param inputName the name of the input message; if this is null
-   * it will be ignored.
+   * it will be ignored, if this is "<code>:none</code>" it means search for an input 
+   * message without a name.
    * @param outputName the name of the output message; if this is null
-   * it will be ignored.
+   * it will be ignored, if this is "<code>:none</code>" it means search for an output 
+   * message without a name.
    * @return the corresponding operation binding, or null if there wasn't
    * any matching operation binding
+   * 
+   * @throws IllegalArgumentException if duplicate operations are found.
    */
   public BindingOperation getBindingOperation(String name,
                                               String inputName,
@@ -145,6 +163,7 @@ public class BindingImpl implements Binding
         }
 
         boolean specifiedDefault = inputName.equals(defaultInputName);
+        
         BindingInput input = op.getBindingInput();
 
         if (input != null)
@@ -153,7 +172,7 @@ public class BindingImpl implements Binding
 
           if (opInputName == null)
           {
-            if (!specifiedDefault)
+            if (!specifiedDefault && !inputName.equals(Constants.NONE))
             {
               op = null;
             }
@@ -193,6 +212,7 @@ public class BindingImpl implements Binding
         }
 
         boolean specifiedDefault = outputName.equals(defaultOutputName);
+        
         BindingOutput output = op.getBindingOutput();
 
         if (output != null)
@@ -201,7 +221,7 @@ public class BindingImpl implements Binding
 
           if (opOutputName == null)
           {
-            if (!specifiedDefault)
+            if (!specifiedDefault && !outputName.equals(Constants.NONE))
             {
               op = null;
             }
@@ -229,7 +249,7 @@ public class BindingImpl implements Binding
                                              (outputName != null
                                               ? ", outputName=" + outputName
                                               : "") +
-                                             ", found in portType '" +
+                                             ", found in binding '" +
                                              getQName() + "'.");
         }
         else
@@ -238,7 +258,7 @@ public class BindingImpl implements Binding
           ret = op;
         }
       }
-    }
+    }  //end while loop
 
     return ret;
   }
@@ -252,47 +272,40 @@ public class BindingImpl implements Binding
   }
 
   /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
+   * Remove the specified operation binding. Note that operation names can
+   * be overloaded within a PortType. In case of overloading, the
+   * names of the input and output messages can be used to further
+   * refine the search.
+   * <p>
+   * Usage of the input and output message name parameters is as 
+   * described for the <code>getBindingOperation</code> method.
    *
-   * @param docEl the documentation element
+   * @param name the name of the operation binding to be removed.
+   * @param inputName the name of the input message; if this is null
+   * it will be ignored, if this is "<code>:none</code>" it means search for an input 
+   * message without a name.
+   * @param outputName the name of the output message; if this is null
+   * it will be ignored, if this is "<code>:none</code>" it means search for an output 
+   * message without a name.
+   * @return the binding operation which was removed, or null if there wasn't
+   * any matching operation
+   * 
+   * @throws IllegalArgumentException if duplicate operations are found.
+   * 
+   * @see #getBindingOperation(String, String, String) 
    */
-  public void setDocumentationElement(Element docEl)
+  public BindingOperation removeBindingOperation(String name,
+                                                 String inputName,
+                                                 String outputName)
   {
-    this.docEl = docEl;
+    BindingOperation op = getBindingOperation(name,inputName,outputName);
+    if(bindingOperations.remove(op))
+    {
+      return op;
+    }
+    else return null;
   }
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement()
-  {
-    return docEl;
-  }
-
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement)
-  {
-    extElements.add(extElement);
-  }
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements()
-  {
-    return extElements;
-  }
-
+  
   public void setUndefined(boolean isUndefined)
   {
     this.isUndefined = isUndefined;
@@ -307,11 +320,13 @@ public class BindingImpl implements Binding
   {
     StringBuffer strBuf = new StringBuffer();
 
-    strBuf.append("Binding: name=" + name);
+    strBuf.append("Binding: name=");
+    strBuf.append(name);
 
     if (portType != null)
     {
-      strBuf.append("\n" + portType);
+      strBuf.append("\n");
+      strBuf.append(portType);
     }
 
     if (bindingOperations != null)
@@ -320,20 +335,29 @@ public class BindingImpl implements Binding
 
       while (bindingOperationIterator.hasNext())
       {
-        strBuf.append("\n" + bindingOperationIterator.next());
+        strBuf.append("\n");
+        strBuf.append(bindingOperationIterator.next());
       }
     }
 
-    if (extElements != null)
+    String superString = super.toString();
+    if(!superString.equals(""))
     {
-      Iterator extIterator = extElements.iterator();
-
-      while (extIterator.hasNext())
-      {
-        strBuf.append("\n" + extIterator.next());
-      }
+      strBuf.append("\n");
+      strBuf.append(superString);
     }
 
     return strBuf.toString();
+  }
+  
+  /**
+   * Get the list of local attribute names defined for this element in
+   * the WSDL specification.
+   *
+   * @return a List of Strings, one for each local attribute name
+   */
+  public List getNativeAttributeNames()
+  {
+    return nativeAttributeNames;
   }
 }

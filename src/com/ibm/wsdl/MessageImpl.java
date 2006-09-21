@@ -1,14 +1,13 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl;
 
 import java.util.*;
+
 import javax.wsdl.*;
-import javax.wsdl.extensions.*;
 import javax.xml.namespace.*;
-import org.w3c.dom.*;
 
 /**
  * This class describes a message used for communication with an operation.
@@ -17,13 +16,13 @@ import org.w3c.dom.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public class MessageImpl implements Message
+public class MessageImpl extends AbstractWSDLElement implements Message
 {
   protected Map parts = new HashMap();
   protected List additionOrderOfParts = new Vector();
   protected QName name = null;
-  protected Element docEl = null;
-  protected List extElements = new Vector();
+  protected List nativeAttributeNames =
+    Arrays.asList(Constants.MESSAGE_ATTR_NAMES);
   protected boolean isUndefined = true;
 
   public static final long serialVersionUID = 1;
@@ -72,6 +71,17 @@ public class MessageImpl implements Message
   {
     return (Part)parts.get(name);
   }
+  
+  /**
+   * Remove the specified part.
+   *
+   * @param name the name of the part to be removed.
+   * @return the part which was removed
+   */
+  public Part removePart(String name)
+  {
+    return (Part)parts.remove(name);
+  }
 
   /**
    * Get all the parts defined here.
@@ -115,48 +125,6 @@ public class MessageImpl implements Message
     return orderedParts;
   }
 
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl)
-  {
-    this.docEl = docEl;
-  }
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement()
-  {
-    return docEl;
-  }
-  
-  /**
-   * Add an extensibility element.
-   *
-   * @param extElement the extensibility element to be added
-   */
-  public void addExtensibilityElement(ExtensibilityElement extElement)
-  {
-    extElements.add(extElement);
-  }
-
-  /**
-   * Get all the extensibility elements defined here.
-   */
-  public List getExtensibilityElements()
-  {
-    return extElements;
-  }
-
   public void setUndefined(boolean isUndefined)
   {
     this.isUndefined = isUndefined;
@@ -183,6 +151,24 @@ public class MessageImpl implements Message
       }
     }
 
+    String superString = super.toString();
+    if(!superString.equals(""))
+    {
+      strBuf.append("\n");
+      strBuf.append(superString);
+    }
+    
     return strBuf.toString();
+  }
+  
+  /**
+   * Get the list of local attribute names defined for this element in
+   * the WSDL specification.
+   *
+   * @return a List of Strings, one for each local attribute name
+   */
+  public List getNativeAttributeNames()
+  {
+    return nativeAttributeNames;
   }
 }

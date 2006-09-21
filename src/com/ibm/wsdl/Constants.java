@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl;
@@ -81,6 +81,8 @@ public class Constants
   public static final String ATTR_REQUIRED = "required";
 
   // Lists of native attribute names.
+  public static final String[] DEFINITION_ATTR_NAMES =
+    new String[]{ATTR_NAME, ATTR_TARGET_NAMESPACE};
   public static final String[] PART_ATTR_NAMES =
     new String[]{ATTR_NAME, ATTR_TYPE, ATTR_ELEMENT};
   public static final String[] BINDING_ATTR_NAMES =
@@ -129,4 +131,6 @@ public class Constants
   public static final String FEATURE_IMPORT_DOCUMENTS =
     "javax.wsdl.importDocuments";
 
+  // Other
+  public static final String NONE = ":none";
 }

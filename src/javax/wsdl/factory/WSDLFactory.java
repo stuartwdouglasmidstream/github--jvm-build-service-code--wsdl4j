@@ -1,10 +1,12 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl.factory;
 
 import java.io.*;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.*;
 import javax.wsdl.*;
 import javax.wsdl.extensions.*;
@@ -26,23 +28,29 @@ public abstract class WSDLFactory
     "javax.wsdl.factory.WSDLFactory";
   private static final String PROPERTY_FILE_NAME =
     "wsdl.properties";
+  private static final String META_INF_SERVICES_PROPERTY_FILE_NAME =
+    "javax.wsdl.factory.WSDLFactory";
   private static final String DEFAULT_FACTORY_IMPL_NAME =
-    "com.ibm.wsdl.factory.WSDLFactoryImpl";
+    "com.ibm.wsdl.factory.WSDLFactoryImpl";  
 
   private static String fullPropertyFileName = null;
+  private static String metaInfServicesFullPropertyFileName = null;
 
   /**
    * Get a new instance of a WSDLFactory. This method
    * follows (almost) the same basic sequence of steps that JAXP
    * follows to determine the fully-qualified class name of the
-   * class which implements WSDLFactory. The steps (in order)
-   * are:
-   *<pre>
-   *  Check the javax.wsdl.factory.WSDLFactory system property.
-   *  Check the lib/wsdl.properties file in the JRE directory. The key
-   * will have the same name as the above system property.
-   *  Use the default value.
-   *</pre>
+   * class which implements WSDLFactory. 
+   * <p>
+   * The steps in order are:
+   * <ol>
+   *  <li>Check the property file META-INF/services/javax.wsdl.factory.WSDLFactory.</li>
+   *  <li>Check the javax.wsdl.factory.WSDLFactory system property.</li>
+   *  <li>Check the lib/wsdl.properties file in the JRE directory. The key
+   *  will have the same name as the above system property.</li>
+   *  <li>Use the default class name provided by the implementation.</li>
+   * </ol>
+   * <p>
    * Once an instance of a WSDLFactory is obtained, invoke
    * newDefinition(), newWSDLReader(), or newWSDLWriter(), to create
    * the desired instances.
@@ -73,6 +81,54 @@ public abstract class WSDLFactory
       try
       {
         Class cl = Class.forName(factoryImplName);
+  
+        return (WSDLFactory)cl.newInstance();
+      }
+      catch (Exception e)
+      {
+        /*
+          Catches:
+                   ClassNotFoundException
+                   InstantiationException
+                   IllegalAccessException
+        */
+        throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                                "Problem instantiating factory " +
+                                "implementation.",
+                                e);
+      }
+    }
+    else
+    {
+      throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+                              "Unable to find name of factory " +
+                              "implementation.");
+    }
+  }
+
+  /**
+   * Get a new instance of a WSDLFactory. This method
+   * returns an instance of the class factoryImplName, using
+   * the specified ClassLoader.
+   * Once an instance of a WSDLFactory is obtained, invoke
+   * newDefinition(), newWSDLReader(), or newWSDLWriter(), to create
+   * the desired instances.
+   *
+   * @param factoryImplName the fully-qualified class name of the
+   * class which provides a concrete implementation of the abstract
+   * class WSDLFactory.
+   * @param classLoader the ClassLoader to use to load the WSDLFactory
+   * implementation.
+   */
+  public static WSDLFactory newInstance(String factoryImplName,
+                                        ClassLoader classLoader)
+    throws WSDLException
+  {
+    if (factoryImplName != null)
+    {
+      try
+      {
+        Class cl = classLoader.loadClass(factoryImplName);
 
         return (WSDLFactory)cl.newInstance();
       }
@@ -125,7 +181,43 @@ public abstract class WSDLFactory
   {
     String factoryImplName = null;
 
-    // First, check the system property.
+    // First, check the META-INF/services property file.
+    final String metaInfServicesPropFileName = getMetaInfFullPropertyFileName();
+
+    if (metaInfServicesPropFileName != null)
+    {
+      try
+      {
+        InputStream is = (InputStream) AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                  return WSDLFactory.class.getResourceAsStream(metaInfServicesPropFileName);
+                }
+            });
+        
+        if(is != null)
+        {
+          InputStreamReader isr = new InputStreamReader(is);
+          BufferedReader br = new BufferedReader(isr);
+          
+          factoryImplName = br.readLine();
+          
+          br.close();
+          isr.close();
+          is.close();
+        }
+
+        if (factoryImplName != null)
+        {
+          return factoryImplName;
+        }
+      }
+      catch (IOException e)
+      {
+      }
+    }
+
+    // Second, check the system property.
     try
     {
       factoryImplName = System.getProperty(PROPERTY_NAME);
@@ -139,7 +231,7 @@ public abstract class WSDLFactory
     {
     }
 
-    // Second, check the properties file.
+    // Third, check the properties file.
     String propFileName = getFullPropertyFileName();
 
     if (propFileName != null)
@@ -164,8 +256,8 @@ public abstract class WSDLFactory
       {
       }
     }
-
-    // Third, return the default.
+    
+    // Fourth, return the default.
     return DEFAULT_FACTORY_IMPL_NAME;
   }
 
@@ -186,5 +278,16 @@ public abstract class WSDLFactory
     }
 
     return fullPropertyFileName;
+  }
+  
+  private static String getMetaInfFullPropertyFileName()
+  {
+    if (metaInfServicesFullPropertyFileName == null)
+    {
+      String metaInfServices = "/META-INF/services/";
+      metaInfServicesFullPropertyFileName = metaInfServices + META_INF_SERVICES_PROPERTY_FILE_NAME;
+    }
+
+    return metaInfServicesFullPropertyFileName;
   }
 }

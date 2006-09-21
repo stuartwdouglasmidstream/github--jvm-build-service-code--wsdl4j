@@ -1,11 +1,8 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package javax.wsdl;
-
-import org.w3c.dom.*;
-import javax.wsdl.extensions.*;
 
 /**
  * This interface represents a port, an endpoint for the
@@ -15,7 +12,7 @@ import javax.wsdl.extensions.*;
  * @author Nirmal Mukhi
  * @author Matthew J. Duftler
  */
-public interface Port extends java.io.Serializable, ElementExtensible
+public interface Port extends WSDLElement
 {
   /**
    * Set the name of this port.
@@ -44,22 +41,4 @@ public interface Port extends java.io.Serializable, ElementExtensible
    * @return the binding associated with this port
    */
   public Binding getBinding();
-
-  /**
-   * Set the documentation element for this document. This dependency
-   * on org.w3c.dom.Element should eventually be removed when a more
-   * appropriate way of representing this information is employed.
-   *
-   * @param docEl the documentation element
-   */
-  public void setDocumentationElement(Element docEl);
-
-  /**
-   * Get the documentation element. This dependency on org.w3c.dom.Element
-   * should eventually be removed when a more appropriate way of
-   * representing this information is employed.
-   *
-   * @return the documentation element
-   */
-  public Element getDocumentationElement();
 }

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.extensions.mime;
@@ -68,6 +68,20 @@ public class MIMEPartImpl implements MIMEPart
   public void addExtensibilityElement(ExtensibilityElement extElement)
   {
     extElements.add(extElement);
+  }
+  
+  /**
+   * Remove an extensibility element.
+   *
+   * @param extElement the extensibility element to be removed
+   * @return the extensibility element which was removed
+   */
+  public ExtensibilityElement removeExtensibilityElement(ExtensibilityElement extElement)
+  {
+    if(extElements.remove(extElement))
+      return extElement;
+    else
+      return null;
   }
 
   /**

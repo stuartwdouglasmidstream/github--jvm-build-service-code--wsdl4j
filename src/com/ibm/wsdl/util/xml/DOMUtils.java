@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2005 
+ * (c) Copyright IBM Corp 2001, 2006 
  */
 
 package com.ibm.wsdl.util.xml;
@@ -7,7 +7,6 @@ package com.ibm.wsdl.util.xml;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 
 import javax.wsdl.Definition;
@@ -431,31 +430,6 @@ public class DOMUtils {
     WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
                                               "Encountered unexpected element '" +
                                               elName + "'.");
-
-    wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(location));
-
-    throw wsdlExc;
-  }
-
-  public static void throwWSDLException(Element location, List remainingAttrs) throws WSDLException
-  {
-    String elName = QNameUtils.newQName(location).toString();
-    
-    StringBuffer sb = new StringBuffer();
-    ListIterator i = remainingAttrs.listIterator();
-    while (i.hasNext())
-    {
-      String attrName = QNameUtils.newQName((Attr)i.next()).toString();
-      sb.append(attrName);
-      sb.append( i.hasNext() ? " " : "");
-    }
-
-    WSDLException wsdlExc = new WSDLException(WSDLException.INVALID_WSDL,
-                                              "Element '" +
-                                              elName +
-                                              "' contained unexpected attributes: '" +
-                                              sb.toString() +
-                                              "'");
 
     wsdlExc.setLocation(XPathUtils.getXPathExprFromNode(location));
 
