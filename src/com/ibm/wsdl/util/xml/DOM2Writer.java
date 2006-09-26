@@ -61,6 +61,15 @@ public class DOM2Writer
   /**
    * Return a string containing this node serialized as XML.
    */
+  public static String nodeToString(Node node)
+  {
+    return nodeToString(node, new HashMap());
+  }
+  
+  /**
+   * Return a string containing this node serialized as XML.
+   * The specified Map associates prefixes with namespace URLs.
+   */
   public static String nodeToString(Node node, Map namespaces)
   {
     StringWriter sw = new StringWriter();
@@ -73,6 +82,15 @@ public class DOM2Writer
 
   /**
    * Print an XML declaration before serializing the element.
+   */
+  public static void serializeElementAsDocument(Element el, Writer writer)
+  {
+    serializeElementAsDocument(el, new HashMap(), writer);
+  }
+
+  /**
+   * Print an XML declaration before serializing the element.
+   * The specified Map associates prefixes with namespace URLs.
    */
   public static void serializeElementAsDocument(Element el, Map namespaces, Writer writer)
   {
@@ -99,6 +117,15 @@ public class DOM2Writer
   
   /**
   * Serialize this node into the writer as XML.
+  */
+  public static void serializeAsXML(Node node, Writer writer)
+  {
+    serializeAsXML(node, new HashMap(), writer);
+  }
+  
+  /**
+  * Serialize this node into the writer as XML.
+  * The specified Map associates prefixes with namespace URLs.
   */
   public static void serializeAsXML(Node node, Map namespaces, Writer writer)
   {
