@@ -1035,6 +1035,38 @@ public class WSDLReaderImpl implements WSDLReader
               ? (bindingOutput.getName() != null ? bindingOutput.getName() : Constants.NONE) 
               : null);
       Operation op = portType.getOperation(name, inputName, outputName);
+      
+      /*
+       * If the bindingOp input or output message names are null we will search first
+       * for a porttypeOp with corresponding unnamed input or output messages (using  
+       * Constants.NONE for inputName or outputName, as above). 
+       * However, input and output message names need not be used at all if operation 
+       * overloading is not used, so if no match was found we will try again ignoring 
+       * these unnamed messages from the search criteria (i.e. using null instead of 
+       * Constants.NONE for inputName or outputName).
+       */
+      
+      if(op == null)
+      {
+        if(Constants.NONE.equals(inputName) && Constants.NONE.equals(outputName))
+        {
+          //There was no porttype op with unnamed input and output messages,
+          //so ignore input and output name and search on the op name only.
+          op = portType.getOperation(name, null, null);
+        }
+        else if(Constants.NONE.equals(inputName))
+        {
+          //There was no porttype op with an unnamed input message,
+          //so ignore input name and search on the op name and output name only.
+          op = portType.getOperation(name, null, outputName);
+        }
+        else if(Constants.NONE.equals(outputName))
+        {
+          //There was no porttype op with an unnamed output message,
+          //so ignore output name and search on the op name and input name only.
+          op = portType.getOperation(name, inputName, null);
+        }
+      }
 
       if (op == null)
       {
