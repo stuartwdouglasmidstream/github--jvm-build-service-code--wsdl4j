@@ -25,11 +25,14 @@ public class ObjectRegistry {
   }
   
   public ObjectRegistry (Map initialValues) {
-    Iterator itr = initialValues.keySet().iterator();
-    while(itr.hasNext())
+    if(initialValues != null)
     {
-      String name = (String) itr.next();
-      register(name, initialValues.get(name));
+      Iterator itr = initialValues.keySet().iterator();
+      while(itr.hasNext())
+      {
+        String name = (String) itr.next();
+        register(name, initialValues.get(name));
+      }
     }
   }
 
