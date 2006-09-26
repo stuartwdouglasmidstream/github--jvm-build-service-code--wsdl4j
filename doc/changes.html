@@ -20,6 +20,49 @@ most recent version is at the top.</p>
 
 <ul>
 
+  <li><strong>Version 1.6.1</strong>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Classes Affected</th>
+          <th>Changes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.ObjectRegistry
+          </td>
+          <td>
+            v1.4 - Added a null arg check to the ctor ObjectRegistry(Map).
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.xml.DOM2Writer
+          </td>
+          <td>
+            v1.5 - Added back the previous method signatures (i.e. without the 
+            namespace Map argument in their signature) from the previous version 
+            of this class.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            v1.49 - Changed parseBindingOperation method so that if a 
+            Binding Operation with unnamed input or output messages does not 
+            match against a PortType Operation with corresponding unnamed input 
+            or output messages, we search for PortType Op again ignoring unnamed
+            messages from the search criteria (i.e. specifying null for those parameters).
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li><br>
+
   <li><strong>Version 1.6</strong>
     <table border="1">
       <thead>
