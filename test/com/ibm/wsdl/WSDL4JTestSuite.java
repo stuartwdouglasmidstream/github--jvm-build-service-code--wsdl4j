@@ -27,6 +27,7 @@ public class WSDL4JTestSuite extends TestCase
     testSuite.addTestSuite(ReadSOAP12Test.class);
     testSuite.addTestSuite(WSDLFactoryPropertyTest.class);
     testSuite.addTestSuite(WSDLLocatorTest.class);
+    testSuite.addTestSuite(RecursiveGetTest.class);
 
     return testSuite;
   }

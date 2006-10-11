@@ -36,10 +36,24 @@ public class RecursiveGetTest extends TestCase
 
     Definition def = reader.readWSDL(null, wsdlURI);
     
-    Map bindings = def.getAllBindings();
     Map portTypes = def.getAllPortTypes();
-    Map services = def.getAllServices();
+    assertEquals("getAllportTypes() did not return the expected number of port types from the composite WSDL document.",
+		         3, portTypes.size());
+
+    Map bindings = def.getAllBindings();
+    assertEquals("getAllBindings() did not return the expected number of bindings from the composite WSDL document.",
+    		     3, bindings.size());
     
+    Map services = def.getAllServices();
+    assertEquals("getAllServices() did not return the expected number of services from the composite WSDL document.",
+		         3, services.size());
+
+    
+    /* The following print statements can be used for diagnostics, 
+     * but are not needed when running the WSDL4J junit test suite 
+     */
+    
+    /*
     Iterator itr = bindings.keySet().iterator();
     while(itr.hasNext())
     {
@@ -57,6 +71,7 @@ public class RecursiveGetTest extends TestCase
     {
       System.out.println(itr.next());
     }
+    */
   }
   
   private void printMap(Map map)
