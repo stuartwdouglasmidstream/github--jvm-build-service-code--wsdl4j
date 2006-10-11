@@ -35,7 +35,7 @@ public class ImportWSDLTest extends TestCase
    */
   public void testImportWSDL() throws Exception
   {
-    String baseURI = "test/resources/";
+    String baseURI = "test/resources/imports/";
     String wsdlURIA = "MyImportA.wsdl";
     
     WSDLFactory factory = WSDLFactory.newInstance();

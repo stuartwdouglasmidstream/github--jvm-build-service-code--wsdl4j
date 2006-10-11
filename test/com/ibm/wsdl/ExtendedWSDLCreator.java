@@ -145,7 +145,7 @@ public class ExtendedWSDLCreator extends TestCase
   {
     Import importDef = def.createImport();
     addCommon(importDef,"TestImport", def);
-    importDef.setLocationURI("MyImportA.wsdl");
+    importDef.setLocationURI("imports/MyImportA.wsdl");
     importDef.setNamespaceURI("testImportNSURI");
     def.addImport(importDef);
   }
