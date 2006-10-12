@@ -4,19 +4,26 @@
 package com.ibm.wsdl.xml;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
 import javax.wsdl.Definition;
+import javax.wsdl.WSDLException;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLLocator;
 import javax.wsdl.xml.WSDLReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.TestCase;
 
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+
+import com.ibm.wsdl.util.StringUtils;
 
 public class ImportWSDLTest extends TestCase
 {
@@ -53,6 +60,41 @@ public class ImportWSDLTest extends TestCase
 //    System.out.println("======Imports A=======");
 //    printMap(importsA);
 //    System.out.println("=====================");
+  }
+  
+  public void testImportWithNullBaseURI() throws Exception
+  {
+	    String wsdlLoc = "test/resources/imports/TestImportDefs.wsdl";
+	    
+	    try {
+	        WSDLFactory factory = WSDLFactory.newInstance();
+	        WSDLReader reader = factory.newWSDLReader();
+
+	        reader.setFeature("javax.wsdl.verbose", true);
+	        reader.setFeature("javax.wsdl.importDocuments", true);
+	        reader.setFactoryImplName("com.ibm.wsdl.factory.WSDLFactoryImpl");
+
+	        URL url = StringUtils.getURL(null, wsdlLoc);
+	        InputStream inputStream = StringUtils.getContentAsInputStream(url);
+	        InputSource inputSource = new InputSource(inputStream);
+	        inputSource.setSystemId(url.toString());
+	        
+	        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	        dbf.setNamespaceAware(true);
+	        dbf.setValidating(false);
+	        Document doc = null;
+	        DocumentBuilder builder = dbf.newDocumentBuilder();
+	        doc = builder.parse(inputSource);
+
+	        inputStream.close();
+
+	        Definition def = reader.readWSDL((String)null, doc);
+	        
+	    } catch (Exception e) {
+        	throw new WSDLException(WSDLException.PARSER_ERROR,
+        			"Problem parsing '" + wsdlLoc + "'.",
+        			e);
+	    }
   }
   
   private void printMap(Map map)

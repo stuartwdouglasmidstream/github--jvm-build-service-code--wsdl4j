@@ -245,14 +245,14 @@ public class WSDLReaderImpl implements WSDLReader
                                              Constants.ATTR_TARGET_NAMESPACE);
     NamedNodeMap attrs = defEl.getAttributes();
 
+    if (importedDefs == null)
+    {
+      importedDefs = new Hashtable();
+    }
+    
     if (documentBaseURI != null)
     {
       def.setDocumentBaseURI(documentBaseURI);
-      
-      if (importedDefs == null)
-      {
-        importedDefs = new Hashtable();
-      }
       importedDefs.put(documentBaseURI, def);
     }
 
