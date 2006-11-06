@@ -155,25 +155,14 @@ public class StringUtils
 
     try
     {
-      Object content = url.getContent();
+      InputStream content = url.openStream();
 
       if (content == null)
       {
         throw new IllegalArgumentException("No content.");
       }
-
-      if (content instanceof InputStream)
-      {
-        return (InputStream)content;
+        return content;
       }
-      else
-      {
-        throw new IllegalArgumentException((content instanceof String)
-                                           ? (String)content
-                                           : "This URL points to a: " +
-                                             StringUtils.getClassName(content.getClass()));
-      }
-    }
     catch (SecurityException e)
     {
       throw new SecurityException("Your JVM's SecurityManager has " +
