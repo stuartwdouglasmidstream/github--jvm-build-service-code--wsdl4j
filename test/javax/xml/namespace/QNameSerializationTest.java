@@ -13,9 +13,7 @@ import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URL;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Test serializing and deserializing the QName class. Ensure that
