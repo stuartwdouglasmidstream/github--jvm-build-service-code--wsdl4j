@@ -4,6 +4,8 @@
 
 package com.ibm.wsdl;
 
+import javax.xml.namespace.QNameSerializationTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -28,6 +30,7 @@ public class WSDL4JTestSuite extends TestCase
     testSuite.addTestSuite(WSDLFactoryPropertyTest.class);
     testSuite.addTestSuite(WSDLLocatorTest.class);
     testSuite.addTestSuite(RecursiveGetTest.class);
+    testSuite.addTestSuite(QNameSerializationTest.class);
 
     return testSuite;
   }

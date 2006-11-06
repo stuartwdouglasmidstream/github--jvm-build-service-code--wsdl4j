@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2002, 2005 
+ * (c) Copyright IBM Corp 2002, 2006 
  */
 
 package javax.xml.namespace;
@@ -30,6 +30,9 @@ public class QName implements Serializable
 
   // Field localPart.
   private String localPart;
+  
+  // Field prefix.
+  private String prefix;
 
   private static final long serialVersionUID = -9120448754896609940L;
 
@@ -44,6 +47,7 @@ public class QName implements Serializable
     this.localPart    = (localPart == null)
                         ? emptyString
                         : localPart.intern();
+    this.prefix       = emptyString;
   }
 
   /**
@@ -60,8 +64,29 @@ public class QName implements Serializable
     this.localPart    = (localPart == null)
                         ? emptyString
                         : localPart.intern();
+    this.prefix       = emptyString;
   }
 
+  /**
+   * Constructor for the QName.
+   *
+   * @param namespaceURI Namespace URI for the QName
+   * @param localPart Local part of the QName.
+   * @param prefix the xmlns-declared prefix for this namespaceURI
+   */
+  public QName(String namespaceURI, String localPart, String prefix)
+  {
+    this.namespaceURI = (namespaceURI == null)
+                        ? emptyString
+                        : namespaceURI.intern();
+    this.localPart    = (localPart == null)
+                        ? emptyString
+                        : localPart.intern();
+    this.prefix       = (prefix == null)
+                        ? emptyString
+                        : prefix.intern();
+  }
+  
   /**
    * Gets the Namespace URI for this QName
    *
@@ -80,6 +105,16 @@ public class QName implements Serializable
   public String getLocalPart()
   {
     return localPart;
+  }
+  
+  /**
+   * Gets the prefix for this QName
+   * 
+   * @return prefix of this QName
+   */
+  public String getPrefix()
+  {
+      return prefix;
   }
 
   /**
@@ -202,5 +237,15 @@ public class QName implements Serializable
 
     namespaceURI = namespaceURI.intern();
     localPart    = localPart.intern();
+    if(prefix == null)
+    {
+        //The serialized object did not have a 'prefix'.
+        //i.e. it was serialized from an old version of QName.
+        prefix = emptyString;
+    }
+    else
+    {
+        prefix = prefix.intern();
+    }
   }
 }
