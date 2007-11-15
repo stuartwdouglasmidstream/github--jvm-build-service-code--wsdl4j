@@ -970,6 +970,8 @@ public class WSDLReaderImpl implements WSDLReader
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
 
+    parseExtensibilityAttributes(bindingEl, Binding.class, binding, def);
+    
     return binding;
   }
 
