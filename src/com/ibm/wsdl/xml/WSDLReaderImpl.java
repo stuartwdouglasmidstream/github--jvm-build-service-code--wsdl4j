@@ -1128,7 +1128,9 @@ public class WSDLReaderImpl implements WSDLReader
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
-
+    
+    parseExtensibilityAttributes(bindingInputEl, BindingInput.class, bindingInput, def);
+    
     return bindingInput;
   }
 
@@ -1168,6 +1170,8 @@ public class WSDLReaderImpl implements WSDLReader
 
       tempEl = DOMUtils.getNextSiblingElement(tempEl);
     }
+
+    parseExtensibilityAttributes(bindingOutputEl, BindingOutput.class, bindingOutput, def);
 
     return bindingOutput;
   }
