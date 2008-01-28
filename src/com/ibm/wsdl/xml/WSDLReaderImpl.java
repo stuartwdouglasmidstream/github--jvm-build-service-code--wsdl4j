@@ -1337,6 +1337,8 @@ public class WSDLReaderImpl implements WSDLReader
                                               Definition def)
                                                 throws WSDLException
   {
+    if (attrExt == null) return;
+    
     List nativeAttributeNames = attrExt.getNativeAttributeNames();
     NamedNodeMap nodeMap = el.getAttributes();
     int length = nodeMap.getLength();
@@ -1682,13 +1684,13 @@ public class WSDLReaderImpl implements WSDLReader
       op.setStyle(style);
     }
 
+    parseExtensibilityAttributes(opEl, Operation.class, op, def);
+    
     if (retrieved)
     {
       op = null;
     }
 
-    parseExtensibilityAttributes(opEl, Operation.class, op, def);
-    
     return op;
   }
 
