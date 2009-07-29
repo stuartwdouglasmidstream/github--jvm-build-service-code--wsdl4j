@@ -41,6 +41,11 @@ public interface WSDLReader
    *         retrieved and processed.</td>
    *     <td><center>true</center></td>
    *   </tr>
+   *   <tr>
+   *     <td><center>javax.wsdl.parseSchemas</center></td>
+   *     <td>If set to true, schemas will be parsed.</td>
+   *     <td><center>true</center></td>
+   *   </tr>
    * </table>
    * <p>
    * All feature names must be fully-qualified, Java package style. All

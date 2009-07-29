@@ -48,6 +48,7 @@ public class WSDLReaderImpl implements WSDLReader
 
   protected boolean verbose = true;
   protected boolean importDocuments = true;
+  protected boolean parseSchema = true;
   protected ExtensionRegistry extReg = null;
   protected String factoryImplName = null;
   protected WSDLLocator loc = null;
@@ -108,6 +109,10 @@ public class WSDLReaderImpl implements WSDLReader
     else if (name.equals(Constants.FEATURE_IMPORT_DOCUMENTS))
     {
       importDocuments = value;
+    }
+    else if (name.equals(Constants.FEATURE_PARSE_SCHEMA))
+    {
+      parseSchema = value;
     }
     else
     {
@@ -589,9 +594,16 @@ public class WSDLReaderImpl implements WSDLReader
       }
       else if ((SchemaConstants.XSD_QNAME_LIST).contains(tempElType))
       {
-      	//the element qname indicates it is a schema.
-        types.addExtensibilityElement(
-          parseSchema(Types.class, tempEl, def));
+        if (parseSchema)
+        {
+      	  //the element qname indicates it is a schema.
+          types.addExtensibilityElement(
+            parseSchema(Types.class, tempEl, def));
+        }
+        else 
+        {
+          types.addExtensibilityElement(parseExtensibilityElementAsDefaultExtensiblityElement(Types.class, tempEl, def));        	
+        }
       }
       else
       {
@@ -1847,6 +1859,61 @@ public class WSDLReaderImpl implements WSDLReader
     }
   }
 
+  /**
+   * Parse the element using the ExtensionRegistry default deserializer instead using the one
+   * registered. The default deserializer will create an UnknownExtensibilityElement from the element. 
+   * @param parentType
+   * @param el
+   * @param def
+   * @return An instance of the default ExtensibilityElement as registered with the ExtensionRegistry 
+   * @throws WSDLException
+   */
+  protected ExtensibilityElement parseExtensibilityElementAsDefaultExtensiblityElement(
+      Class parentType, Element el, Definition def) throws WSDLException
+  {
+    QName elementType = QNameUtils.newQName(el);
+
+    String namespaceURI = el.getNamespaceURI();
+
+    try
+    {
+      if (namespaceURI == null || namespaceURI.equals(Constants.NS_URI_WSDL))
+      {
+        throw new WSDLException(WSDLException.INVALID_WSDL,
+            "Encountered illegal extension element '" + elementType
+                + "' in the context of a '" + parentType.getName()
+                + "'. Extension elements must be in "
+                + "a namespace other than WSDL's.");
+      }
+
+      ExtensionRegistry extReg = def.getExtensionRegistry();
+
+      if (extReg == null)
+      {
+        throw new WSDLException(WSDLException.CONFIGURATION_ERROR,
+            "No ExtensionRegistry set for this "
+                + "Definition, so unable to deserialize " + "a '" + elementType
+                + "' element in the " + "context of a '" + parentType.getName()
+                + "'.");
+      }
+
+      ExtensionDeserializer extDS = extReg.getDefaultDeserializer();
+      
+      NamedNodeMap attrs = el.getAttributes();
+      registerNSDeclarations(attrs, def);
+      
+      return extDS.unmarshall(parentType, elementType, el, def, extReg);
+    } catch (WSDLException e)
+    {
+      if (e.getLocation() == null)
+      {
+        e.setLocation(XPathUtils.getXPathExprFromNode(el));
+      }
+
+      throw e;
+    }
+  }
+  
   protected Input parseInput(Element inputEl, Definition def)
     throws WSDLException
   {

@@ -130,6 +130,8 @@ public class Constants
   public static final String FEATURE_VERBOSE = "javax.wsdl.verbose";
   public static final String FEATURE_IMPORT_DOCUMENTS =
     "javax.wsdl.importDocuments";
+  public static final String FEATURE_PARSE_SCHEMA =
+      "com.ibm.wsdl.parseXMLSchemas";
 
   // Other
   public static final String NONE = ":none";
