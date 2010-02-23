@@ -982,10 +982,19 @@ public class WSDLWriterImpl implements WSDLWriter
                                   "' element in the context of a '" +
                                   parentType.getName() + "'.");
         }
-
-        ExtensionSerializer extSer = extReg.querySerializer(parentType,
-                                                            elementType);
-
+        
+        // If the wsdl was parsed using the parseSchema feature set to false
+        // then the extensibility will be an UnknownExtensibilityElement rather 
+        // than a schema. Serialize this using the default serializer.
+        ExtensionSerializer extSer;
+        if (ext instanceof UnknownExtensibilityElement) 
+        {
+          extSer = extReg.getDefaultSerializer();
+        } 
+        else 
+        {        	
+          extSer = extReg.querySerializer(parentType,elementType);
+        }
         extSer.marshall(parentType, elementType, ext, pw, def, extReg);
       }
     }
