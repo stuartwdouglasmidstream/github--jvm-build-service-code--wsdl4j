@@ -20,6 +20,10 @@ public class SetFactoryNameTest extends TestCase
     super("WSDLPrinter");
   }
   
+  public void tearDown() {
+    WSDLFactoryImpl3.ctorCount = 0;
+  }
+  
   /**
    * Test that if the FactoryImplName is set to the same string
    * as it is already, then the FactoryImpl cache is not cleared.
