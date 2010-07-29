@@ -82,7 +82,7 @@ public class WSDLReaderImpl implements WSDLReader
    *     <td><center>true</center></td>
    *   </tr>
    *   <tr>
-   *     <td><center>com.ibm.wsdl.parseSchema</center></td>
+   *     <td><center>com.ibm.wsdl.parseXMLSchemas</center></td>
    *     <td>If set to true, the schema documents inlined and import directly
    *         or indrectly will be retrieved as javax.wsdl.extensions.schema.Schema
    *         objects and referred to in the Definition. This is the default (only)
