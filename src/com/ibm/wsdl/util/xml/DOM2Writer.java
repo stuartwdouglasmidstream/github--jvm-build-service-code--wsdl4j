@@ -1,5 +1,5 @@
 /*
- * (c) Copyright IBM Corp 2001, 2006 
+ * (c) Copyright IBM Corp 2001, 2010 
  */
 
 package com.ibm.wsdl.util.xml;
@@ -167,16 +167,11 @@ public class DOM2Writer
           out.println("<?xml version=\"1.0\"?>");
         }
 
-        NodeList children = node.getChildNodes();
-
-        if (children != null)
+        Node child = node.getFirstChild();
+        while (child != null)
         {
-          int numChildren = children.getLength();
-
-          for (int i = 0; i < numChildren; i++)
-          {
-            print(children.item(i), namespaceStack, out, xmlEncoding);
-          }
+          print(child,namespaceStack, out, xmlEncoding);
+          child = child.getNextSibling();
         }
         break;
       }
@@ -252,31 +247,21 @@ public class DOM2Writer
           }
         }
 
-        NodeList children = node.getChildNodes();
-
-        if (children != null)
+        Node child = node.getFirstChild();
+        if (child != null)
         {
-          int numChildren = children.getLength();
-
-          hasChildren = (numChildren > 0);
-
-          if (hasChildren)
-          {
-            out.print('>');
-          }
-
-          for (int i = 0; i < numChildren; i++)
-          {
-            print(children.item(i), namespaceStack, out, xmlEncoding);
+          hasChildren = true;
+          out.print('>');
+          
+          while (child != null) 
+          {   
+            print(child, namespaceStack, out, xmlEncoding);
+            child = child.getNextSibling();
           }
         }
-        else
+        else 
         {
           hasChildren = false;
-        }
-
-        if (!hasChildren)
-        {
           out.print("/>");
         }
         break;
