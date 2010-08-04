@@ -1855,7 +1855,9 @@ public class WSDLReaderImpl implements WSDLReader
 
       ExtensionDeserializer extDS = extReg.queryDeserializer(parentType,
                                                              elementType);
-
+      NamedNodeMap attrs = el.getAttributes();
+      registerNSDeclarations(attrs, def);
+      
       return extDS.unmarshall(parentType, elementType, el, def, extReg);
     }
     catch (WSDLException e)
