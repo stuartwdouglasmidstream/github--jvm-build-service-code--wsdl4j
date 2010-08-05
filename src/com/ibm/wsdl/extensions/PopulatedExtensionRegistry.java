@@ -76,6 +76,15 @@ public class PopulatedExtensionRegistry extends ExtensionRegistry
     mapExtensionTypes(SOAPHeader.class,
                       SOAPConstants.Q_ELEM_SOAP_HEADER_FAULT,
                       SOAPHeaderFaultImpl.class);
+    registerSerializer(MIMEPart.class,                     
+                       SOAPConstants.Q_ELEM_SOAP_HEADER,   
+                       soapHeaderSer);                     
+    registerDeserializer(MIMEPart.class,                   
+                         SOAPConstants.Q_ELEM_SOAP_HEADER, 
+                         soapHeaderSer);                   
+    mapExtensionTypes(MIMEPart.class,                      
+                      SOAPConstants.Q_ELEM_SOAP_HEADER,    
+                      SOAPHeaderImpl.class);               
 
     SOAPBodySerializer soapBodySer = new SOAPBodySerializer();
 
@@ -179,6 +188,15 @@ public class PopulatedExtensionRegistry extends ExtensionRegistry
     mapExtensionTypes(SOAP12Header.class,
                       SOAP12Constants.Q_ELEM_SOAP_HEADER_FAULT,
                       SOAP12HeaderFaultImpl.class);
+    registerSerializer(MIMEPart.class,                       
+                       SOAP12Constants.Q_ELEM_SOAP_HEADER,   
+                       soap12HeaderSer);                     
+    registerDeserializer(MIMEPart.class,                     
+                         SOAP12Constants.Q_ELEM_SOAP_HEADER, 
+                         soap12HeaderSer);                   
+    mapExtensionTypes(MIMEPart.class,                        
+                      SOAP12Constants.Q_ELEM_SOAP_HEADER,    
+                      SOAP12HeaderImpl.class);               
 
     SOAP12BodySerializer soap12BodySer = new SOAP12BodySerializer();
 
