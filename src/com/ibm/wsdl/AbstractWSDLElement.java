@@ -96,8 +96,10 @@ public abstract class AbstractWSDLElement implements WSDLElement
    *
    * @see #getExtensionAttribute
    * @see #getExtensionAttributes
-   * @see ExtensionRegistry#registerExtensionAttributeType
-   * @see ExtensionRegistry#queryExtensionAttributeType
+   * @see 
+   *      javax.wsdl.extensions.ExtensionRegistry#registerExtensionAttributeType
+   * @see 
+   *      javax.wsdl.extensions.ExtensionRegistry#queryExtensionAttributeType
    */
   public void setExtensionAttribute(QName name, Object value)
   {
@@ -123,8 +125,10 @@ public abstract class AbstractWSDLElement implements WSDLElement
    *
    * @see #setExtensionAttribute
    * @see #getExtensionAttributes
-   * @see ExtensionRegistry#registerExtensionAttributeType
-   * @see ExtensionRegistry#queryExtensionAttributeType
+   * @see 
+   *      javax.wsdl.extensions.ExtensionRegistry#registerExtensionAttributeType
+   * @see 
+   *      javax.wsdl.extensions.ExtensionRegistry#queryExtensionAttributeType
    */
   public Object getExtensionAttribute(QName name)
   {

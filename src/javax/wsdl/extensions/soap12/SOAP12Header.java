@@ -90,7 +90,7 @@ public interface SOAP12Header extends ExtensibilityElement, java.io.Serializable
   /**
    * Remove a SOAP header fault.
    * 
-   * @param soapHeaderFault the SOAP header fault to be removed.
+   * @param soap12HeaderFault the SOAP header fault to be removed.
    * @return the SOAP header fault which was removed.
    */
   public SOAP12HeaderFault removeSOAP12HeaderFault(SOAP12HeaderFault soap12HeaderFault);

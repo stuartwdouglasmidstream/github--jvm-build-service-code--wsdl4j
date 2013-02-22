@@ -5,13 +5,13 @@
    Build file for WSDL4J
 
 Notes:
-   This is a build file for use with the Jakarta Ant build tool.
+   This is a build file for use with the Apache Ant build tool.
 
 Prerequisites:
 
-   jakarta-ant from http://jakarta.apache.org
+   Apache Ant from http://ant.apache.org
    A JAXP-compliant DOM parser.
-     - Xerces, from http://xml.apache.org, works fine.
+     - e.g. Apache Xerces, from http://xerces.apache.org/xerces2-j/
 
 Optional additions:
 
@@ -41,12 +41,12 @@ Author:
   <target name="init">
     <property name="name" value="wsdl4j"/>
     <property name="Name" value="WSDL4J"/>
-    <property name="wsdl4j.version" value="1.6.2"/>
-    <property name="wsdl4j.version.underscore" value="1_6_2"/>
+    <property name="wsdl4j.version" value="1.6.3"/>
+    <property name="wsdl4j.version.underscore" value="1_6_3"/>
     <property name="jwsdl.version" value="1.2"/>
     <property name="jwsdl.version.underscore" value="1_2"/>
     <property name="qname.version" value="1.0"/>
-    <property name="year" value="2003,2006"/>
+    <property name="year" value="2003, 2013"/>
 
     <property name="build.compiler" value="classic"/>
     <property name="debug" value="on"/>
@@ -304,8 +304,8 @@ Author:
 
     <cvschangelog destfile="${build.dir}/changelog.xml"
                   start="${change.log.start.date}">
-      <user displayname="John Kaputin"
-            userid="kaputin"/>
+      <user displayname="Jeremy Hughes"
+            userid="hughesjp"/>
     </cvschangelog>
 
     <style in="${build.dir}/changelog.xml"
@@ -314,7 +314,7 @@ Author:
       <param name="title" expression="WSDL4J ChangeLog"/>
       <param name="module" expression="wsdl4j"/>
       <param name="cvsweb"
-             expression="http://cvs.sourceforge.net/viewcvs.py/wsdl4j/"/>
+             expression="http://wsdl4j.cvs.sourceforge.net/wsdl4j/"/>
       <param name="date" expression="${TODAY}"/>
     </style>
   </target>

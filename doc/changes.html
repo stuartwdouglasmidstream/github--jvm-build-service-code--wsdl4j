@@ -20,7 +20,7 @@ most recent version is at the top.</p>
 
 <ul>
 
-  <li><strong>Changes post version 1.6.2</strong>
+  <li><strong>Version </strong>
     <table border="1">
       <thead>
         <tr>
@@ -31,19 +31,75 @@ most recent version is at the top.</p>
       <tbody>
         <tr>
           <td class="classList">
-            com.ibm.wsdl.xml.WSDLReaderImpl,<br>
-            com.ibm.wsdl.Contsants
+            com.ibm.wsdl.xml.WSDLReaderImpl
           </td>
           <td>
-            Sourceforge Tracker 2828374.  Add the "javax.wsdl.parseSchema" 
-            feature i.e. "wsdlReader.setFeature("javax.wsdl.parseSchema", false);"
+            Tracker 1689969. NPE when Binding precedes PortType.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            Tracker 1832529. BindingInput and BindingOutput ext attr not parsed.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            Tracker 1848594. BindingInput and BindingOutput ext attr not parsed.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.util.xml.DOM2Writer
+          </td>
+          <td>
+            Tracker 2074233. StackOverflowException error when using WSDLWriter to serialize a WSDL document.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.Contsants,<br>
+            com.ibm.wsdl.xml.WSDLReaderImpl,<br>
+            com.ibm.wsdl.xml.WSDLWriterImpl
+          </td>
+          <td>
+            Tracker 2828374. Add the "javax.wsdl.parseSchema" feature.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.WSDLReaderImpl
+          </td>
+          <td>
+            Tracker 2845103. WSDLException: Can't find prefix for a 'namespace'. Occurs when the prefix is
+            declared inline within an extensibility element (e.g. a multipartRelated one).
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.xml.SetFactoryNameTest
+          </td>
+          <td>
+            Tracker 3035301. Unit test failure: com.ibm.wsdl.xml.SetFactoryNameTest.testSetFactoryName()
+            can fail as it does not reset the constructor count of the WSDLFactoryImpl3 it uses.
+          </td>
+        </tr>
+        <tr>
+          <td class="classList">
+            com.ibm.wsdl.extensions.PopulatedExtensionRegistry
+          </td>
+          <td>
+            Tracker 3040040. wsdlsoap:header or wsdlsoap12:header parsed as UnknownExtensibilityElement in a mime:part.
           </td>
         </tr>
       </tbody>
     </table>
   </li><br>
-
-
 
   <li><strong>Version 1.6.2</strong>
     <table border="1">
